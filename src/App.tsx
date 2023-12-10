@@ -1,12 +1,15 @@
 import React from 'react';
-import './App.css';
+import { ThemeProvider } from '@mui/material';
+import { LightTheme } from './shared/theme';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRoutes } from './routes';
 
-function App() {
+export function App() {
   return (
-    <div className="App">
-
-    </div>
+    <ThemeProvider theme={LightTheme}>
+      <BrowserRouter basename='/'>
+        <AppRoutes />
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
-
-export default App;
