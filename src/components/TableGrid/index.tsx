@@ -82,7 +82,7 @@ export function TableGrid(props: TableGridProps) {
         rows={props.rows}
         columns={columns.map((column: GridColDef) => ({
           ...column,
-          ...(!matches ? {
+          ...(matches === false ? {
             flex: 1,
           } : { width: 230 }),
           sortable: false,
@@ -95,7 +95,7 @@ export function TableGrid(props: TableGridProps) {
             },
           },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[10]}
         disableColumnMenu
         onCellClick={handleOnCellClick}
         sx={table}

@@ -2,9 +2,8 @@ import { Box, Button, Typography } from "@mui/material";
 import { button, title, toolbar1 } from "../../styles";
 import { TableGrid } from "../../components/TableGrid";
 import { columns } from "./columns";
-import { colors } from "../../shared/theme";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
+import { CreateTag } from "./createTag";
 
 export function Sites() {
   return (
@@ -18,9 +17,7 @@ export function Sites() {
           >
             Programar
           </Button>
-          <Button variant="outlined" endIcon={<AddCircleIcon />}>
-            Adicionar Tags
-          </Button>
+          <CreateTag/>
           <Button variant="contained" sx={button}>
             Cadastrar Site
           </Button>

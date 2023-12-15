@@ -15,9 +15,15 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { colors } from "../../shared/theme";
 import { api } from "../../service/api";
 
-
-function Row(props: any) {
-  const { row } = props;
+export interface RowProps {
+  nome: string;
+  link: string;
+  conteudo: string;
+  feminicidio: boolean;
+  lido: boolean;
+  row: () => void;
+}
+export function Row(props: RowProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -33,12 +39,12 @@ function Row(props: any) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.nomeDoSite}
+          {props.nome}
         </TableCell>
-        <TableCell align="right">{row.link}</TableCell>
-        <TableCell align="right">{row.conteudo}</TableCell>
-        <TableCell align="right">{row.feminicidio}</TableCell>
-        <TableCell align="right">{row.acoes}</TableCell>
+        <TableCell align="left">{props.link}</TableCell>
+        <TableCell align="left">{props.conteudo}</TableCell>
+        <TableCell align="left">{props.feminicidio}</TableCell>
+        <TableCell align="left">{props.lido}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -51,7 +57,7 @@ function Row(props: any) {
                 <TableBody>
                   <iframe
                     style={{ width: "700px", height: "350px" }}
-                    src={row.linkToNoticia}
+                    src={props.link}
                   ></iframe>
                 </TableBody>
               </Table>
@@ -67,7 +73,9 @@ export default function CollapsibleTable() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    api.get("/api/fidSites/").then((res) => setRows(res.data))
+    api
+      .get("/api/site/")
+      .then((res) => setRows(res.data))
       .catch((error) => console.error("Erro ao obter dados:", error));
   }, []);
 
@@ -84,10 +92,15 @@ export default function CollapsibleTable() {
             <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
+        {/*   <TableBody>
+          {rows.map((row: RowProps) => (
+           <Row key={row.nome} row={rows} />
+          ))}
+        </TableBody> */}
         <TableBody>
-      {/*     {rows.map((row) => (
-           // <Row key={row.nomeDoSite} row={row} />
-          ))} */}
+          {rows.map((row: RowProps) => (
+            <Row key={row.nome} {...row} />
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
