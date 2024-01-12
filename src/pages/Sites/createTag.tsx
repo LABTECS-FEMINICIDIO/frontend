@@ -1,30 +1,42 @@
-import React, { useState, ChangeEvent } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { useTheme } from '@mui/material/styles';
-import { caixaTag } from '../../styles';
-import { Box, Chip, Divider, IconButton, TextField, Typography } from '@mui/material';
-import { api } from '../../service/api';
+import React, { useState, ChangeEvent, useEffect } from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useTheme } from "@mui/material/styles";
+import { caixaTag } from "../../styles";
+import {
+  Box,
+  Chip,
+  Divider,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { api } from "../../service/api";
+import { toast } from "react-toastify";
 
-interface CreateTagProps {
-  // Props, se necessário
-}
-
-export function CreateTag({}: CreateTagProps) {
+export function CreateTag() {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [tags, setTags] = useState<string[]>([]);
-  const [nome, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
 
   const handleRemoverTag = (tagRemovida: string) => {
-    const novasTags = tags.filter((tag) => tag !== tagRemovida);
-    setTags(novasTags);
+    api.delete('/api/tag/' + tagRemovida)
+      .then(response => {
+        if (response.status === 200) {
+          const novasTags = tags.filter((tag) => tag !== tagRemovida);
+          setTags(novasTags);
+          toast.success(`Tag ${tagRemovida} removida com sucesso!`);
+        } 
+      }).catch(error => {
+        toast.error(error.message);
+      });
   };
 
   const handleClickOpen = () => {
@@ -40,28 +52,55 @@ export function CreateTag({}: CreateTagProps) {
   };
 
   const handleAdicionarTag = () => {
-    if (nome.trim() !== '') {
-      setTags([...tags, nome.trim()]);
-      api.post('/api/tag/', {nome})
-        .then((data) => {
-          console.log(data);
+    if (inputValue.trim() !== "") {
+      api
+        .post("/api/tag/", { nome: inputValue })
+        .then(() => {
+          toast.success("Tag criada com sucesso");
+          setTags([...tags, inputValue]);
+          setInputValue("");
         })
-        .catch((error) => {
-          console.error('Erro ao adicionar tag:', error);
+        .catch((error: any) => {
+          toast.error(error.message);
         });
-      setInputValue('');
     }
   };
 
+  const findTags = () => {
+    api
+      .get("/api/tag/")
+      .then((response) => {
+        const tagNames = response.data.map((tag: { nome: string }) => tag.nome);
+        setTags(tagNames);
+      })
+      .catch((error: any) => {
+        toast.error(error.message);
+      });
+  };
+
+  useEffect(() => {
+    findTags();
+  }, [open]);
+
   return (
     <>
-      <Button variant="outlined" endIcon={<AddCircleIcon />} onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        endIcon={<AddCircleIcon />}
+        onClick={handleClickOpen}
+      >
         Adicionar Tags
       </Button>
       <Box component="form">
-        <Dialog fullScreen={fullScreen} open={open} aria-labelledby="responsive-dialog-title">
+        <Dialog
+          fullScreen={fullScreen}
+          open={open}
+          aria-labelledby="responsive-dialog-title"
+        >
           <Box>
-            <DialogTitle sx={{ fontWeight: 600 }}>{"Adicionar Tags"}</DialogTitle>
+            <DialogTitle sx={{ fontWeight: 600 }}>
+              {"Adicionar Tags"}
+            </DialogTitle>
             <Typography
               sx={{
                 marginLeft: 3,
@@ -73,10 +112,10 @@ export function CreateTag({}: CreateTagProps) {
             </Typography>
           </Box>
           <Divider sx={{ marginBottom: 1 }} />
-          <DialogContent sx={{ display: 'flex', gap: 1 }}>
+          <DialogContent sx={{ display: "flex", gap: 1 }}>
             <TextField
-              label="Nome Completo"
-              value={nome}
+              label="Tag"
+              value={inputValue}
               onChange={handleChangeInput}
               variant="filled"
               fullWidth
@@ -86,21 +125,30 @@ export function CreateTag({}: CreateTagProps) {
             </IconButton>
           </DialogContent>
           <Box sx={caixaTag}>
-            {tags.map((tag, index) => (
-              <Chip
-                key={index}
-                label={tag}
-                onDelete={() => handleRemoverTag(tag)}
-                sx={{ background: '#f0f0f0', mt: 2, mr: 1 }}
-              />
-            ))}
+            {tags?.length > 0 ? (
+              tags.map((tag, index) => (
+                <Chip
+                  key={index}
+                  label={tag}
+                  onDelete={() => handleRemoverTag(tag)}
+                  sx={{ background: "#fff", mt: 2, mr: 1 }}
+                />
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "130px",
+                }}
+              >
+                Nenhuma tag cadastrada.
+              </Typography>
+            )}
           </Box>
           <DialogActions sx={{ marginRight: 2, marginBottom: 2 }}>
             <Button autoFocus onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button variant="contained" autoFocus>
-              Cadastrar
+              Fechar
             </Button>
           </DialogActions>
         </Dialog>

@@ -1,9 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
-import { button, title, toolbar1 } from "../../styles";
+import { Box, Typography } from "@mui/material";
+import { title, toolbar1 } from "../../styles";
 import { TableGrid } from "../../components/TableGrid";
 import { columns } from "./columns";
-import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { CreateTag } from "./createTag";
+import { CreateSite } from "./createSite";
+import { CreateProgram } from "./scheduleSearch";
 
 export function Sites() {
   return (
@@ -11,16 +12,9 @@ export function Sites() {
       <Box sx={toolbar1}>
         <Typography sx={title}>Sites</Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
-          <Button
-            variant="outlined"
-            endIcon={<AccessTimeFilledIcon />}
-          >
-            Programar
-          </Button>
+         <CreateProgram/>
           <CreateTag/>
-          <Button variant="contained" sx={button}>
-            Cadastrar Site
-          </Button>
+         <CreateSite/>
         </Box>
       </Box>
       <TableGrid rows={[]} columns={columns} />

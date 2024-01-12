@@ -14,6 +14,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { colors } from "../../shared/theme";
 import { api } from "../../service/api";
+import { Form } from "./form";
 
 export interface RowProps {
   nome: string;
@@ -21,8 +22,8 @@ export interface RowProps {
   conteudo: string;
   feminicidio: boolean;
   lido: boolean;
-  row: () => void;
 }
+
 export function Row(props: RowProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -41,7 +42,7 @@ export function Row(props: RowProps) {
         <TableCell component="th" scope="row">
           {props.nome}
         </TableCell>
-        <TableCell align="left">{props.link}</TableCell>
+        <TableCell align="left"><a href={props.link} target="blank">{props.link}</a></TableCell>
         <TableCell align="left">{props.conteudo}</TableCell>
         <TableCell align="left">{props.feminicidio}</TableCell>
         <TableCell align="left">{props.lido}</TableCell>
@@ -53,12 +54,15 @@ export function Row(props: RowProps) {
               <Typography variant="h6" gutterBottom component="div">
                 Notícia
               </Typography>
-              <Table size="small" aria-label="purchases">
+              <Table size="small" aria-label="purchases" sx={{display: "flex", gap: 3}}>
                 <TableBody>
                   <iframe
-                    style={{ width: "700px", height: "350px" }}
+                    style={{ width: "1080px", height: "500px" }}
                     src={props.link}
                   ></iframe>
+                </TableBody>
+                <TableBody>
+                  <Form/>
                 </TableBody>
               </Table>
             </Box>
@@ -88,15 +92,10 @@ export default function CollapsibleTable() {
             <TableCell>Nome do Site</TableCell>
             <TableCell align="left">Link</TableCell>
             <TableCell align="left">Conteúdo</TableCell>
-            <TableCell align="left">Feminicídio?</TableCell>
+            <TableCell align="left">Assassinato?</TableCell>
             <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
-        {/*   <TableBody>
-          {rows.map((row: RowProps) => (
-           <Row key={row.nome} row={rows} />
-          ))}
-        </TableBody> */}
         <TableBody>
           {rows.map((row: RowProps) => (
             <Row key={row.nome} {...row} />

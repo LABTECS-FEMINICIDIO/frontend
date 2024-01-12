@@ -10,6 +10,7 @@ export const toolbar1 = {
   display: "flex",
   justifyContent: "space-between",
   marginBottom: 3,
+  marginLeft: '10px'
 };
 
 export const button = {
