@@ -10,6 +10,8 @@ import { Iml } from '../pages/Iml';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
 import { Dashboard } from '../pages/Dashboard';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { Victims } from '../pages/Victims';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 
 
 export const APP_PAGES = [
@@ -46,6 +48,13 @@ export const APP_PAGES = [
         route: '/users',
         icon: <GroupAddIcon />,
         component: <Users />,
+        showMenu: true,
+    },
+    {
+        title: 'Vítimas',
+        route: '/victims',
+        icon: <ContactPageIcon />,
+        component: <Victims />,
         showMenu: true,
     },
     {
