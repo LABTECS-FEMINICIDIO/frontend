@@ -21,15 +21,13 @@ export function Cards({ param }: any) {
         flexWrap: "wrap",
         "& > :not(style)": {
           m: 1,
-          maxWidth: 500,
+          maxWidth: 300,
           width: 325,
           height: 100,
-          mt: 4,
-          mb: 5
         }
       }}
     >
-      <Paper elevation={2} >
+      <Paper elevation={2}>
         <CardContent sx={{marginBottom: 4}}>
           <Typography sx={{ fontWeight: "bold", display: 'flex', gap: 2, fontSize: '18px' }}>Encontrados  <ComputerIcon sx={{color: '#2f52b3'}}/></Typography>
           <Typography sx={{ fontWeight: "bold", fontSize: '28px', color: '#2f52b3' }}>20</Typography>

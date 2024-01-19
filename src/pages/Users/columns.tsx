@@ -1,6 +1,7 @@
 import { IconButton, Switch } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import LockResetIcon from "@mui/icons-material/LockReset";
+import { ResetPassword } from "./resetPassword";
+
 
 export const columns: GridColDef[] = [
   {
@@ -20,9 +21,7 @@ export const columns: GridColDef[] = [
     headerName: "Resetar Senha",
     renderCell(params) {
       return (
-        <IconButton>
-          <LockResetIcon />
-        </IconButton>
+       <ResetPassword userId={''}/>
       );
     },
   },

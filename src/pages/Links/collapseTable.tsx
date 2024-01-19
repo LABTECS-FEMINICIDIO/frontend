@@ -15,6 +15,7 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { colors } from "../../shared/theme";
 import { api } from "../../service/api";
 import { Form } from "./form";
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
 
 export interface RowProps {
   nome: string;
@@ -43,7 +44,12 @@ export function Row(props: RowProps) {
           {props.nome}
         </TableCell>
         <TableCell align="left"><a href={props.link} target="blank">{props.link}</a></TableCell>
-        <TableCell align="left">{props.conteudo}</TableCell>
+        <TableCell align="left">
+          {props.conteudo}
+        <IconButton>
+          <IntegrationInstructionsIcon />
+        </IconButton>
+        </TableCell>
         <TableCell align="left">{props.feminicidio}</TableCell>
         <TableCell align="left">{props.lido}</TableCell>
       </TableRow>
