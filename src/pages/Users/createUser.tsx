@@ -23,6 +23,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "../../shared/theme";
 import { createUser } from "../../service/users";
 import { toast } from "react-toastify";
+import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object().shape({
   nome: Yup.string().required("Nome é obrigatório"),
@@ -38,6 +39,8 @@ export function CreateUser() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const { addCount } = useRefresh();
+  
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(schema)
   });
@@ -49,6 +52,7 @@ export function CreateUser() {
       const response = await createUser(data);
      toast.success('Usuário cadastrado com sucesso');
       reset();
+      addCount();
       handleClose();
     } catch (error: any) {
       toast.error(error.response.data.message);
