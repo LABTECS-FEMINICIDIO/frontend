@@ -19,11 +19,8 @@ export const columns: GridColDef[] = [
   {
     field: "type",
     headerName: "Tipo",
-    renderCell: (params) => {
-      const type = params.value.type;
-      if(type === 'national'){
-        return 'Nacional'
-      }
-    }
+    valueFormatter: (params) => {
+      return params.value === "national" ? "Nacional" : params.value;
+    },
   },
 ];
