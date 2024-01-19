@@ -15,7 +15,8 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { colors } from "../../shared/theme";
 import { api } from "../../service/api";
 import { Form } from "./form";
-import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import { Content } from "./content";
+import Classification from "./classification";
 
 export interface RowProps {
   nome: string;
@@ -23,6 +24,7 @@ export interface RowProps {
   conteudo: string;
   feminicidio: boolean;
   lido: boolean;
+  classificacao: string;
 }
 
 export function Row(props: RowProps) {
@@ -45,13 +47,16 @@ export function Row(props: RowProps) {
         </TableCell>
         <TableCell align="left"><a href={props.link} target="blank">{props.link}</a></TableCell>
         <TableCell align="left">
-          {props.conteudo}
-        <IconButton>
-          <IntegrationInstructionsIcon />
-        </IconButton>
+          
+        <Content props={props.conteudo}/>
         </TableCell>
         <TableCell align="left">{props.feminicidio}</TableCell>
-        <TableCell align="left">{props.lido}</TableCell>
+        <TableCell align="left">
+          <Classification props={props.classificacao}/>
+        </TableCell>
+        <TableCell align="left">
+          {props.lido}
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -99,6 +104,7 @@ export default function CollapsibleTable() {
             <TableCell align="left">Link</TableCell>
             <TableCell align="left">Conteúdo</TableCell>
             <TableCell align="left">Assassinato?</TableCell>
+            <TableCell align="left">Classificação</TableCell>
             <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>
