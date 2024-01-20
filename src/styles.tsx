@@ -10,7 +10,7 @@ export const toolbar1 = {
   display: "flex",
   justifyContent: "space-between",
   marginBottom: 3,
-  marginLeft: '10px'
+  marginLeft: "10px",
 };
 
 export const button = {
@@ -25,4 +25,28 @@ export const caixaTag = {
   marginRight: 3,
   marginBottom: 2,
   padding: 2,
+};
+
+export const borda = {
+  border: "solid 1px",
+  width: 200,
+  height: 5,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  mt: 3,
+  ml: 12,
+  color: colors.primary_dark,
+  backgroundColor: colors.primary_dark,
+  borderRadius: 2,
+};
+
+export const container = {
+  backgroundColor: colors.primary_lightest,
+  height: "100vh",
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  padding: 0
 };

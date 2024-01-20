@@ -7,19 +7,15 @@ export const columns: GridColDef[] = [
     headerName: "Nome",
   },
   {
-    field: "email",
-    headerName: "E-mail",
+    field: "idade",
+    headerName: "Idade",
   },
   {
-    field: "telefone",
-    headerName: "Telefone",
+    field: "rua",
+    headerName: "Rua",
   },
   {
-    field: "resetarSenha",
-    headerName: "Resetar Senha",
-  },
-  {
-    field: "Acesso",
-    headerName: "Acesso",
+    field: "armaUsada",
+    headerName: "ArmaUsada",
   },
 ];
