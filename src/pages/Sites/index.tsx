@@ -5,6 +5,7 @@ import { columns } from "./columns";
 import { CreateTag } from "./createTag";
 import { CreateSite } from "./createSite";
 import { CreateProgram } from "./scheduleSearch";
+import { Search } from "../../components/Search";
 
 export function Sites() {
   return (

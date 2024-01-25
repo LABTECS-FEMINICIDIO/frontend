@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
-import { createProgramSearch } from "../../service/site";
+import { createProgramSearch, findManyProgramSearch } from "../../service/site";
 import { toast } from "react-toastify";
 
 const schema = Yup.object().shape({
@@ -45,6 +45,10 @@ export function CreateProgram() {
       toast.error(error.response.data.message);
     }
   };
+
+  React.useEffect(()=> {
+    const response = findManyProgramSearch().then
+  },[])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,7 +83,7 @@ export function CreateProgram() {
             marginBottom: 3,
           }}
         >
-          {"Selecione data e hora para as pesquisas."}
+          {"Defina o intervalo de dias em que o robô irá realizar as pesquisas."}
         </Typography>
         <Divider sx={{ marginBottom: 2 }} />
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>

@@ -1,9 +1,12 @@
 import axios from "axios";
+import Cookies from 'universal-cookie';
 
 export const api = axios.create({
     baseURL: process.env.REACT_APP_PORT_PROJECT_BACKEND,
-    //headers: {
-    //    'Content-Type': 'application/json', // Cabeçalhos personalizados, se necessário
-    //    Authorization: 'Bearer YOUR_ACCESS_TOKEN', // Exemplo de autenticação com token
-    //},
 });
+
+export async function validation() {
+    const cookie = new Cookies();
+    const Token = await cookie.get('@feminicidio_token');
+    api.defaults.headers.common['Authorization'] = `Bearer ${Token}`;
+  }
