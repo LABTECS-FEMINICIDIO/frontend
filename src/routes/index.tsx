@@ -5,6 +5,7 @@ import { APP_PAGES } from "./pages.routes";
 import { DefaultLayout } from "../DefaultLayout";
 import SignIn from "../pages/Login";
 import { useToken } from "../shared/hooks/auth";
+import Register from "../pages/Login/register";
 
 export function AppRoutes() {
   const { Login, token, permission } = useToken();
@@ -18,7 +19,10 @@ export function AppRoutes() {
           ))}
         </Route>
       ) : (
+        <> 
         <Route key={"login"} path="/" element={<SignIn />} />
+        <Route key={"register"} path="/register" element={<Register />} />
+        </>
       )}
       <Route path="*" element={<NotFound />} />
     </Routes>

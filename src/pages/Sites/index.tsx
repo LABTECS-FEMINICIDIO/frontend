@@ -12,13 +12,17 @@ export function Sites() {
     <>
       <Box sx={toolbar1}>
         <Typography sx={title}>Sites</Typography>
-        <Box sx={{ display: "flex", gap: 1 }}>
+        <Box sx={{ display: "flex", flexWrap: 'wrap',gap: 1 }}>
+          <Search column={''} value={''}/>
          <CreateProgram/>
           <CreateTag/>
          <CreateSite/>
         </Box>
       </Box>
-      <TableGrid rows={[]} columns={columns} />
+      <TableGrid 
+      rows={[]} 
+      columns={columns} 
+      titleDelete="Deseja realmente excluir este dado?"/>
     </>
   );
 }

@@ -57,7 +57,7 @@ export function Content(props: IContent) {
           <Box dangerouslySetInnerHTML={{ __html: props.props }} />
         </DialogContent>
         <DialogActions sx={{marginBottom: 3, marginTop: 3, marginRight: '35px'}}>
-          <Button variant="contained" autoFocus onClick={handleClose}>
+          <Button variant="contained" onClick={handleClose}>
             Voltar
           </Button>
         </DialogActions>

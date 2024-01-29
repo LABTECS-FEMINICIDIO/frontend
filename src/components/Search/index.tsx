@@ -37,9 +37,9 @@ export const Search: React.FC<ISearch> = ({value}) => {
     }));
   };
 
-  const NewArray = value.map((item: any) => (
-    <MenuItem key={item.value} value={item.value}>
-      {item.column}
+  const NewArray = Array.isArray(value) && value.map((item: any) => (
+    <MenuItem key={item?.value} value={item?.value}>
+      {item?.column}
     </MenuItem>
   ));
 

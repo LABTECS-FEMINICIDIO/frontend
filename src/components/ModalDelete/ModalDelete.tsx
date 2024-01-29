@@ -38,8 +38,8 @@ export function ModalDelete({onDelete, title, subtitle}: ModalDeleteProps) {
       <Dialog open={open}>
         <DialogTitle
           sx={{
-            padding: '2.5rem 2.5rem 0 2.5rem',
-            color: colors.primary_base,
+            padding: '2rem 2rem 0 2rem',
+            color: colors.neutral_darkest,
             fontSize: '1.25rem',
           }}>
           {title}

@@ -17,6 +17,8 @@ import { api } from "../../service/api";
 import { Form } from "./form";
 import { Content } from "./content";
 import Classification from "./classification";
+import { Switch } from "@mui/material";
+import { toast } from "react-toastify";
 
 export interface RowProps {
   nome: string;
@@ -47,7 +49,6 @@ export function Row(props: RowProps) {
         </TableCell>
         <TableCell align="left"><a href={props.link} target="blank">{props.link}</a></TableCell>
         <TableCell align="left">
-          
         <Content props={props.conteudo}/>
         </TableCell>
         <TableCell align="left">{props.feminicidio}</TableCell>
@@ -55,7 +56,7 @@ export function Row(props: RowProps) {
           <Classification props={props.classificacao}/>
         </TableCell>
         <TableCell align="left">
-          {props.lido}
+         {props.lido}<Switch/>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -68,7 +69,7 @@ export function Row(props: RowProps) {
               <Table size="small" aria-label="purchases" sx={{display: "flex", gap: 3}}>
                 <TableBody>
                   <iframe
-                    style={{ width: "1080px", height: "500px" }}
+                    style={{ width: "1000px", height: "500px" }}
                     src={props.link}
                   ></iframe>
                 </TableBody>
@@ -88,10 +89,9 @@ export default function CollapsibleTable() {
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
-    api
-      .get("/api/site/")
-      .then((res) => setRows(res.data))
-      .catch((error) => console.error("Erro ao obter dados:", error));
+    api.get("/api/findSites/")
+    api.get("/api/site/").then((res) => 
+    setRows(res.data)).catch((error) => toast.error("Erro ao obter dados:", error));
   }, []);
 
   return (
@@ -105,7 +105,7 @@ export default function CollapsibleTable() {
             <TableCell align="left">Conteúdo</TableCell>
             <TableCell align="left">Assassinato?</TableCell>
             <TableCell align="left">Classificação</TableCell>
-            <TableCell align="left"></TableCell>
+            <TableCell align="left">Lido</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

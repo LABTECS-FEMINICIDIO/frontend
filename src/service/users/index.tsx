@@ -10,3 +10,6 @@ export function findManyUsers(){
 export function createPassword(userId: string){
     return api.post('/api/usuarios/reset/', userId)
 }
+export function deleteUser(userId: string){
+    return api.delete('/api/usuarios/'+userId)
+}
