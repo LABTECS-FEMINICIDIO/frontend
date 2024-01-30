@@ -79,10 +79,10 @@ export default function SignIn() {
             }
           />
           <Paper sx={{ p: 8, width: 400 }}>
-            <Avatar sx={{ ml: 21, backgroundColor: colors.primary_dark }}>
+            <Avatar sx={{ ml: '170px', backgroundColor: colors.primary_dark }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" sx={{ marginLeft: 20 }}>
+            <Typography component="h1" variant="h5" sx={{ marginLeft: '160px', marginTop: 1, fontWeight: 'bold'  }}>
               Login
             </Typography>
             <Box
@@ -138,7 +138,7 @@ export default function SignIn() {
                   mt: 3,
                 }}
               >
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   Não possui cadastro? Registre-se
                 </Link>
               </Box>

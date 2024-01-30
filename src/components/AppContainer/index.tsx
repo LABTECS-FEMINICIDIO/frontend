@@ -16,7 +16,6 @@ import { MenuList } from "./MenuList";
 import { Content } from "./Content";
 import { AppBar, ButtonStyled, Drawer, DrawerHeader } from "./styles";
 import Cookies from "universal-cookie";
-//import Cookies from 'universal-cookie';
 //import { useToken } from '../../shared/hooks/auth';
 
 interface AppContainerProps {
@@ -29,7 +28,6 @@ export function AppContainer({ children }: AppContainerProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const data = localStorage.getItem("data");
   const user = JSON.parse(data ?? '{"result":true, "count":42}');
-  //const { User_Access } = useToken()
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -94,7 +92,7 @@ export function AppContainer({ children }: AppContainerProps) {
               aria-haspopup="true"
               onClick={handleClick}
             >
-              {/*   {User_Access} */}
+                {} 
             </ButtonStyled>
 
             <Button variant="text" onClick={() => Logout()}>

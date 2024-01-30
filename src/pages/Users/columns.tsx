@@ -1,4 +1,4 @@
-import { IconButton, Switch } from "@mui/material";
+import { Switch } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { ResetPassword } from "./resetPassword";
 
@@ -21,15 +21,15 @@ export const columns: GridColDef[] = [
     headerName: "Resetar Senha",
     renderCell(params) {
       return (
-       <ResetPassword userId={''}/>
+       <ResetPassword userId={params.row.id}/>
       );
     },
   },
   {
-    field: "Acesso",
-    headerName: "Acesso",
-    renderCell(params) {
-      return <Switch />;
-    },
+    field: 'Acesso',
+    headerName: 'Acesso',
+    renderCell: (params) => (
+      <Switch checked={params.row.acesso} /* onChange={() => handleChange(params.row.id)} */ />
+    ),
   },
 ];

@@ -2,13 +2,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import { IconButton, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
-//import { ModalDelete } from '../ModalDelete/ModalDelete';
 import { table, tableContainer } from "./styles";
 import { ModalDelete } from "../ModalDelete/ModalDelete";
-//import { useToken } from '../../shared/hooks/auth';
-//import DeleteIcon from '@mui/icons-material/Delete';
-//import { api } from '../../utils/api';
-//import { toast } from 'react-toastify';
 
 interface TableGridProps {
   rows: any[];
@@ -37,18 +32,10 @@ export function TableGrid(props: TableGridProps) {
             subtitle={props.subtitleDelete}
             onDelete={() => (props.onDelete ? props.onDelete(row.id) : "")}
           ></ModalDelete>
-          {props.onEdit && (
             <IconButton
-              onClick={() => {
-                if (props.handleOpenModalEdit && props.setColaboradorId) {
-                  props.handleOpenModalEdit();
-                  props.setColaboradorId(row.id);
-                }
-              }}
-            >
+            onClick={() => (props.onEdit ?  props.onEdit(row.id) : '')}>
               <EditIcon />
             </IconButton>
-          )}
         </>
       ),
     },

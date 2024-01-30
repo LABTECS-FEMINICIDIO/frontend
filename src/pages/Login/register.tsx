@@ -22,7 +22,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { login } from "../../service/auth";
+import { registerUser } from "../../service/users";
 
 const schema = yup
   .object({
@@ -46,9 +46,18 @@ export default function Register() {
     resolver: yupResolver(schema),
   });
 
-  //const onSubmit = (data: FormData) => handleLogin(data);
+  const onSubmit = (data: FormData) => handleRegister(data);
 
-
+  const handleRegister = async (data: yup.InferType<typeof schema>) => {
+    registerUser(data)
+    .then((response) => {
+      toast.success('Usuário cadastrado com sucesso');
+      reset();
+    })
+    .catch((error) => {
+      toast.error(error.response.data.detail);
+    });
+  };
 
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
@@ -79,15 +88,15 @@ export default function Register() {
           }
         />
         <Paper sx={{ p: 8, width: 400 }}>
-          <Avatar sx={{ ml: 21, backgroundColor: colors.primary_dark }}>
+          <Avatar sx={{ ml: '180px', mb: 1, backgroundColor: colors.primary_dark }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5" sx={{ marginLeft: 20 }}>
+          <Typography component="h1" variant="h5" sx={{ marginLeft: '130px', fontWeight: 'bold' }}>
             Registre-se
           </Typography>
           <Box
             component="form"
-            //onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit)}
             noValidate
             sx={{ mt: 5 }}
             >
@@ -160,7 +169,7 @@ export default function Register() {
                 mt: 3,
               }}
             >
-              <Link href="#" variant="body2">
+              <Link href="/" variant="body2">
                 Já possui cadastro? Faça login
               </Link>
             </Box>

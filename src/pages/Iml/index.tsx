@@ -5,7 +5,8 @@ import { columns } from "./columns";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import { findManyImlData } from "../../service/iml";
+import { findImlData, findManyIml} from "../../service/iml";
+import { Search } from "../../components/Search";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -22,8 +23,15 @@ const VisuallyHiddenInput = styled("input")({
 export function Iml() {
   const [rows, setRows] = useState([]);
 
+  const column = [{ 
+    sexo: 'Sexo',
+    idade: 'Idade',
+  }]
+
+
   useEffect(() => {
-    findManyImlData()
+    findManyIml()
+    findImlData()
       .then((res) => setRows(res.data))
       .catch((error) => console.error("Erro ao obter dados:", error));
   }, []);
@@ -32,6 +40,8 @@ export function Iml() {
     <>
       <Box sx={toolbar1}>
         <Typography style={title}>Relatório IML</Typography>
+        <Box sx={{display: 'flex', gap: 1}}>
+        <Search column={column} value={''}/>
         <Button
           component="label"
           variant="contained"
@@ -40,6 +50,7 @@ export function Iml() {
           Importar arquivo
           <VisuallyHiddenInput type="file" />
         </Button>
+        </Box>
       </Box>
       <TableGrid rows={rows} columns={columns} />
     </>

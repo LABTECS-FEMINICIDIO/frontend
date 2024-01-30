@@ -14,9 +14,7 @@ import {
   import LockResetIcon from "@mui/icons-material/LockReset";
   import { createPassword } from "../../service/users";
   
-  // Você não precisa mais do Yup neste código, então vamos removê-lo
-  
-  export function ResetPassword({ userId }: { userId: string }) { // Adicionamos userId como prop
+  export function ResetPassword({ userId }: { userId: string }) {
     const [open, setOpen] = React.useState(false);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -25,7 +23,6 @@ import {
   
     const handleResetPassword = async () => {
       try {
-        // Aqui você faz a requisição para resetar a senha, passando o userId no corpo da requisição
         const response = await createPassword(userId);
         toast.success('Senha atualizada com sucesso');
         handleClose();

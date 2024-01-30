@@ -24,16 +24,16 @@ const TokenContext = createContext<TokenContextData>({} as TokenContextData);
 export function TokenProvider({children}: TokenProviderProps) {
   const cookies = new Cookies();
 
-  const [permission, setPermission] = useState(true);
+  const [permission, setPermission] = useState(false);
   const [token,setToken] = useState(cookies.get('@obstetrico_token'));
 
   window.onload = async function () {
-    await authToken(token).then(()=>{
+   /*  await authToken(token).then(()=>{
       setPermission(true)
     }).catch((error:any)=>{
       console.log({error})
       setPermission(false)
-    })
+    }) */
   }
 
   async function Login(payload : ILogin) {
