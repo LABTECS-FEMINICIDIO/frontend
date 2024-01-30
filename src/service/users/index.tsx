@@ -1,7 +1,6 @@
-import { IUser } from "../../models/users";
 import { api } from "../api";
 
-export function createUser(data: IUser){
+export function createUser(data: any){
     return api.post('/api/usuarios/', data)
 }
 export function registerUser(data: any){

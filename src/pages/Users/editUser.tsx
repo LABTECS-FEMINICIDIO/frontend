@@ -50,7 +50,7 @@ export function EditUser() {
 
   const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
     try {
-      //const response = await updateUser(data);
+    //const response = await updateUser(data);
      setIsEdit(1);
      handleClose();
     } catch (error: any) {

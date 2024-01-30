@@ -3,7 +3,3 @@ export interface ICalendar{
     name: string
     type: string
 }
-
-export interface UpdateCalendarListProps {
-    updateCalendarList: (calendar: ICalendar) => void;
-  }

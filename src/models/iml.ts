@@ -7,7 +7,3 @@ export interface Iiml{
     id: string
     bairroDaRemocao: string
 }
-
-export interface UpdateImlListProps {
-    updateImlList: (iml: Iiml) => void;
-  }
