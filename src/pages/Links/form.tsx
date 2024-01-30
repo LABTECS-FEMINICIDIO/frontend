@@ -3,7 +3,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
+  Button,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -134,6 +136,7 @@ const schema = Yup.object()
     filhosdescrever: Yup.number().positive(
       "O número de filhos deve ser um número positivo"
     ),
+    latLng: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -153,7 +156,8 @@ export function Form() {
   // const onSubmit = (data: FormData) => { handleCreateUser(data) };
 
   return (
-    <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
+    <>
+    <Box sx={{ display: "grid", gridTemplateColumns: 'repeat(2, 1fr)', gap: 1 }}>
       <TextField
         type="date"
         label={errors.datadofato?.message ?? "datadofato"}
@@ -474,6 +478,16 @@ export function Form() {
         error={!!errors.filhosdescrever?.message}
         variant="filled"
       />
+      <TextField
+        label={errors.latLng?.message ?? "lat e lng"}
+        {...register("latLng")}
+        error={!!errors.latLng?.message}
+        variant="filled"
+      />
     </Box>
+      <Box sx={{marginLeft: '180px', marginTop: '10px'}}>
+        <Button variant="contained" type="submit" >Salvar</Button>
+      </Box>
+    </>
   );
 }

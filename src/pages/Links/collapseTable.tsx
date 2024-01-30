@@ -69,7 +69,7 @@ export function Row(props: RowProps) {
               <Table size="small" aria-label="purchases" sx={{display: "flex", gap: 3}}>
                 <TableBody>
                   <iframe
-                    style={{ width: "1000px", height: "500px" }}
+                    style={{ width: "900x", height: "900px"}}
                     src={props.link}
                   ></iframe>
                 </TableBody>
