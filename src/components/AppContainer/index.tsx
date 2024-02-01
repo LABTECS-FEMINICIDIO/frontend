@@ -16,6 +16,7 @@ import { MenuList } from "./MenuList";
 import { Content } from "./Content";
 import { AppBar, ButtonStyled, Drawer, DrawerHeader } from "./styles";
 import Cookies from "universal-cookie";
+import { useToken } from "../../shared/hooks/auth";
 //import { useToken } from '../../shared/hooks/auth';
 
 interface AppContainerProps {
@@ -31,6 +32,7 @@ export function AppContainer({ children }: AppContainerProps) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const { username } = useToken()
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -92,7 +94,7 @@ export function AppContainer({ children }: AppContainerProps) {
               aria-haspopup="true"
               onClick={handleClick}
             >
-                {} 
+              {username}
             </ButtonStyled>
 
             <Button variant="text" onClick={() => Logout()}>

@@ -4,9 +4,9 @@ import { title } from "../../styles";
 import DonutChart from "./charts";
 import { MapPage } from "../../components/Maps";
 
-const feminicidePercentages = [30, 20, 25, 15];
 
 export function Dashboard() {
+
   return (
     <>
       <Box sx={{ marginLeft: "13px", margimTop: 6, marginBottom: 2.5 }}>
@@ -16,13 +16,13 @@ export function Dashboard() {
         <Cards />
       </Box>
       <Grid container gap={5}>
-      <Grid>
-        <MapPage />
+        <Grid>
+          <MapPage />
+        </Grid>
+        <Grid>
+          <DonutChart />
+        </Grid>
       </Grid>
-      <Grid>
-        <DonutChart data={feminicidePercentages} />
-      </Grid>
-    </Grid>
     </>
   );
 }

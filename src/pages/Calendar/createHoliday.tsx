@@ -20,9 +20,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = Yup.object().shape({
-  date: Yup.string().required('Data é obrigatório'),
-  type: Yup.string().required('Tipo é obrigatório'),
-  name: Yup.string().required('Link é obrigatório'),
+  dia: Yup.number().required('Dia é obrigatório'),
+  mes: Yup.number().required('Mês é obrigatório'),
+  ano: Yup.number().required('Ano é obrigatório'),
+  tipo: Yup.string().required('Tipo é obrigatório'),
 });
 
 export function CreateHoliday() {
@@ -32,7 +33,7 @@ export function CreateHoliday() {
 
   const { register, handleSubmit, reset, setValue, formState: { errors }, watch } = useForm({
     resolver: yupResolver(schema),
-});
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,28 +66,37 @@ export function CreateHoliday() {
         >
           {"Preencha as informações para cadastrar feriado."}
         </Typography>
-          <Divider sx={{marginBottom: 2}} />
-        <DialogContent sx={{display: 'grid', gap: 2}}>
-        <TextField
-        label={errors.date?.message ?? "Data"}
-        {...register("date")}
-        error={!!errors.date?.message}
-        variant="filled"
-      />
-       <TextField
-        label={errors.name?.message ?? "Nome"}
-        {...register("name")}
-        error={!!errors.name?.message}
-        variant="filled"
-      />
-      <FormControl variant="filled">
+        <Divider sx={{ marginBottom: 2 }} />
+        <DialogContent sx={{ display: 'grid', gap: 2 }}>
+          <TextField
+            label={errors.dia?.message ?? "Dia"}
+            {...register("dia")}
+            error={!!errors.dia?.message}
+            variant="filled"
+            type="number"
+          />
+          <TextField
+            label={errors.mes?.message ?? "Mês"}
+            {...register("mes")}
+            error={!!errors.mes?.message}
+            variant="filled"
+            type="number"
+          />
+          <TextField
+            label={errors.dia?.message ?? "Dia"}
+            {...register("dia")}
+            error={!!errors.dia?.message}
+            variant="filled"
+            type="number"
+          />
+          <FormControl variant="filled">
             <InputLabel>
-              {errors.type?.message ?? "Tipo"}
+              {errors.tipo?.message ?? "Tipo"}
             </InputLabel>
             <Select
-              label={errors.type?.message ?? "Tipo"}
-              {...register("type")}
-              error={!!errors.type?.message}
+              label={errors.tipo?.message ?? "Tipo"}
+              {...register("tipo")}
+              error={!!errors.tipo?.message}
               defaultValue={""}
             >
               <MenuItem value={"0"}>Nacional</MenuItem>
@@ -94,7 +104,7 @@ export function CreateHoliday() {
             </Select>
           </FormControl>
         </DialogContent>
-        <DialogActions sx={{marginBottom: 3, marginRight: '20px'}}>
+        <DialogActions sx={{ marginBottom: 3, marginRight: '20px' }}>
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>

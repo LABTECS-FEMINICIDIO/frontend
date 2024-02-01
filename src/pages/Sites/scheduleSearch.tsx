@@ -28,6 +28,7 @@ export function CreateProgram() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [periodoPesquisa, setPeriodoPesquisa] = React.useState()
 
   const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(schema)
@@ -37,8 +38,12 @@ export function CreateProgram() {
 
   const handleCreateProgramSearch = async (data: Yup.InferType<typeof schema>) => {
     try {
-      const response = await createProgramSearch(data);
-     toast.success('Cadastrado com sucesso');
+      await createProgramSearch(data).then((res) => {
+        findManyProgramSearch().then((res) => {
+          setPeriodoPesquisa(res.data[0].dias)
+        })
+      });
+      toast.success('Cadastrado com sucesso');
       reset();
       handleClose();
     } catch (error: any) {
@@ -46,9 +51,12 @@ export function CreateProgram() {
     }
   };
 
-  React.useEffect(()=> {
-    const response = findManyProgramSearch().then
-  },[])
+  React.useEffect(() => {
+    findManyProgramSearch().then((res) => {
+      setPeriodoPesquisa(res.data[0].dias)
+    })
+
+  }, [])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -85,9 +93,14 @@ export function CreateProgram() {
         >
           {"Defina o intervalo de dias em que o robô irá realizar as pesquisas."}
         </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", paddingLeft: 3 }}>
+          <Typography>
+            Atualmente o bot está fazendo uma pesquisa a cada <strong>{periodoPesquisa ?? "1"} dias</strong>
+          </Typography>
+        </Box>
         <Divider sx={{ marginBottom: 2 }} />
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <DialogContent sx={{ display: "grid", gap: 2 }}>
+          <DialogContent sx={{ display: "grid", gap: 2 }}>
             <TextField
               type="number"
               fullWidth
@@ -99,15 +112,15 @@ export function CreateProgram() {
                 shrink: true,
               }}
             />
-        </DialogContent>
-        <DialogActions sx={{ marginBottom: 3, marginRight: "20px" }}>
-          <Button autoFocus onClick={handleClose}>
-            Cancelar
-          </Button>
-          <Button type="submit" variant="contained" onClick={handleClose} autoFocus>
-            Salvar
-          </Button>
-        </DialogActions>
+          </DialogContent>
+          <DialogActions sx={{ marginBottom: 3, marginRight: "20px" }}>
+            <Button autoFocus onClick={handleClose}>
+              Cancelar
+            </Button>
+            <Button type="submit" variant="contained" onClick={handleClose} autoFocus>
+              Salvar
+            </Button>
+          </DialogActions>
         </Box>
       </Dialog>
     </>

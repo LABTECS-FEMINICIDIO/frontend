@@ -1,4 +1,7 @@
-import { GridColDef } from "@mui/x-data-grid";
+import { Rating, Switch } from "@mui/material";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
+import { api } from "../../service/api";
+import { useRefresh } from "../../shared/hooks/useRefresh";
 
 export const columns: GridColDef[] = [
   {
@@ -11,4 +14,26 @@ export const columns: GridColDef[] = [
     headerName: "Link",
     width: 150,
   },
+  {
+    field: 'classificacao',
+    headerName: 'Classificação',
+    renderCell: (params: GridRenderCellParams<any, number>) => (
+      <Rating value={params.value} />
+    ),
+  },
+  {
+    field: "menu",
+    headerName: "Pesquisar",
+    renderCell: ({ row }) => {
+
+      const handleChangePesquisar = () => {
+        api.patch(`/api/referenceSitePesquisar/${row.id}`).then(() => {
+        })
+      }
+      return (<>
+        <Switch onChange={handleChangePesquisar} defaultChecked={row.pesquisar} />
+      </>)
+    }
+
+  }
 ];

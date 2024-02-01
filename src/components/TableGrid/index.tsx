@@ -4,6 +4,7 @@ import { Box } from "@mui/system";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { table, tableContainer } from "./styles";
 import { ModalDelete } from "../ModalDelete/ModalDelete";
+import { api } from "../../service/api";
 
 interface TableGridProps {
   rows: any[];
@@ -32,10 +33,10 @@ export function TableGrid(props: TableGridProps) {
             subtitle={props.subtitleDelete}
             onDelete={() => (props.onDelete ? props.onDelete(row.id) : "")}
           ></ModalDelete>
-            <IconButton
-            onClick={() => (props.onEdit ?  props.onEdit(row.id) : '')}>
-              <EditIcon />
-            </IconButton>
+          <IconButton
+            onClick={() => (props.onEdit ? props.onEdit(row.id) : '')}>
+            <EditIcon />
+          </IconButton>
         </>
       ),
     },
@@ -47,18 +48,29 @@ export function TableGrid(props: TableGridProps) {
     }
   };
 
-  const columns = [...props.columns, ...actionColumn];
+  const columns = props.onEdit || props.onEdit ? [...props.columns, ...actionColumn] : [...props.columns];
   const matches = useMediaQuery("(max-width:480px)");
+  const telaVitimas = window.location.pathname.includes("victims")
+  console.log(window.location.pathname.includes("victims"))
+
+  const handleCellEditChange = (params: any) => {
+    // console.log("Edited Row:", params.row);
+    // console.log("Edited Field:", params.field);
+    // console.log("Edited Value:", params.row[`${params.field}`]);
+    console.log("teste", params)
+    // api.patch(`/api/vitimas/${params.row.id}`, )
+  };
+
   return (
     <Box sx={tableContainer}>
       <DataGrid
         rows={props.rows}
         columns={columns.map((column: GridColDef) => ({
           ...column,
-          ...(matches === false
+          ...(matches === false && telaVitimas == false
             ? {
-                flex: 1,
-              }
+              flex: 1,
+            }
             : { width: 230 }),
           sortable: false,
           headerClassName: "super-app-theme--header",
@@ -71,6 +83,7 @@ export function TableGrid(props: TableGridProps) {
           },
         }}
         pageSizeOptions={[10]}
+        // onCellEditStop={handleCellEditChange}
         disableColumnMenu
         onCellClick={handleOnCellClick}
         sx={table}

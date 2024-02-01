@@ -17,11 +17,13 @@ export function AppRoutes() {
           {APP_PAGES.map(({ route, component }) => (
             <Route key={route} path={route} element={component} />
           ))}
+          <Route key={"login"} path="/" element={<SignIn />} />
+          <Route key={"register"} path="/register" element={<Register />} />
         </Route>
       ) : (
-        <> 
-        <Route key={"login"} path="/" element={<SignIn />} />
-        <Route key={"register"} path="/register" element={<Register />} />
+        <>
+          <Route key={"login"} path="/" element={<SignIn />} />
+          <Route key={"register"} path="/register" element={<Register />} />
         </>
       )}
       <Route path="*" element={<NotFound />} />
