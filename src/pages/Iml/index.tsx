@@ -63,7 +63,6 @@ export function Iml() {
     if (search.column === '' || search.value === '') {
       toast.error('Campo coluna e pesquisa não pode ser vazio');
     } else {
-      console.log(search.column, search.value)
       //setCount(prevCount => prevCount + 1);
       const findRows = rows.filter((item) => (String(item[search.column]).toLowerCase()).includes(String(search.value).toLowerCase()))
       if (findRows.length == 0) {
