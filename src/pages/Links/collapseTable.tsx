@@ -34,7 +34,6 @@ export interface RowProps {
 
 export function Row(props: RowProps) {
   const [open, setOpen] = React.useState(false);
-  console.log(props.vitima)
 
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
@@ -99,7 +98,7 @@ export default function CollapsibleTable() {
   const [rows, setRows] = useState([]);
   const [findSitesFetched, setFindSitesFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // You can adjust the number of items per page
+  const itemsPerPage = 10;
 
   const refreshList = () => {
     api.get("/api/site/").then((res) =>
