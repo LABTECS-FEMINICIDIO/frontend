@@ -1,4 +1,15 @@
-import { Box, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { TableGrid } from "../../components/TableGrid";
 import { columns } from "./columns";
 import { title, toolbar1 } from "../../styles";
@@ -9,14 +20,14 @@ import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { Search } from "../../components/Search";
 import { EditUser } from "./editUser";
-import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export function Users() {
-  const [rows, setRows] = useState([])
-  const [isEdit, setIsEdit] = useState(0)
-  const [search, setSearch] = useState({ column: '', value: '' });
-  const [rowsFiltered, setRowsFiltered] = useState([])
+  const [rows, setRows] = useState([]);
+  const [isEdit, setIsEdit] = useState(0);
+  const [search, setSearch] = useState({ column: "", value: "" });
+  const [rowsFiltered, setRowsFiltered] = useState([]);
   const { count } = useRefresh();
 
   useEffect(() => {
@@ -25,20 +36,22 @@ export function Users() {
 
   const listAll = () => {
     findManyUsers()
-      .then(response => {
+      .then((response) => {
         setRows(response.data);
       })
-      .catch(error => {
+      .catch((error) => {
         toast.error(error.response.data.message);
       });
   };
 
   const OpenModalEdit = async (id: string) => {
-    await findById(id).then(response => {
-      setIsEdit(1)
-    }).catch(error => {
-      toast.error(error.response.data.message);
-    });
+    await findById(id)
+      .then((response) => {
+        setIsEdit(1);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      });
   };
 
   const DeleteUser = (userId: string) => {
@@ -46,7 +59,7 @@ export function Users() {
       .then((response: any) => {
         if (response.status === 200) {
           listAll();
-          toast.success('Usuário excluído com sucesso');
+          toast.success("Usuário excluído com sucesso");
         }
       })
       .catch((error: any) => {
@@ -54,53 +67,54 @@ export function Users() {
       });
   };
 
-
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearch(state => ({
+    setSearch((state) => ({
       ...state,
       [event.target.name]: event.target.value,
     }));
   };
 
   const handleColumn = (event: SelectChangeEvent) => {
-    setSearch(state => ({
+    setSearch((state) => ({
       ...state,
       [event.target.name]: event.target.value.trim(),
     }));
   };
 
   const handleSearch = () => {
-    if (search.column === '' || search.value === '') {
-      toast.error('Campo coluna e pesquisa não pode ser vazio');
+    if (search.column === "" || search.value === "") {
+      toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
       //setCount(prevCount => prevCount + 1);
 
-      const findRows = rows.filter((item) => String(item[search.column]).toLowerCase() == String(search.value).toLowerCase())
+      const findRows = rows.filter(
+        (item) =>
+          String(item[search.column]).toLowerCase() ==
+          String(search.value).toLowerCase()
+      );
       if (findRows.length == 0) {
-        toast.error('Nenhum resultado encontrado para esta pesquisa.')
+        toast.error("Nenhum resultado encontrado para esta pesquisa.");
       }
-      setRowsFiltered(findRows)
-
+      setRowsFiltered(findRows);
     }
   };
 
   const handleClear = () => {
-    setSearch({ column: '', value: '' });
-    setRowsFiltered([])
+    setSearch({ column: "", value: "" });
+    setRowsFiltered([]);
     //setCount(prevCount => prevCount + 1);
   };
 
-  const filtered = rowsFiltered.length > 0
-
+  const filtered = rowsFiltered.length > 0;
 
   return (
     <>
       <Box sx={toolbar1}>
         <Typography sx={title}>Usuários</Typography>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            <Box sx={{ display: "flex", flexWrap: 'wrap', gap: 1 }}>
-              <Box sx={{ display: 'flex', gap: '0.3125rem' }}>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+              <Box sx={{ display: "flex", gap: "0.3125rem" }}>
                 <Box>
                   <FormControl sx={{ minWidth: 140 }} size="small">
                     <InputLabel id="demo-select-small">Coluna</InputLabel>
@@ -110,7 +124,8 @@ export function Users() {
                       labelId="demo-select-small"
                       id="demo-select-small"
                       label="coluna"
-                      onChange={handleColumn}>
+                      onChange={handleColumn}
+                    >
                       <MenuItem value={"nome"}>Nome</MenuItem>
                       <MenuItem value={"email"}>Email</MenuItem>
                       <MenuItem value={"telefone"}>Telefone</MenuItem>
@@ -127,7 +142,7 @@ export function Users() {
                       label="Pesquisar"
                       value={search.value}
                       onChange={handleValue}
-                      onKeyDown={({ key }) => key === 'Enter' && handleSearch()}
+                      onKeyDown={({ key }) => key === "Enter" && handleSearch()}
                       size="small"
                       InputProps={{
                         endAdornment: (
@@ -137,14 +152,16 @@ export function Users() {
                               onClick={() => {
                                 handleSearch();
                               }}
-                              aria-label="search">
+                              aria-label="search"
+                            >
                               <SearchIcon />
                             </IconButton>
                             <IconButton
                               onClick={() => {
                                 handleClear();
                               }}
-                              aria-label="delete">
+                              aria-label="delete"
+                            >
                               <ClearIcon />
                             </IconButton>
                           </InputAdornment>
@@ -157,9 +174,12 @@ export function Users() {
             </Box>
           </Box>
           <CreateUser />
-          {isEdit ? <EditUser /> : ''
-
-          }
+          {isEdit ? (
+            <EditUser
+              onClose={() => setIsEdit(0)} 
+              handleOpenModalEdit={() => {}}
+            />
+          ) : null}
         </Box>
       </Box>
       <TableGrid
@@ -170,5 +190,5 @@ export function Users() {
         onEdit={OpenModalEdit}
       />
     </>
-  )
+  );
 }

@@ -30,7 +30,6 @@ const schema = Yup.object().shape({
   email: Yup.string().required("Email é obrigatório"),
   telefone: Yup.string().required("O telefone é obrigatório"),
   perfil: Yup.string().required("O perfil é obrigatório"),
-  senha: Yup.string(),
 }).required();
 type FormData = Yup.InferType<typeof schema>;
 
@@ -112,12 +111,12 @@ export function CreateUser() {
             error={!!errors.telefone?.message}
             variant="filled"
           />
-           <TextField
+{/*            <TextField
             label={errors.senha?.message ?? "Senha"}
             {...register("senha")}
             error={!!errors.senha?.message}
             variant="filled"
-          />
+          /> */}
           <FormControl variant="filled">
             <InputLabel>
               {errors.perfil?.message ?? "Perfil"}

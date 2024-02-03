@@ -8,8 +8,9 @@ import {
 } from '@mui/material';
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { APP_PAGES } from '../../../routes/pages.routes';
+import { APP_PAGES, APP_PAGES_VISUALIZAODR } from '../../../routes/pages.routes';
 import { colors } from '../../../shared/theme';
+import { useToken } from '../../../shared/hooks/auth';
 
 interface MenuListProps {
   open?: boolean;
@@ -22,10 +23,14 @@ export function MenuList({ open }: MenuListProps) {
   const handleNavigate = (page: string) => {
     navigate(page);
   };
+  const { Login, token, permission, perfil } = useToken();
+
+  
+  const [pagesRender] = React.useState(perfil == "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
 
   return (
     <List>
-      {APP_PAGES.filter(e => e.showMenu === true).map((item: any, index: any) => (
+      {pagesRender.filter(e => e.showMenu === true).map((item: any, index: any) => (
         <ListItem
           key={index}
           disablePadding

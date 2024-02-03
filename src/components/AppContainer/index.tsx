@@ -32,7 +32,10 @@ export function AppContainer({ children }: AppContainerProps) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const { username } = useToken()
+  const cookies = new Cookies();
+
+  const username = cookies.get("usernamef")
+
 
   const handleClose = () => {
     setAnchorEl(null);

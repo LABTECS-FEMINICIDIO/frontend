@@ -53,7 +53,8 @@ export function CreateProgram() {
 
   React.useEffect(() => {
     findManyProgramSearch().then((res) => {
-      setPeriodoPesquisa(res.data[0].dias)
+      console.log(res.data)
+      setPeriodoPesquisa(res.data[0]?.dias ?? 1)
     })
 
   }, [])

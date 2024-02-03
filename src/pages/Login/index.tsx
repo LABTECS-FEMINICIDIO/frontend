@@ -48,7 +48,6 @@ export default function SignIn() {
 
   const handleLogin = async (data: yup.InferType<typeof schema>) => {
     await Login(data);
-    console.log(data);
   };
 
   React.useEffect(() => {

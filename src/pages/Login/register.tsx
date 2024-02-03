@@ -29,7 +29,6 @@ const schema = yup
     nome: yup.string().required("Nome é um campo obrigatório"),
     email: yup.string().required("E-mail é um campo obrigatório"),
     telefone: yup.string().required("Telefone é um campo obrigatório"),
-    senha: yup.string().required("Senha é um campo obrigatório"),
   })
   .required();
 type FormData = yup.InferType<typeof schema>;
@@ -133,7 +132,7 @@ export default function Register() {
               autoComplete="telefone"
               autoFocus
             />
-            <FormControl margin="normal" fullWidth variant="outlined">
+            {/* <FormControl margin="normal" fullWidth variant="outlined">
               <InputLabel>Senha</InputLabel>
               <OutlinedInput
                 {...register("senha")}
@@ -153,7 +152,7 @@ export default function Register() {
                   </InputAdornment>
                 }
               />
-            </FormControl>
+            </FormControl> */}
             <Button
               type="submit"
               variant="contained"

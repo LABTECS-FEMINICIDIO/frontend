@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { NotFound } from "../pages/NotFound";
-import { APP_PAGES } from "./pages.routes";
+import { APP_PAGES, APP_PAGES_VISUALIZAODR } from "./pages.routes";
 import { DefaultLayout } from "../DefaultLayout";
 import SignIn from "../pages/Login";
 import { useToken } from "../shared/hooks/auth";
 import Register from "../pages/Login/register";
+import Cookies from 'universal-cookie';
 
 export function AppRoutes() {
-  const { Login, token, permission } = useToken();
+  const { Login, token, permission, perfil } = useToken();
 
+  const [pagesRender] = useState(perfil == "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
+  console.log(pagesRender)
   return (
     <Routes>
-      {permission !== false ? (
+    {permission && pagesRender.length > 0 ? ( 
         <Route path="/" element={<DefaultLayout />}>
-          {APP_PAGES.map(({ route, component }) => (
+          {pagesRender.map(({ route, component }) => (
             <Route key={route} path={route} element={component} />
           ))}
           <Route key={"login"} path="/" element={<SignIn />} />
@@ -25,7 +28,7 @@ export function AppRoutes() {
           <Route key={"login"} path="/" element={<SignIn />} />
           <Route key={"register"} path="/register" element={<Register />} />
         </>
-      )}
+      )} 
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

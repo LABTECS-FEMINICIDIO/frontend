@@ -15,6 +15,7 @@ interface TokenContextData {
   Login: (payload: ILogin) => void;
   token: string;
   username: string;
+  perfil: string
 }
 
 interface TokenProviderProps {
@@ -26,7 +27,8 @@ export function TokenProvider({ children }: TokenProviderProps) {
   const cookies = new Cookies();
 
   const [permission, setPermission] = useState(false);
-  const [token, setToken] = useState(cookies.get('@obstetrico_token'));
+  const [perfil, setPerfil] = useState("")
+  const [token, setToken] = useState(cookies.get('@feminicidio_token'));
   const [username, setUsername] = useState("")
 
   window.onload = async function () {
@@ -48,7 +50,9 @@ export function TokenProvider({ children }: TokenProviderProps) {
         await validation();
         setToken(response.data.access_token);
         setUsername(response.data.nome)
+        cookies.set("usernamef", response.data.nome)
         setPermission(true);
+        setPerfil(response.data.permission)
         toast.success('Login realizado com sucesso')
       })
       .catch(error => {
@@ -64,7 +68,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
   console.log('--->', permission)
 
   return (
-    <TokenContext.Provider value={{ permission, Login, token, username }}>
+    <TokenContext.Provider value={{ permission, Login, token, username, perfil }}>
       {children}
     </TokenContext.Provider>
   );

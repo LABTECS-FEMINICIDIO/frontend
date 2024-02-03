@@ -66,3 +66,14 @@ export const APP_PAGES = [
         showMenu: true,
     },
 ]
+
+
+export const APP_PAGES_VISUALIZAODR = [
+    {
+        title: 'Dashboard',
+        route: '/',
+        icon: <DashboardIcon />,
+        component: <Dashboard />,
+        showMenu: true,
+    }
+]
