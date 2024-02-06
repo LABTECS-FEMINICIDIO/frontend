@@ -13,19 +13,15 @@ import {
 import { TableGrid } from "../../components/TableGrid";
 import { columns } from "./columns";
 import { title, toolbar1 } from "../../styles";
-import { CreateUser } from "./createUser";
 import { ChangeEvent, useEffect, useState } from "react";
 import { deleteUser, findById, findManyUsers } from "../../service/users";
 import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
-import { Search } from "../../components/Search";
-import { EditUser } from "./editUser";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
 export function Users() {
   const [rows, setRows] = useState([]);
-  const [isEdit, setIsEdit] = useState(0);
   const [search, setSearch] = useState({ column: "", value: "" });
   const [rowsFiltered, setRowsFiltered] = useState([]);
   const { count } = useRefresh();
@@ -47,7 +43,6 @@ export function Users() {
   const OpenModalEdit = async (id: string) => {
     await findById(id)
       .then((response) => {
-        setIsEdit(1);
       })
       .catch((error) => {
         toast.error(error.response.data.message);
@@ -89,10 +84,10 @@ export function Users() {
 
       const findRows = rows.filter(
         (item) =>
-          String(item[search.column]).toLowerCase() ==
+          String(item[search.column]).toLowerCase() ===
           String(search.value).toLowerCase()
       );
-      if (findRows.length == 0) {
+      if (findRows.length === 0) {
         toast.error("Nenhum resultado encontrado para esta pesquisa.");
       }
       setRowsFiltered(findRows);
@@ -173,13 +168,6 @@ export function Users() {
               </Box>
             </Box>
           </Box>
-          <CreateUser />
-          {isEdit ? (
-            <EditUser
-              onClose={() => setIsEdit(0)} 
-              handleOpenModalEdit={() => {}}
-            />
-          ) : null}
         </Box>
       </Box>
       <TableGrid

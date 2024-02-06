@@ -23,10 +23,10 @@ export function MenuList({ open }: MenuListProps) {
   const handleNavigate = (page: string) => {
     navigate(page);
   };
-  const { Login, token, permission, perfil } = useToken();
+  const { perfil } = useToken();
 
   
-  const [pagesRender] = React.useState(perfil == "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
+  const [pagesRender] = React.useState(perfil === "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
 
   return (
     <List>

@@ -41,7 +41,7 @@ export function Victims() {
         } else {
             //setCount(prevCount => prevCount + 1);
             const findRows = rows.filter((item) => (String(item[search.column]).toLowerCase()).includes(String(search.value).toLowerCase()))
-            if (findRows.length == 0) {
+            if (findRows.length === 0) {
                 toast.error('Nenhum resultado encontrado para esta pesquisa.')
             }
             setRowsFiltered(findRows)

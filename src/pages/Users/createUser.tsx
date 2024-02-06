@@ -48,7 +48,7 @@ export function CreateUser() {
 
   const handleCreateUser = async (data: Yup.InferType<typeof schema>) => {
     try {
-      const response = await createUser(data);
+     await createUser(data);
      toast.success('Usuário cadastrado com sucesso');
       reset();
       addCount();

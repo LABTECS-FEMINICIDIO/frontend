@@ -1,24 +1,11 @@
 
 import { useEffect, useState } from "react";
 import { stylesMap } from "./map";
-import { styles } from "./theme";
-import { SelectComponent } from "./select";
-import { TextField } from "@mui/material";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import { Icon, LatLngExpression, icon, map } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { api } from "../../service/api";
 import MarkerClusterGroup from "react-leaflet-cluster";
-
-
-const libraries: any[] = ["places"]; // Define libraries as a constant outside the component
-
-interface maps {
-  lat: number;
-  lng: number;
-  formatted_address?: string;
-  index?: number;
-}
 
 export function MapPage() {
   const position = [-3.059943, -59.988359] as LatLngExpression

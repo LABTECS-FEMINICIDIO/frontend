@@ -1,7 +1,6 @@
 import { Rating, Switch } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { api } from "../../service/api";
-import { useRefresh } from "../../shared/hooks/useRefresh";
 
 export const columns: GridColDef[] = [
   {

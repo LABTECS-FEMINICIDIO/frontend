@@ -6,12 +6,10 @@ import { DefaultLayout } from "../DefaultLayout";
 import SignIn from "../pages/Login";
 import { useToken } from "../shared/hooks/auth";
 import Register from "../pages/Login/register";
-import Cookies from 'universal-cookie';
 
 export function AppRoutes() {
-  const { Login, token, permission, perfil } = useToken();
-
-  const [pagesRender] = useState(perfil == "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
+  const { permission, perfil } = useToken();
+  const [pagesRender] = useState(perfil === "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
   console.log(pagesRender)
   return (
     <Routes>

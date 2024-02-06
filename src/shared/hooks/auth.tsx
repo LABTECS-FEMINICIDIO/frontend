@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import Cookies from 'universal-cookie';
 import { ILogin } from '../../models/login';
-import { authToken, login } from '../../service/auth';
+import { login } from '../../service/auth';
 import { validation } from '../../service/api';
 import { toast } from 'react-toastify';
 

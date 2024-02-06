@@ -5,7 +5,6 @@ import { columns } from "./columns";
 import { CreateTag } from "./createTag";
 import { CreateSite } from "./createSite";
 import { CreateProgram } from "./scheduleSearch";
-import { Search } from "../../components/Search";
 import { ChangeEvent, useEffect, useState } from "react";
 import { api } from "../../service/api";
 import { useRefresh } from "../../shared/hooks/useRefresh";
@@ -46,8 +45,8 @@ export function Sites() {
     } else {
       console.log(search.column, search.value)
       //setCount(prevCount => prevCount + 1);
-      const findRows = rows.filter((item) => String(item[search.column]).toLowerCase() == String(search.value).toLowerCase())
-      if (findRows.length == 0) {
+      const findRows = rows.filter((item) => String(item[search.column]).toLowerCase() === String(search.value).toLowerCase())
+      if (findRows.length === 0) {
         toast.error('Nenhum resultado encontrado para esta pesquisa.')
       }
       setRowsFiltered(findRows)

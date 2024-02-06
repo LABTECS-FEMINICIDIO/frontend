@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -58,10 +57,7 @@ export function Form(props: IPropsForm) {
   const {
     register,
     handleSubmit,
-    reset,
-    setValue,
     formState: { errors },
-    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });

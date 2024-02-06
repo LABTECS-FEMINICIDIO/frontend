@@ -25,7 +25,7 @@ export function CreateSite() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const { register, handleSubmit, reset, setValue, formState: { errors }, watch } = useForm({
+  const { register, formState: { errors }, } = useForm({
     resolver: yupResolver(schema),
 });
 

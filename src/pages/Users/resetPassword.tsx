@@ -23,7 +23,7 @@ import {
   
     const handleResetPassword = async () => {
       try {
-        const response = await createPassword(userId);
+        await createPassword(userId);
         toast.success('Senha atualizada com sucesso');
         handleClose();
       } catch (error: any) {

@@ -17,12 +17,12 @@ export const DonutChart: React.FC = () => {
   }, [])
 
   useEffect(() => {
-    const zonaNorte: number = vitimas.filter((item: any) => (item.zona).toLowerCase() == "norte").length
-    const zonaLeste: number = vitimas.filter((item: any) => (item.zona).toLowerCase() == "leste").length
-    const zonaSul: number = vitimas.filter((item: any) => (item.zona).toLowerCase() == "sul").length
-    const zonaOeste: number = vitimas.filter((item: any) => (item.zona).toLowerCase() == "oeste").length
-    const zonaCentroOeste: number = vitimas.filter((item: any) => (item.zona).toLowerCase() == "centro-oeste").length
-    const zonaCentroSul: number = vitimas.filter((item: any) => (item.zona).toLowerCase() == "centro-sul").length
+    const zonaNorte: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "norte").length
+    const zonaLeste: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "leste").length
+    const zonaSul: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "sul").length
+    const zonaOeste: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "oeste").length
+    const zonaCentroOeste: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "centro-oeste").length
+    const zonaCentroSul: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "centro-sul").length
 
     setSeries([zonaNorte, zonaSul, zonaLeste, zonaOeste, zonaCentroOeste, zonaCentroSul])
   }, [vitimas])

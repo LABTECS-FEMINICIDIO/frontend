@@ -12,8 +12,6 @@ import { Dashboard } from '../pages/Dashboard';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Victims } from '../pages/Victims';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
-import SignIn from '../pages/Login';
-
 
 export const APP_PAGES = [
     {

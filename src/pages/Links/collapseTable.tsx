@@ -56,7 +56,7 @@ export function Row(props: RowProps) {
         <TableCell component="th" scope="row">
           {props.nome}
         </TableCell>
-        <TableCell align="left"><a href={props.link} target="blank">{props.link}</a></TableCell>
+        <TableCell align="left"><a href={props.link} target="_blank">{props.link}</a></TableCell>
         <TableCell align="left">
           <Content props={props.conteudo} />
         </TableCell>
@@ -69,7 +69,8 @@ export function Row(props: RowProps) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0
+         }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
@@ -78,7 +79,7 @@ export function Row(props: RowProps) {
               <Table size="small" aria-label="purchases" sx={{ display: "flex", gap: 3 }}>
                 <TableBody>
                   <iframe
-                    style={{ width: "1000x", height: "900px" }}
+                    style={{ width: "1000px", height: "900px" }}
                     src={props.link}
                   ></iframe>
                 </TableBody>

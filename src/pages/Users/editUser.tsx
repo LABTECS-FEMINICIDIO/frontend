@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Divider,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -22,11 +23,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "../../shared/theme";
 import { toast } from "react-toastify";
-
-interface EditUserProps {
-  onClose: () => void;
-  handleOpenModalEdit: () => void;
-}
+import EditIcon from "@mui/icons-material/Edit";
 
 const schema = Yup.object()
   .shape({
@@ -39,7 +36,7 @@ const schema = Yup.object()
   .required();
 type FormData = Yup.InferType<typeof schema>;
 
-export function EditUser(props: EditUserProps) {
+export function EditUser({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -62,24 +59,27 @@ export function EditUser(props: EditUserProps) {
     try {
       //const response = await updateUser(data);
       toast.success("Usuário atualizado com sucesso");
-      props.handleOpenModalEdit(); // Chama a função para abrir o modal de edição no Users
       handleClose();
     } catch (error: any) {
-      toast.error(error?.response?.data?.message || "Erro ao atualizar usuário");
+      toast.error(
+        error?.response?.data?.message || "Erro ao atualizar usuário"
+      );
     }
   };
-  
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    props.onClose(); // Chama a função onClose passada por props
   };
 
   return (
     <>
+      <IconButton onClick={handleClickOpen}>
+        <EditIcon />
+      </IconButton>
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -162,7 +162,7 @@ export function EditUser(props: EditUserProps) {
             </Button>
           </DialogActions>
         </Box>
-      </Dialog>  
+      </Dialog>
     </>
   );
 }
