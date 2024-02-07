@@ -10,7 +10,6 @@ import Register from "../pages/Login/register";
 export function AppRoutes() {
   const { permission, perfil } = useToken();
   const [pagesRender] = useState(perfil === "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
-  console.log(pagesRender)
   return (
     <Routes>
     {permission && pagesRender.length > 0 ? ( 

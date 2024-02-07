@@ -8,7 +8,6 @@ interface IClassification {
 }
 export default function Classification(props: IClassification) {
   const [value, setValue] = React.useState<number>(props.classification);
-  console.log(props.classification)
 
   return (
     <Rating

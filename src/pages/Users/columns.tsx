@@ -43,8 +43,8 @@ export const columns: GridColDef[] = [
     },
   },
   {
-    field: "resetarSenha",
-    headerName: "Resetar Senha",
+    field: "editar",
+    headerName: "",
     renderCell(params) {
       return (
        <EditUser id={params.row.id}/>

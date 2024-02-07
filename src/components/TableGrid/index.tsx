@@ -33,10 +33,10 @@ export function TableGrid(props: TableGridProps) {
             subtitle={props.subtitleDelete}
             onDelete={() => (props.onDelete ? props.onDelete(row.id) : "")}
           ></ModalDelete>
-          <IconButton
+         {/*  <IconButton
             onClick={() => (props.onEdit ? props.onEdit(row.id) : '')}>
             <EditIcon />
-          </IconButton>
+          </IconButton> */}
         </>
       ),
     },

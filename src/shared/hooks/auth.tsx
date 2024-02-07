@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import Cookies from 'universal-cookie';
 import { ILogin } from '../../models/login';
-import { login } from '../../service/auth';
+import { authToken, login } from '../../service/auth';
 import { validation } from '../../service/api';
 import { toast } from 'react-toastify';
 
@@ -35,12 +35,12 @@ export function TokenProvider({ children }: TokenProviderProps) {
     if (token) {
       setPermission(true)
     }
-    /*  await authToken(token).then(()=>{
+/*      await authToken(token).then(()=>{
        setPermission(true)
      }).catch((error:any)=>{
        console.log({error})
        setPermission(false)
-     }) */
+     })  */
   }
 
   async function Login(payload: ILogin) {
@@ -56,7 +56,6 @@ export function TokenProvider({ children }: TokenProviderProps) {
         toast.success('Login realizado com sucesso')
       })
       .catch(error => {
-        console.log({ error })
         setPermission(false);
         if (error.response.status === 401) {
           setPermission(false);
@@ -64,8 +63,6 @@ export function TokenProvider({ children }: TokenProviderProps) {
         }
       });
   }
-
-  console.log('--->', permission)
 
   return (
     <TokenContext.Provider value={{ permission, Login, token, username, perfil }}>

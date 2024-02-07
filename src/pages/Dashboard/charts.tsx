@@ -35,8 +35,6 @@ export const DonutChart: React.FC = () => {
 
       // Obtendo a cor da coluna clicada
       const color = chartOptions.colors[dataPointIndex];
-
-      console.log({ label, color });
     }
   };
 
