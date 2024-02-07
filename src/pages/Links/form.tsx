@@ -17,10 +17,7 @@ const schema = Yup.object()
   .shape({
     datadofato: Yup.string().required(),
     diah: Yup.string(),
-    horario: Yup.string().matches(
-      /^([01]\d|2[0-3]):[0-5]\d$/,
-      "Formato inválido. Use hora:minutos"
-    ),
+    horario: Yup.string(),
     turno: Yup.string(),
     nome: Yup.string(),
     idade: Yup.number(),

@@ -34,7 +34,6 @@ export interface RowProps {
 
 export function Row(props: RowProps) {
   const [open, setOpen] = React.useState(false);
-
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
       props.refreshList()
@@ -79,7 +78,7 @@ export function Row(props: RowProps) {
               <Table size="small" aria-label="purchases" sx={{ display: "flex", gap: 3 }}>
                 <TableBody>
                   <iframe
-                    style={{ width: "1000px", height: "900px" }}
+                    style={{ width: "50vw", height: "900px" }}
                     src={props.link}
                   ></iframe>
                 </TableBody>
@@ -137,17 +136,17 @@ export default function CollapsibleTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {currentRows.map((row: RowProps) => (
+          {rows.map((row: RowProps) => (
             <Row key={row.nome} {...row} refreshList={refreshList} />
           ))}
         </TableBody>
       </Table>
-      <Pagination
+      {/* <Pagination
         itemsPerPage={itemsPerPage}
         totalItems={rows.length}
         currentPage={currentPage}
         paginate={paginate}
-      />
+      /> */}
     </TableContainer>
   );
 }

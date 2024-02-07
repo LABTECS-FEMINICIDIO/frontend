@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+import { CreateUser } from "./createUser";
 
 export function Users() {
   const [rows, setRows] = useState([]);
@@ -164,6 +165,7 @@ export function Users() {
                       }}
                     />
                   </FormControl>
+                  <CreateUser/>
                 </Box>
               </Box>
             </Box>

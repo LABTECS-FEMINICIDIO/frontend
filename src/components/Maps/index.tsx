@@ -7,15 +7,19 @@ import 'leaflet/dist/leaflet.css'
 import { api } from "../../service/api";
 import MarkerClusterGroup from "react-leaflet-cluster";
 
-export function MapPage() {
-  const position = [-3.059943, -59.988359] as LatLngExpression
-  const [vitimas, setVitimas] = useState<any[]>([])
+interface IProps {
+  vitimas: any[]
+}
 
-  useEffect(() => {
-    api.get("/api/vitimas/").then((res) => {
-      setVitimas(res.data)
-    })
-  }, [])
+export function MapPage({vitimas}: IProps) {
+  const position = [-3.059943, -59.988359] as LatLngExpression
+  // const [vitimas, setVitimas] = useState<any[]>([])
+
+  // useEffect(() => {
+  //   api.get("/api/vitimas/").then((res) => {
+  //     setVitimas(res.data)
+  //   })
+  // }, [])
 
   const myIcon: any = new Icon({
     iconUrl: "https://www.irmasclarissas.org.br/wp-content/uploads/2015/08/Map-Marker-PNG-File.png",

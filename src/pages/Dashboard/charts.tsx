@@ -5,16 +5,18 @@ import ReactApexChart from "react-apexcharts";
 import { api } from "../../service/api";
 
 
-
-export const DonutChart: React.FC = () => {
-  const [vitimas, setVitimas] = useState([])
+interface IProps {
+  vitimas: any[]
+}
+export const DonutChart = ({vitimas}: IProps) => {
+  // const [vitimas, setVitimas] = useState([])
   const [series, setSeries] = useState<number[]>([])
-
-  useEffect(() => {
-    api.get("/api/vitimas/").then((res: any) => {
-      setVitimas(res.data)
-    })
-  }, [])
+  
+  // useEffect(() => {
+  //   api.get("/api/vitimas/").then((res: any) => {
+  //     setVitimas(res.data)
+  //   })
+  // }, [])
 
   useEffect(() => {
     const zonaNorte: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "norte").length

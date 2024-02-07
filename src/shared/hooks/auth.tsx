@@ -52,7 +52,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
         setUsername(response.data.nome)
         cookies.set("usernamef", response.data.nome)
         setPermission(true);
-        setPerfil(response.data.permission)
+        setPerfil(response.data.permission.toLowerCase())
         toast.success('Login realizado com sucesso')
       })
       .catch(error => {

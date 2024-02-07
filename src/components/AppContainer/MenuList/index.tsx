@@ -24,7 +24,6 @@ export function MenuList({ open }: MenuListProps) {
     navigate(page);
   };
   const { perfil } = useToken();
-
   
   const [pagesRender] = React.useState(perfil === "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
 
