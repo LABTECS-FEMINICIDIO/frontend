@@ -19,6 +19,6 @@ export function createPassword(userId: string){
 export function deleteUser(userId: string){
     return api.delete('/api/usuarios/'+userId)
 }
-export function updateUser(userId: string, data: IUser){
+export function updateUser(userId: string, data: any){
     return api.patch('/api/usuarios/'+userId, data)
 }

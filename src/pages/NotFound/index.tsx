@@ -30,7 +30,9 @@ export function NotFound() {
             variant="h1"
             style={{ fontWeight: '700', color: '#DC0032', fontSize: '87px' }}>
             ERROR 404 Não Encontrado
-            <Typography
+           
+          </Typography>
+          <Typography
               variant="subtitle1"
               style={{
                 fontWeight: '400',
@@ -40,7 +42,6 @@ export function NotFound() {
               }}>
               Sessão expirada ou página não encontrada!!
             </Typography>
-          </Typography>
           <Button
             //onClick={Logout}
             variant="contained"

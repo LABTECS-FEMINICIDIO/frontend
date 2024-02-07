@@ -24,6 +24,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "../../shared/theme";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
+import { updateUser } from "../../service/users";
 
 const schema = Yup.object()
   .shape({
@@ -57,12 +58,12 @@ export function EditUser({ id }: { id: string }) {
 
   const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
     try {
-      //const response = await updateUser(data);
-      toast.success("Usuário atualizado com sucesso");
+      const response = await updateUser(id, data);
+      toast.success("Informações do usuário atualizadas com sucesso");
       handleClose();
     } catch (error: any) {
       toast.error(
-        error?.response?.data?.message || "Erro ao atualizar usuário"
+        error?.response.data.detail || "Erro ao atualizar usuário"
       );
     }
   };
