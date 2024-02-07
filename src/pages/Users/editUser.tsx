@@ -24,6 +24,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "../../shared/theme";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
+import { updateUser } from "../../service/users";
 
 const schema = Yup.object()
   .shape({
@@ -54,10 +55,10 @@ export function EditUser({ id }: { id: string }) {
   const onSubmit = async (data: FormData) => {
     await handleUpadateUser(data);
   };
-
+  console.log(id)
   const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
     try {
-      //const response = await updateUser(data);
+      // const response = await updateUser(data);
       toast.success("Usuário atualizado com sucesso");
       handleClose();
     } catch (error: any) {
@@ -158,7 +159,7 @@ export function EditUser({ id }: { id: string }) {
               Cancelar
             </Button>
             <Button type="submit" variant="contained" autoFocus>
-              Cadastrar
+              Editar
             </Button>
           </DialogActions>
         </Box>
