@@ -51,6 +51,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
         setToken(response.data.access_token);
         setUsername(response.data.nome)
         cookies.set("usernamef", response.data.nome)
+        cookies.set("idf", response.data.id)
         setPermission(true);
         setPerfil(response.data.permission.toLowerCase())
         toast.success('Login realizado com sucesso')

@@ -17,6 +17,7 @@ import { Content } from "./Content";
 import { AppBar, ButtonStyled, Drawer, DrawerHeader } from "./styles";
 import Cookies from "universal-cookie";
 import { useToken } from "../../shared/hooks/auth";
+import { EditUser } from "../../pages/Users/editUser";
 //import { useToken } from '../../shared/hooks/auth';
 
 interface AppContainerProps {
@@ -36,10 +37,6 @@ export function AppContainer({ children }: AppContainerProps) {
 
   const username = cookies.get("usernamef")
 
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -77,7 +74,6 @@ export function AppContainer({ children }: AppContainerProps) {
             >
               <MenuIcon color="primary" />
             </IconButton>
-            {/* <img src={logo} width="120px" alt="Logo" /> */}
             <Divider
               orientation="vertical"
               variant="middle"
@@ -88,17 +84,7 @@ export function AppContainer({ children }: AppContainerProps) {
             />
           </Box>
           <Box display="flex" alignItems="center" color="primary">
-            <ButtonStyled
-              sx={{
-                ...(matches && { display: "none" }),
-              }}
-              startIcon={<AccountCircleIcon color="primary" />}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              {username}
-            </ButtonStyled>
+            <EditUser/>
 
             <Button variant="text" onClick={() => Logout()}>
               <LogoutIcon />

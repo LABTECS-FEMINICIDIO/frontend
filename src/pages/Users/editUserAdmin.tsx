@@ -23,10 +23,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "../../shared/theme";
 import { toast } from "react-toastify";
+import EditIcon from "@mui/icons-material/Edit";
 import { findById, updateUser } from "../../service/users";
-import Cookies from "universal-cookie";
-import { ButtonStyled } from "../../components/AppContainer/styles";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const schema = Yup.object()
   .shape({
@@ -39,11 +37,12 @@ const schema = Yup.object()
   .required();
 type FormData = Yup.InferType<typeof schema>;
 
-export function EditUser() {
+export function EditUser({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [userData, setUserData] = useState({});
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const {
     register,
     handleSubmit,
@@ -53,19 +52,12 @@ export function EditUser() {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const cookies = new Cookies();
 
-  const onSubmit = async (data: any) => {
-    Object.keys(data).forEach((key) => {
-      if(data[key] == ""){
-        delete data[key]
-      }
-    })
+  const onSubmit = async (data: FormData) => {
     await handleUpadateUser(data);
   };
-  const id = cookies.get("idf")
 
-  const handleUpadateUser = async (data: any) => {
+  const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
     try {
       const response = await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
@@ -85,10 +77,6 @@ export function EditUser() {
     setOpen(false);
   };
 
-
-  const username = cookies.get("usernamef")
-  const matches = useMediaQuery("(max-width:480px)");
-
   useEffect(() => {
     const fetchUserData = () => {
       findById(id)
@@ -106,26 +94,13 @@ export function EditUser() {
         .catch((error) => {
           console.error("Erro ao buscar os dados do usuário:", error);
         });
-    };
-  
-    fetchUserData();
-  }, [id]);
-
-  
+    }});
 
   return (
     <>
-      <ButtonStyled
-              sx={{
-                ...(matches && { display: "none" }),
-              }}
-              startIcon={<AccountCircleIcon color="primary" />}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleClickOpen}
-            >
-              {username}
-            </ButtonStyled>
+      <IconButton onClick={handleClickOpen}>
+        <EditIcon />
+      </IconButton>
       <Dialog
         fullScreen={fullScreen}
         open={open}

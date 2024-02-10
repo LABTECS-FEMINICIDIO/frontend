@@ -2,7 +2,7 @@ import { Switch } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { ResetPassword } from "./resetPassword";
 import { updateUser } from "../../service/users";
-import { EditUser } from "./editUser";
+import { EditUser } from "./editUserAdmin";
 
 export const columns: GridColDef[] = [
   {
