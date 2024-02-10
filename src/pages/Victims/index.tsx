@@ -1,4 +1,4 @@
-import { Box, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { TableGrid } from "../../components/TableGrid";
 import { title, toolbar1 } from "../../styles";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { api } from "../../service/api";
 import { toast } from "react-toastify";
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
+import { saveAs } from 'file-saver';
 
 export function Victims() {
     const [rows, setRows] = useState([])
@@ -55,6 +56,16 @@ export function Victims() {
     };
 
     const filtered = rowsFiltered.length > 0
+
+    const handleExportClick = async () => {
+        try {
+           const response = await api.get("/api/export-xlsx", { responseType: 'blob' });
+           const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+           saveAs(blob, 'export.xlsx');
+        } catch (error) {
+           console.error('Erro ao exportar o arquivo:', error);
+        }
+     };
 
 
     return (
@@ -139,14 +150,13 @@ export function Victims() {
                             </Box>
                         </Box>
                     </Box>
-                    {/* <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-          >
-            Importar arquivo
-            <VisuallyHiddenInput type="file" />
-          </Button> */}
+                     <Button
+                        component="label"
+                        variant="contained"
+                        onClick={handleExportClick}
+                    >
+                        Exportar
+                    </Button> 
                 </Box>
             </Box>
             <TableGrid rows={filtered ? rowsFiltered : rows} columns={columns} />

@@ -95,7 +95,7 @@ export function CreateProgram() {
         </Typography>
         <Box sx={{ display: "flex", alignItems: "center", paddingLeft: 3 }}>
           <Typography>
-            Atualmente o bot está fazendo uma pesquisa a cada <strong>{periodoPesquisa ?? "1"} dias</strong>
+            Atualmente o bot está fazendo uma pesquisa a cada <strong>{periodoPesquisa ?? "2"} dias</strong>
           </Typography>
         </Box>
         <Divider sx={{ marginBottom: 2 }} />
