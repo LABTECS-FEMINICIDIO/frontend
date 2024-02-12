@@ -17,7 +17,7 @@ import { api } from "../../service/api";
 import { Form } from "./form";
 import { Content } from "./content";
 import Classification from "./classification";
-import { Switch } from "@mui/material";
+import { CircularProgress, Switch } from "@mui/material";
 import { toast } from "react-toastify";
 
 export interface RowProps {
@@ -36,9 +36,9 @@ export function Row(props: RowProps) {
   const [open, setOpen] = React.useState(false);
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
-      props.refreshList()
-    })
-  }
+      props.refreshList();
+    });
+  };
 
   return (
     <React.Fragment>
@@ -55,27 +55,38 @@ export function Row(props: RowProps) {
         <TableCell component="th" scope="row">
           {props.nome}
         </TableCell>
-        <TableCell align="left"><a href={props.link} target="_blank">{props.link}</a></TableCell>
+        <TableCell align="left">
+          <a href={props.link} target="_blank">
+            {props.link}
+          </a>
+        </TableCell>
         <TableCell align="left">
           <Content props={props.conteudo} />
         </TableCell>
         <TableCell align="left">{props.feminicidio}</TableCell>
         <TableCell align="left">
-          <Classification classification={props.classificacao} idLink={props.id} />
+          <Classification
+            classification={props.classificacao}
+            idLink={props.id}
+          />
         </TableCell>
         <TableCell align="left">
-          {props.lido}<Switch onChange={handleChangeLido} checked={props.lido} />
+          {props.lido}
+          <Switch onChange={handleChangeLido} checked={props.lido} />
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0
-         }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Typography variant="h6" gutterBottom component="div">
                 Notícia
               </Typography>
-              <Table size="small" aria-label="purchases" sx={{ display: "flex", gap: 3 }}>
+              <Table
+                size="small"
+                aria-label="purchases"
+                sx={{ display: "flex", gap: 3 }}
+              >
                 <TableBody>
                   <iframe
                     style={{ width: "50vw", height: "900px" }}
@@ -98,21 +109,35 @@ export default function CollapsibleTable() {
   const [rows, setRows] = useState([]);
   const [findSitesFetched, setFindSitesFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 10;
 
   const refreshList = () => {
-    api.get("/api/site/").then((res) =>
-      setRows(res.data)).catch((error) => toast.error("Erro ao obter dados:", error));
+    setLoading(true);
+    api
+      .get("/api/site/")
+      .then((res) => {
+        setRows(res.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   };
 
   useEffect(() => {
+    setLoading(true);
     if (!findSitesFetched) {
       api.get("/api/findSites/").then((res) => {
+        setLoading(false);
         setFindSitesFetched(true);
       });
     }
-    api.get("/api/site/").then((res) =>
-      setRows(res.data)).catch((error) => toast.error("Erro ao obter dados:", error));
+    api
+      .get("/api/site/")
+      .then((res) => {
+        setRows(res.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, [findSitesFetched]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -120,10 +145,14 @@ export default function CollapsibleTable() {
   const currentRows = rows.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-
+  
   return (
     <TableContainer component={Paper} sx={{ marginTop: "30px" }}>
-      <Table aria-label="collapsible table">
+     { loading ? 
+               <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", height: "70vh"}}>
+               <CircularProgress />
+             </Box>
+     : <Table aria-label="collapsible table">
         <TableHead sx={{ background: colors.primary_lightest }}>
           <TableRow>
             <TableCell />
@@ -135,20 +164,17 @@ export default function CollapsibleTable() {
             <TableCell align="left">Lido</TableCell>
           </TableRow>
         </TableHead>
-        <TableBody>
-          {rows.map((row: RowProps) => (
-            <Row key={row.nome} {...row} refreshList={refreshList} />
-          ))}
-        </TableBody>
-      </Table>
-      {/* <Pagination
-        itemsPerPage={itemsPerPage}
-        totalItems={rows.length}
-        currentPage={currentPage}
-        paginate={paginate}
-      /> */}
+          <TableBody>
+            {rows.map((row: RowProps) => (
+              <Row key={row.nome} {...row} refreshList={refreshList} />
+            ))}
+          </TableBody>
+      </Table>}
+
     </TableContainer>
   );
+
+  
 }
 
 interface PaginationProps {
@@ -158,7 +184,12 @@ interface PaginationProps {
   paginate: (pageNumber: number) => void;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ itemsPerPage, totalItems, currentPage, paginate }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  itemsPerPage,
+  totalItems,
+  currentPage,
+  paginate,
+}) => {
   const pageNumbers = [];
 
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
@@ -167,17 +198,24 @@ const Pagination: React.FC<PaginationProps> = ({ itemsPerPage, totalItems, curre
 
   return (
     <nav>
-      <ul style={{ listStyle: 'none', display: 'flex', justifyContent: 'center', gap: '10px' }}>
-        {pageNumbers.map(number => (
+      <ul
+        style={{
+          listStyle: "none",
+          display: "flex",
+          justifyContent: "center",
+          gap: "10px",
+        }}
+      >
+        {pageNumbers.map((number) => (
           <li key={number}>
             <button
               style={{
-                padding: '5px 10px',
-                cursor: 'pointer',
-                backgroundColor: currentPage === number ? '#4CAF50' : '',
-                color: currentPage === number ? '#fff' : '',
-                border: '1px solid #ddd',
-                borderRadius: '5px'
+                padding: "5px 10px",
+                cursor: "pointer",
+                backgroundColor: currentPage === number ? "#4CAF50" : "",
+                color: currentPage === number ? "#fff" : "",
+                border: "1px solid #ddd",
+                borderRadius: "5px",
               }}
               onClick={() => paginate(number)}
             >

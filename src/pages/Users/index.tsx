@@ -1,5 +1,6 @@
 import {
   Box,
+  CircularProgress,
   FormControl,
   IconButton,
   InputAdornment,
@@ -26,25 +27,30 @@ export function Users() {
   const [search, setSearch] = useState({ column: "", value: "" });
   const [rowsFiltered, setRowsFiltered] = useState([]);
   const { count } = useRefresh();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     listAll();
   }, [count]);
 
   const listAll = () => {
+    setLoading(true)
     findManyUsers()
       .then((response) => {
         setRows(response.data);
+        setLoading(false);
+
       })
       .catch((error) => {
         toast.error(error.response.data.message);
+        setLoading(false);
+
       });
   };
 
   const OpenModalEdit = async (id: string) => {
     await findById(id)
-      .then((response) => {
-      })
+      .then((response) => {})
       .catch((error) => {
         toast.error(error.response.data.message);
       });
@@ -165,20 +171,33 @@ export function Users() {
                       }}
                     />
                   </FormControl>
-                  <CreateUser/>
+                  <CreateUser />
                 </Box>
               </Box>
             </Box>
           </Box>
         </Box>
       </Box>
-      <TableGrid
-        rows={filtered ? rowsFiltered : rows}
-        columns={columns}
-        titleDelete="Excluir usuário?"
-        onDelete={DeleteUser}
-        onEdit={OpenModalEdit}
-      />
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "70vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <TableGrid
+          rows={filtered ? rowsFiltered : rows}
+          columns={columns}
+          titleDelete="Excluir usuário?"
+          onDelete={DeleteUser}
+          onEdit={OpenModalEdit}
+        />
+      )}
     </>
   );
 }

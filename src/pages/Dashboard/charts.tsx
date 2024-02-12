@@ -60,7 +60,7 @@ export const DonutChart = ({vitimas}: IProps) => {
 
   return (
     <>
-      <Paper elevation={2} sx={{ width: 600, marginTop: 1, padding: 2 }}>
+      <Paper elevation={2} sx={{ width: "30vw", marginTop: 1, padding: 2 }}>
         <ReactApexChart
           options={{ ...chartOptions, chart: { events: { click: handleChartClick } } }}
           series={series}

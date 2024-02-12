@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import {
+  CircularProgress,
   FormControl,
   IconButton,
   InputAdornment,
@@ -35,7 +36,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
   const { Login, token, permission } = useToken();
-
+  const [loading, setLoading] = React.useState(false)
   const {
     register,
     handleSubmit,
@@ -47,7 +48,9 @@ export default function SignIn() {
   const onSubmit = (data: FormData) => handleLogin(data);
 
   const handleLogin = async (data: yup.InferType<typeof schema>) => {
+    setLoading(true)
     await Login(data);
+    setLoading(false)
   };
 
   React.useEffect(() => {
@@ -122,13 +125,16 @@ export default function SignIn() {
                   }
                 />
               </FormControl>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ mt: 3, mb: 2, ml: 19 }}
-              >
-                ENTRAR
-              </Button>
+              <Box sx={{display: "flex", width: "100%", marginTop: 3, marginBottom: 2, justifyContent: "center"}}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  disabled={loading}
+                  sx={{minWidth: 100}}
+                >
+                {loading ? <CircularProgress/> : "ENTRAR"}
+                </Button>
+              </Box>
               <Box
                 sx={{
                   display: "flex",

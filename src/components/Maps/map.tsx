@@ -2,7 +2,6 @@ export const stylesMap = {
     container: {
       display: 'grid',
       width: '50vw',
-      height: '80vh',
       backgroundColor: 'rgba(255, 255, 255, 0.926)',
       padding: '10px',
       border: '1px solid transparent',

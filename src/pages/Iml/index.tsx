@@ -1,4 +1,17 @@
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { TableGrid } from "../../components/TableGrid";
 import { title, toolbar1 } from "../../styles";
 import { columns } from "./columns";
@@ -7,8 +20,8 @@ import { styled } from "@mui/material/styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import { findImlData, findManyIml } from "../../service/iml";
 import { toast } from "react-toastify";
-import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -24,69 +37,74 @@ const VisuallyHiddenInput = styled("input")({
 
 export function Iml() {
   const [rows, setRows] = useState([]);
-
-  const column = [{
-    sexo: 'Sexo',
-    idade: 'Idade',
-  }]
-
+  const [loading, setLoading] = useState(true);
+  const column = [
+    {
+      sexo: "Sexo",
+      idade: "Idade",
+    },
+  ];
 
   useEffect(() => {
-    findManyIml()
+    setLoading(true);
+    findManyIml();
     findImlData()
-      .then((res) => setRows(res.data))
-      .catch((error) => console.error("Erro ao obter dados:", error));
+      .then((res) => {
+        setRows(res.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
-
-  const [search, setSearch] = useState({ column: '', value: '' });
-  const [rowsFiltered, setRowsFiltered] = useState([])
-
-
+  const [search, setSearch] = useState({ column: "", value: "" });
+  const [rowsFiltered, setRowsFiltered] = useState([]);
 
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearch(state => ({
+    setSearch((state) => ({
       ...state,
       [event.target.name]: event.target.value,
     }));
   };
 
   const handleColumn = (event: SelectChangeEvent) => {
-    setSearch(state => ({
+    setSearch((state) => ({
       ...state,
       [event.target.name]: event.target.value.trim(),
     }));
   };
 
   const handleSearch = () => {
-    if (search.column === '' || search.value === '') {
-      toast.error('Campo coluna e pesquisa não pode ser vazio');
+    if (search.column === "" || search.value === "") {
+      toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
       //setCount(prevCount => prevCount + 1);
-      const findRows = rows.filter((item) => (String(item[search.column]).toLowerCase()).includes(String(search.value).toLowerCase()))
+      const findRows = rows.filter((item) =>
+        String(item[search.column])
+          .toLowerCase()
+          .includes(String(search.value).toLowerCase())
+      );
       if (findRows.length === 0) {
-        toast.error('Nenhum resultado encontrado para esta pesquisa.')
+        toast.error("Nenhum resultado encontrado para esta pesquisa.");
       }
-      setRowsFiltered(findRows)
+      setRowsFiltered(findRows);
     }
   };
 
   const handleClear = () => {
-    setSearch({ column: '', value: '' });
-    setRowsFiltered([])
+    setSearch({ column: "", value: "" });
+    setRowsFiltered([]);
     //setCount(prevCount => prevCount + 1);
   };
 
-  const filtered = rowsFiltered.length > 0
-
+  const filtered = rowsFiltered.length > 0;
 
   return (
     <>
       <Box sx={toolbar1}>
         <Typography style={title}>Relatório IML</Typography>
-        <Box sx={{ display: 'flex', gap: 1 }}>
-          <Box sx={{ display: "flex", flexWrap: 'wrap', gap: 1 }}>
-            <Box sx={{ display: 'flex', gap: '0.3125rem' }}>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+            <Box sx={{ display: "flex", gap: "0.3125rem" }}>
               <Box>
                 <FormControl sx={{ minWidth: 140 }} size="small">
                   <InputLabel id="demo-select-small">Coluna</InputLabel>
@@ -96,12 +114,15 @@ export function Iml() {
                     labelId="demo-select-small"
                     id="demo-select-small"
                     label="coluna"
-                    onChange={handleColumn}>
+                    onChange={handleColumn}
+                  >
                     <MenuItem value={"dataEntrada"}>Data de entrada</MenuItem>
                     <MenuItem value={"horaEntrada"}>Hora de entrada</MenuItem>
                     <MenuItem value={"sexo"}>Sexo</MenuItem>
                     <MenuItem value={"idade"}>Idade</MenuItem>
-                    <MenuItem value={"bairroDaRemocao"}>Bairro da remoção</MenuItem>
+                    <MenuItem value={"bairroDaRemocao"}>
+                      Bairro da remoção
+                    </MenuItem>
                     <MenuItem value={"causaMorte"}>Causa da morte</MenuItem>
                   </Select>
                 </FormControl>
@@ -115,7 +136,7 @@ export function Iml() {
                     label="Pesquisar"
                     value={search.value}
                     onChange={handleValue}
-                    onKeyDown={({ key }) => key === 'Enter' && handleSearch()}
+                    onKeyDown={({ key }) => key === "Enter" && handleSearch()}
                     size="small"
                     InputProps={{
                       endAdornment: (
@@ -125,14 +146,16 @@ export function Iml() {
                             onClick={() => {
                               handleSearch();
                             }}
-                            aria-label="search">
+                            aria-label="search"
+                          >
                             <SearchIcon />
                           </IconButton>
                           <IconButton
                             onClick={() => {
                               handleClear();
                             }}
-                            aria-label="delete">
+                            aria-label="delete"
+                          >
                             <ClearIcon />
                           </IconButton>
                         </InputAdornment>
@@ -153,7 +176,20 @@ export function Iml() {
           </Button> */}
         </Box>
       </Box>
-      <TableGrid rows={filtered ? rowsFiltered : rows} columns={columns} />
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "70vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <TableGrid rows={filtered ? rowsFiltered : rows} columns={columns} />
+      )}
     </>
   );
 }

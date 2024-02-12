@@ -6,7 +6,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { Paper } from "@mui/material";
+import { CircularProgress, Paper } from "@mui/material";
 import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
 import imagemLogin from "../../assets/laco-login.svg";
@@ -37,14 +37,18 @@ export default function Register() {
   });
 
   const onSubmit = (data: FormData) => handleRegister(data);
+  const [loading, setLoading] = React.useState(false)
 
   const handleRegister = async (data: yup.InferType<typeof schema>) => {
+    setLoading(true)
     registerUser(data)
       .then((response) => {
+        setLoading(false)
         toast.success("Usuário cadastrado com sucesso");
         reset();
       })
       .catch((error) => {
+        setLoading(false)
         toast.error(error.response.data.detail);
       });
   };
@@ -121,13 +125,18 @@ export default function Register() {
               autoComplete="telefone"
               autoFocus
             />
+            <Box 
+            sx={{width: "100%", display: "flex", justifyContent: "center", marginTop: 3, marginBottom: 2}}
+            >
             <Button
               type="submit"
               variant="contained"
-              sx={{ mt: 3, mb: 2, ml: 19 }}
+              disabled={loading}
+              sx={{ minWidth: 120 }}
             >
-              ENTRAR
+              {loading ? <CircularProgress /> : "REGISTRAR"}
             </Button>
+            </Box>
             <Box
               sx={{
                 display: "flex",
