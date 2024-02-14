@@ -2,6 +2,7 @@ import {
   Alert,
   Box,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -53,27 +54,31 @@ export function EditUser() {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+  const [loading, setLoading] = useState(true);
   const cookies = new Cookies();
 
   const onSubmit = async (data: any) => {
     Object.keys(data).forEach((key) => {
-      if(data[key] == ""){
-        delete data[key]
+      if (data[key] == "") {
+        delete data[key];
       }
-    })
+    });
     await handleUpadateUser(data);
   };
-  const id = cookies.get("idf")
+
+  const id = cookies.get("idf");
 
   const handleUpadateUser = async (data: any) => {
+    setLoading(true)
     try {
       const response = await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
+      cookies.set("usernamef", response.data.nome);
       handleClose();
+      setLoading(false)
     } catch (error: any) {
-      toast.error(
-        error?.response.data.detail || "Erro ao atualizar usuário"
-      );
+      toast.error(error?.response.data.detail || "Erro ao atualizar usuário");
+      setLoading(false)
     }
   };
 
@@ -85,47 +90,50 @@ export function EditUser() {
     setOpen(false);
   };
 
-
-  const username = cookies.get("usernamef")
+  const username = cookies.get("usernamef");
   const matches = useMediaQuery("(max-width:480px)");
 
   useEffect(() => {
+    setLoading(true)
     const fetchUserData = () => {
       findById(id)
         .then((response) => {
           if (response && response.data) {
             setUserData(response.data);
-            setValue('nome', response.data.nome)
-            setValue('email', response.data.email)
-            setValue('perfil', response.data.perfil)
-            setValue('telefone', response.data.telefone)
+            setValue("nome", response.data.nome);
+            setValue("email", response.data.email);
+            setValue("perfil", response.data.perfil);
+            setValue("telefone", response.data.telefone);
+            setLoading(false)
           } else {
-            console.error("Erro ao buscar os dados do usuário: Resposta inválida");
+            console.error(
+              "Erro ao buscar os dados do usuário: Resposta inválida"
+            );
+            setLoading(false)
           }
         })
         .catch((error) => {
+          setLoading(false)
           console.error("Erro ao buscar os dados do usuário:", error);
         });
     };
-  
-    fetchUserData();
-  }, [id]);
 
-  
+    fetchUserData();
+  }, [id, open]);
 
   return (
     <>
       <ButtonStyled
-              sx={{
-                ...(matches && { display: "none" }),
-              }}
-              startIcon={<AccountCircleIcon color="primary" />}
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleClickOpen}
-            >
-              {username}
-            </ButtonStyled>
+        sx={{
+          ...(matches && { display: "none" }),
+        }}
+        startIcon={<AccountCircleIcon color="primary" />}
+        aria-controls="simple-menu"
+        aria-haspopup="true"
+        onClick={handleClickOpen}
+      >
+        {username}
+      </ButtonStyled>
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -141,50 +149,62 @@ export function EditUser() {
             marginRight: 3,
             marginBottom: 3,
           }}
-        >
-        </Typography>
+        ></Typography>
         <Divider />
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent sx={{ display: "grid", gap: 2 }}>
-            <TextField
-              label={errors.nome?.message ?? "Nome"}
-              {...register("nome")}
-              error={!!errors.nome?.message}
-              variant="filled"
-              fullWidth
-            />
-            <TextField
-              label={errors.email?.message ?? "E-mail"}
-              {...register("email")}
-              error={!!errors.email?.message}
-              variant="filled"
-            />
-            <TextField
-              label={errors.telefone?.message ?? "Telefone"}
-              {...register("telefone")}
-              error={!!errors.telefone?.message}
-              variant="filled"
-            />
-            <TextField
-              label={errors.senha?.message ?? "Senha"}
-              {...register("senha")}
-              error={!!errors.senha?.message}
-              variant="filled"
-            />
-            <FormControl variant="filled">
-              <InputLabel>{errors.perfil?.message ?? "Perfil"}</InputLabel>
-              <Select
-                label={errors.perfil?.message ?? "Perfil"}
-                {...register("perfil")}
-                error={!!errors.perfil?.message}
-                defaultValue={""}
-              >
-                <MenuItem value={"Administrador"}>Administrador</MenuItem>
-                <MenuItem value={"Pesquisador"}>Pesquisador</MenuItem>
-                <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
-              </Select>
-            </FormControl>
-          </DialogContent>
+          {loading ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "300px",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          ) : (
+            <DialogContent sx={{ display: "grid", gap: 2 }}>
+              <TextField
+                label={errors.nome?.message ?? "Nome"}
+                {...register("nome")}
+                error={!!errors.nome?.message}
+                variant="filled"
+                fullWidth
+              />
+              <TextField
+                label={errors.email?.message ?? "E-mail"}
+                {...register("email")}
+                error={!!errors.email?.message}
+                variant="filled"
+              />
+              <TextField
+                label={errors.telefone?.message ?? "Telefone"}
+                {...register("telefone")}
+                error={!!errors.telefone?.message}
+                variant="filled"
+              />
+              <TextField
+                label={errors.senha?.message ?? "Senha"}
+                {...register("senha")}
+                error={!!errors.senha?.message}
+                variant="filled"
+              />
+              <FormControl variant="filled">
+                <InputLabel>{errors.perfil?.message ?? "Perfil"}</InputLabel>
+                <Select
+                  label={errors.perfil?.message ?? "Perfil"}
+                  {...register("perfil")}
+                  error={!!errors.perfil?.message}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"Administrador"}>Administrador</MenuItem>
+                  <MenuItem value={"Pesquisador"}>Pesquisador</MenuItem>
+                  <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
+                </Select>
+              </FormControl>
+            </DialogContent>
+          )}
           <Alert
             severity="info"
             sx={{
@@ -202,8 +222,13 @@ export function EditUser() {
             <Button autoFocus onClick={handleClose}>
               Cancelar
             </Button>
-            <Button type="submit" variant="contained" autoFocus>
-              Cadastrar
+            <Button
+              type="submit"
+              variant="contained"
+              autoFocus
+              disabled={loading}
+            >
+              Editar
             </Button>
           </DialogActions>
         </Box>

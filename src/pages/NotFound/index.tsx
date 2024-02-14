@@ -1,15 +1,15 @@
 import React from 'react';
 import { Box, Button, Container, Typography } from '@mui/material';
-//import Cookies from 'universal-cookie';
+import Cookies from 'universal-cookie';
 
 export function NotFound() {
 
-  /*   function Logout() {
+  function Logout() {
       const cookie = new Cookies();
-      cookie.remove('@diabetico_token');
-      localStorage.removeItem('@diabetico_token');
+      cookie.remove('@feminicidio_token');
+      localStorage.removeItem('@feminicidio_token');
       window.location.href = '/';
-    } */
+    } 
   return (
     <div>
       <Container
@@ -43,7 +43,7 @@ export function NotFound() {
               Sessão expirada ou página não encontrada!!
             </Typography>
           <Button
-            //onClick={Logout}
+            onClick={Logout}
             variant="contained"
             color="secondary"
             style={{ maxWidth: '200px', marginTop: '60px', fontWeight: 'bold' }}>

@@ -11,6 +11,7 @@ import { caixaTag } from "../../styles";
 import {
   Box,
   Chip,
+  CircularProgress,
   Divider,
   IconButton,
   TextField,
@@ -24,17 +25,23 @@ export function CreateTag() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [tags, setTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
   const [inputValue, setInputValue] = useState("");
 
   const handleRemoverTag = (tagRemovida: string) => {
-    api.delete('/api/tag/' + tagRemovida)
-      .then(response => {
+    setLoading(true);
+    api
+      .delete("/api/tag/" + tagRemovida)
+      .then((response) => {
         if (response.status === 200) {
           const novasTags = tags.filter((tag) => tag !== tagRemovida);
           setTags(novasTags);
+          setLoading(false);
           toast.success(`Tag ${tagRemovida} removida com sucesso!`);
-        } 
-      }).catch(error => {
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
         toast.error(error.message);
       });
   };
@@ -52,6 +59,7 @@ export function CreateTag() {
   };
 
   const handleAdicionarTag = () => {
+    setLoading(true);
     if (inputValue.trim() !== "") {
       api
         .post("/api/tag/", { nome: inputValue })
@@ -59,22 +67,27 @@ export function CreateTag() {
           toast.success("Tag criada com sucesso");
           setTags([...tags, inputValue]);
           setInputValue("");
+          setLoading(false);
         })
         .catch((error: any) => {
+          setLoading(false);
           toast.error(error.message);
         });
     }
   };
 
   const findTags = () => {
+    setLoading(true);
     api
       .get("/api/tag/")
       .then((response) => {
         const tagNames = response.data.map((tag: { nome: string }) => tag.nome);
         setTags(tagNames);
+        setLoading(false);
       })
       .catch((error: any) => {
         toast.error(error.message);
+        setLoading(false);
       });
   };
 
@@ -88,6 +101,7 @@ export function CreateTag() {
         variant="outlined"
         endIcon={<AddCircleIcon />}
         onClick={handleClickOpen}
+        disabled={loading}
       >
         Adicionar Tags
       </Button>
@@ -124,28 +138,39 @@ export function CreateTag() {
               <AddCircleIcon />
             </IconButton>
           </DialogContent>
-          <Box sx={caixaTag}>
-            {tags?.length > 0 ? (
-              tags.map((tag, index) => (
-                <Chip
-                  key={index}
-                  label={tag}
-                  onDelete={() => handleRemoverTag(tag)}
-                  sx={{ background: "#fff", mt: 2, mr: 1 }}
-                />
-              ))
-            ) : (
-              <Typography
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: "130px",
-                }}
-              >
-                Nenhuma tag cadastrada.
-              </Typography>
-            )}
-          </Box>
+          {loading ? (
+            <Box sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              ...caixaTag
+            }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <Box sx={caixaTag}>
+              {tags?.length > 0 ? (
+                tags.map((tag, index) => (
+                  <Chip
+                    key={index}
+                    label={tag}
+                    onDelete={() => handleRemoverTag(tag)}
+                    sx={{ background: "#fff", mt: 2, mr: 1 }}
+                  />
+                ))
+              ) : (
+                <Typography
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "130px",
+                  }}
+                >
+                  Nenhuma tag cadastrada.
+                </Typography>
+              )}
+            </Box>
+          )}
           <DialogActions sx={{ marginRight: 2, marginBottom: 2 }}>
             <Button autoFocus onClick={handleClose}>
               Fechar
