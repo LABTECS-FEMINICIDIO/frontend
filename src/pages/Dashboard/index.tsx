@@ -66,11 +66,10 @@ export function Dashboard() {
     if (search.column === "" || search.value === "") {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-      console.log(vitimas[1].datadofato.split("-"));
 
       if (search.column == "mes") {
         const findRows = vitimas.filter(
-          (item) => item?.datadofato.split("-")[1] == search.value
+          (item) => item?.datadofato?.split("-")[1] == search.value
         );
         if (findRows.length === 0) {
           toast.error("Nenhum resultado encontrado para esta pesquisa.");
@@ -78,7 +77,7 @@ export function Dashboard() {
         setRowsFiltered(findRows);
       } else {
         const findRows = vitimas.filter(
-          (item) => item.datadofato.split("-")[0] == search.value
+          (item) => item?.datadofato?.split("-")[0] == search.value
         );
         if (findRows.length === 0) {
           toast.error("Nenhum resultado encontrado para esta pesquisa.");
