@@ -8,6 +8,7 @@ export const title = {
 
 export const toolbar1 = {
   display: "flex",
+  flex: 'wrap',
   justifyContent: "space-between",
   marginBottom: 3,
   marginLeft: "10px",
@@ -29,16 +30,11 @@ export const caixaTag = {
 
 export const borda = {
   border: "solid 1px",
-  width: 200,
-  height: 5,
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  mt: 3,
-  ml: 12,
+  width: "200px",
+  height: "5px",
   color: colors.primary_dark,
   backgroundColor: colors.primary_dark,
-  borderRadius: 2,
+  borderRadius: "5px",
 };
 
 export const container = {

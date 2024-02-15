@@ -36,7 +36,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
   const { Login, token, permission } = useToken();
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
   const {
     register,
     handleSubmit,
@@ -48,9 +48,9 @@ export default function SignIn() {
   const onSubmit = (data: FormData) => handleLogin(data);
 
   const handleLogin = async (data: yup.InferType<typeof schema>) => {
-    setLoading(true)
+    setLoading(true);
     await Login(data);
-    setLoading(false)
+    setLoading(false);
   };
 
   React.useEffect(() => {
@@ -80,13 +80,37 @@ export default function SignIn() {
                 : { position: "absolute", top: "20px", right: "10px" }
             }
           />
-          <Paper sx={{ p: 8, width: 400 }}>
-            <Avatar sx={{ ml: '170px', backgroundColor: colors.primary_dark }}>
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5" sx={{ marginLeft: '160px', marginTop: 1, fontWeight: 'bold'  }}>
-              Login
-            </Typography>
+          <Paper
+            style={
+              windowSize < 800
+                ? {
+                    display: "grid",
+                    margin: "20px",
+                    padding: "20px",
+                  }
+                : { padding: "80px", width: "400px" }
+            }
+          >
+            <Box
+              sx={{
+                display: "grid",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Avatar
+                sx={{ backgroundColor: colors.primary_dark, margin: "10px" }}
+              >
+                <LockOutlinedIcon />
+              </Avatar>
+              <Typography
+                component="h1"
+                variant="h5"
+                sx={{ fontWeight: "bold" }}
+              >
+                Login
+              </Typography>
+            </Box>
             <Box
               component="form"
               onSubmit={handleSubmit(onSubmit)}
@@ -125,29 +149,28 @@ export default function SignIn() {
                   }
                 />
               </FormControl>
-              <Box sx={{display: "flex", width: "100%", marginTop: 3, marginBottom: 2, justifyContent: "center"}}>
+              <Box
+                sx={{
+                  display: "grid",
+                  gap: 2,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 3,
+                }}
+              >
                 <Button
                   type="submit"
                   variant="contained"
                   disabled={loading}
-                  sx={{minWidth: 100}}
+                  sx={{ minWidth: 100 }}
                 >
-                {loading ? <CircularProgress/> : "ENTRAR"}
+                  {loading ? <CircularProgress /> : "ENTRAR"}
                 </Button>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  mt: 3,
-                }}
-              >
-                <Link href="/register" variant="body2">
+                <Link href="/register" variant="body2" sx={{marginTop: 3}}>
                   Não possui cadastro? Registre-se
                 </Link>
+                <Box sx={borda} />
               </Box>
-              <Box sx={borda} />
             </Box>
           </Paper>
         </Box>

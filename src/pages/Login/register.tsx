@@ -26,7 +26,6 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 export default function Register() {
-
   const {
     register,
     handleSubmit,
@@ -37,18 +36,18 @@ export default function Register() {
   });
 
   const onSubmit = (data: FormData) => handleRegister(data);
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState(false);
 
   const handleRegister = async (data: yup.InferType<typeof schema>) => {
-    setLoading(true)
+    setLoading(true);
     registerUser(data)
       .then((response) => {
-        setLoading(false)
+        setLoading(false);
         toast.success("Usuário cadastrado com sucesso");
         reset();
       })
       .catch((error) => {
-        setLoading(false)
+        setLoading(false);
         toast.error(error.response.data.detail);
       });
   };
@@ -73,19 +72,33 @@ export default function Register() {
               : { position: "absolute", top: "20px", right: "10px" }
           }
         />
-        <Paper sx={{ p: 8, width: 400 }}>
-          <Avatar
-            sx={{ ml: "180px", mb: 1, backgroundColor: colors.primary_dark }}
+        <Paper
+          style={
+            windowSize < 800
+              ? {
+                  display: "grid",
+                  margin: "20px",
+                  padding: "20px",
+                }
+              : { padding: "80px", width: "400px" }
+          }
+        >
+          <Box
+            sx={{
+              display: "grid",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography
-            component="h1"
-            variant="h5"
-            sx={{ marginLeft: "130px", fontWeight: "bold" }}
-          >
-            Registre-se
-          </Typography>
+            <Avatar
+              sx={{ backgroundColor: colors.primary_dark, marginLeft: "45px", marginTop: '30px' }}
+            >
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5" sx={{ fontWeight: "bold" }}>
+              Registre-se
+            </Typography>
+          </Box>
           <Box
             component="form"
             onSubmit={handleSubmit(onSubmit)}
@@ -125,31 +138,37 @@ export default function Register() {
               autoComplete="telefone"
               autoFocus
             />
-            <Box 
-            sx={{width: "100%", display: "flex", justifyContent: "center", marginTop: 3, marginBottom: 2}}
-            >
-            <Button
-              type="submit"
-              variant="contained"
-              disabled={loading}
-              sx={{ minWidth: 120 }}
-            >
-              {loading ? <CircularProgress /> : "REGISTRAR"}
-            </Button>
-            </Box>
             <Box
               sx={{
-                display: "flex",
+                display: "grid",
+                gap: 2,
                 justifyContent: "center",
                 alignItems: "center",
-                mt: 3,
+                marginTop: 3,
               }}
             >
-              <Link href="/" variant="body2">
-                Já possui cadastro? Faça login
-              </Link>
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={loading}
+                sx={{ minWidth: 120 }}
+              >
+                {loading ? <CircularProgress /> : "REGISTRAR"}
+              </Button>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mt: 3,
+                }}
+              >
+                <Link href="/" variant="body2" sx={{ marginTop: 3 }}>
+                  Já possui cadastro? Faça login
+                </Link>
+              </Box>
+              <Box sx={borda} />
             </Box>
-            <Box sx={borda} />
           </Box>
         </Paper>
       </Box>
