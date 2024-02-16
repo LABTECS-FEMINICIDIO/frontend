@@ -66,7 +66,7 @@ export const APP_PAGES = [
 ]
 
 
-export const APP_PAGES_VISUALIZAODR = [
+export const APP_PAGES_VISUALIZADOR = [
     {
         title: 'Dashboard',
         route: '/',
@@ -74,4 +74,49 @@ export const APP_PAGES_VISUALIZAODR = [
         component: <Dashboard />,
         showMenu: true,
     }
+]
+
+export const APP_PAGES_PESQUISADOR = [
+    {
+        title: 'Dashboard',
+        route: '/',
+        icon: <DashboardIcon />,
+        component: <Dashboard />,
+        showMenu: true,
+    },
+    {
+        title: 'Sites',
+        route: '/sites',
+        icon: <ScreenSearchDesktopIcon />,
+        component: <Sites />,
+        showMenu: true,
+    },
+    {
+        title: 'Relatório IML',
+        route: '/iml',
+        icon: <TextSnippetIcon />,
+        component: <Iml />,
+        showMenu: true,
+    },
+    {
+        title: 'Links',
+        route: '/links',
+        icon: <AddLinkOutlinedIcon />,
+        component: <Links />,
+        showMenu: true,
+    },
+    {
+        title: 'Vítimas',
+        route: '/victims',
+        icon: <ContactPageIcon />,
+        component: <Victims />,
+        showMenu: true,
+    },
+    {
+        title: 'Calendário',
+        route: '/calendar',
+        icon: <EventIcon />,
+        component: <Calendar />,
+        showMenu: true,
+    },
 ]

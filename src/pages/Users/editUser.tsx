@@ -102,7 +102,6 @@ export function EditUser() {
             setUserData(response.data);
             setValue("nome", response.data.nome);
             setValue("email", response.data.email);
-            setValue("perfil", response.data.perfil);
             setValue("telefone", response.data.telefone);
             setLoading(false)
           } else {
@@ -141,15 +140,8 @@ export function EditUser() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
-          {"Editar usuário"}
+          {"Configurações da conta"}
         </DialogTitle>
-        <Typography
-          sx={{
-            marginLeft: 3,
-            marginRight: 3,
-            marginBottom: 3,
-          }}
-        ></Typography>
         <Divider />
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           {loading ? (
@@ -164,7 +156,7 @@ export function EditUser() {
               <CircularProgress />
             </Box>
           ) : (
-            <DialogContent sx={{ display: "grid", gap: 2 }}>
+            <DialogContent sx={{ display: "grid", gridTemplateColumns: '1fr 1fr', gap: 2 }}>
               <TextField
                 label={errors.nome?.message ?? "Nome"}
                 {...register("nome")}
@@ -190,34 +182,8 @@ export function EditUser() {
                 error={!!errors.senha?.message}
                 variant="filled"
               />
-              <FormControl variant="filled">
-                <InputLabel>{errors.perfil?.message ?? "Perfil"}</InputLabel>
-                <Select
-                  label={errors.perfil?.message ?? "Perfil"}
-                  {...register("perfil")}
-                  error={!!errors.perfil?.message}
-                  defaultValue={""}
-                >
-                  <MenuItem value={"Administrador"}>Administrador</MenuItem>
-                  <MenuItem value={"Pesquisador"}>Pesquisador</MenuItem>
-                  <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
-                </Select>
-              </FormControl>
             </DialogContent>
           )}
-          <Alert
-            severity="info"
-            sx={{
-              margin: "20px",
-              background: colors.primary_lightest,
-              color: colors.neutral_dark,
-            }}
-          >
-            Lembre-se, a senha padrão inicial é composta pelas três primeiras
-            letras do seu nome seguidas pelos três últimos dígitos do seu
-            telefone. Após o primeiro login, é altamente recomendável redefinir
-            sua senha para garantir a segurança da sua conta.
-          </Alert>
           <DialogActions sx={{ marginRight: "20px", marginBottom: 3 }}>
             <Button autoFocus onClick={handleClose}>
               Cancelar

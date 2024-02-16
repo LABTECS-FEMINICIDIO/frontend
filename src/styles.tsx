@@ -46,3 +46,10 @@ export const container = {
   alignItems: "center",
   padding: 0
 };
+
+export const load = {
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  margin: 3
+}

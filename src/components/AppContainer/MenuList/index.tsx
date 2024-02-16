@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { APP_PAGES, APP_PAGES_VISUALIZAODR } from '../../../routes/pages.routes';
+import { APP_PAGES, APP_PAGES_PESQUISADOR, APP_PAGES_VISUALIZADOR } from '../../../routes/pages.routes';
 import { colors } from '../../../shared/theme';
 import { useToken } from '../../../shared/hooks/auth';
 
@@ -25,7 +25,13 @@ export function MenuList({ open }: MenuListProps) {
   };
   const { perfil } = useToken();
   
-  const [pagesRender] = React.useState(perfil === "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
+  const [pagesRender] = React.useState(
+    perfil === "visualizador"
+      ? APP_PAGES_VISUALIZADOR
+      : perfil === "pesquisador"
+      ? APP_PAGES_PESQUISADOR
+      : APP_PAGES
+  );
 
   return (
     <List>

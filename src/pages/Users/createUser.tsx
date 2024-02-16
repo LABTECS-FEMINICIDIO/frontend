@@ -84,7 +84,7 @@ export function CreateUser() {
           sx={{
             marginLeft: 3,
             marginRight: 3,
-            marginBottom: 3,
+            marginBottom: 1,
           }}
         >
           {"Preencha as informações para cadastrar um novo usuário."}

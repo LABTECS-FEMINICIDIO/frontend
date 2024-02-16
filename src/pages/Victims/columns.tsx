@@ -1,5 +1,6 @@
 import { GridColDef, GridPreProcessEditCellProps } from "@mui/x-data-grid";
 import { api } from "../../service/api";
+import { format } from 'date-fns';
 
 
 export const columns: GridColDef[] = [
@@ -345,7 +346,11 @@ export const columns: GridColDef[] = [
     field: "createdAt",
     headerName: "Achado no dia",
     editable: true,
-
+    renderCell: (params) => (
+      <span>
+        {format(new Date(params.value), 'dd-MM-yyyy HH:mm:ss')}
+      </span>
+    ),
   },
   {
     field: "sites",

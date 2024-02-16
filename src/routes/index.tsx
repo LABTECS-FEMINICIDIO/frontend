@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { NotFound } from "../pages/NotFound";
-import { APP_PAGES, APP_PAGES_VISUALIZAODR } from "./pages.routes";
+import {
+  APP_PAGES,
+  APP_PAGES_PESQUISADOR,
+  APP_PAGES_VISUALIZADOR,
+} from "./pages.routes";
 import { DefaultLayout } from "../DefaultLayout";
 import SignIn from "../pages/Login";
 import { useToken } from "../shared/hooks/auth";
@@ -9,10 +13,17 @@ import Register from "../pages/Login/register";
 
 export function AppRoutes() {
   const { permission, perfil } = useToken();
-  const [pagesRender] = useState(perfil === "visualizador" ? APP_PAGES_VISUALIZAODR : APP_PAGES )
+  const [pagesRender] = useState(
+    perfil === "visualizador"
+      ? APP_PAGES_VISUALIZADOR
+      : perfil === "pesquisador"
+      ? APP_PAGES_PESQUISADOR
+      : APP_PAGES
+  );
+
   return (
     <Routes>
-    {permission && pagesRender.length > 0 ? ( 
+      {permission && pagesRender.length > 0 ? (
         <Route path="/" element={<DefaultLayout />}>
           {pagesRender.map(({ route, component }) => (
             <Route key={route} path={route} element={component} />
@@ -25,7 +36,7 @@ export function AppRoutes() {
           <Route key={"login"} path="/" element={<SignIn />} />
           <Route key={"register"} path="/register" element={<Register />} />
         </>
-      )} 
+      )}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

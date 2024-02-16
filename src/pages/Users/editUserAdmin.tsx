@@ -13,7 +13,6 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -46,7 +45,6 @@ export function EditUser({ id }: { id: string }) {
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
     formState: { errors },
   } = useForm<FormData>({
@@ -59,13 +57,11 @@ export function EditUser({ id }: { id: string }) {
 
   const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
     try {
-      const response = await updateUser(id, data);
+      await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
       handleClose();
     } catch (error: any) {
-      toast.error(
-        error?.response.data.detail || "Erro ao atualizar usuário"
-      );
+      toast.error(error?.response.data.detail || "Erro ao atualizar usuário");
     }
   };
 
@@ -83,18 +79,21 @@ export function EditUser({ id }: { id: string }) {
         .then((response) => {
           if (response && response.data) {
             setUserData(response.data);
-            setValue('nome', response.data.nome)
-            setValue('email', response.data.email)
-            setValue('perfil', response.data.perfil)
-            setValue('telefone', response.data.telefone)
+            setValue("nome", response.data.nome);
+            setValue("email", response.data.email);
+            setValue("perfil", response.data.perfil);
+            setValue("telefone", response.data.telefone);
           } else {
-            console.error("Erro ao buscar os dados do usuário: Resposta inválida");
+            console.error(
+              "Erro ao buscar os dados do usuário: Resposta inválida"
+            );
           }
         })
         .catch((error) => {
           console.error("Erro ao buscar os dados do usuário:", error);
         });
-    }});
+    };
+  });
 
   return (
     <>
@@ -108,16 +107,8 @@ export function EditUser({ id }: { id: string }) {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
-          {"Editar usuário"}
+          {"Editar informações do usuário"}
         </DialogTitle>
-        <Typography
-          sx={{
-            marginLeft: 3,
-            marginRight: 3,
-            marginBottom: 3,
-          }}
-        >
-        </Typography>
         <Divider />
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ display: "grid", gap: 2 }}>
@@ -169,7 +160,7 @@ export function EditUser({ id }: { id: string }) {
             }}
           >
             Lembre-se, a senha padrão inicial é composta pelas três primeiras
-            letras do seu nome seguidas pelos três últimos dígitos do seu
+            letras do seu nome seguidas pelos três primeiros dígitos do seu
             telefone. Após o primeiro login, é altamente recomendável redefinir
             sua senha para garantir a segurança da sua conta.
           </Alert>
@@ -178,7 +169,7 @@ export function EditUser({ id }: { id: string }) {
               Cancelar
             </Button>
             <Button type="submit" variant="contained" autoFocus>
-              Cadastrar
+              Editar
             </Button>
           </DialogActions>
         </Box>
