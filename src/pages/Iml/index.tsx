@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { TableGrid } from "../../components/TableGrid";
-import { title, toolbar1 } from "../../styles";
+import { title, toolbarMobile, toolbarWeb } from "../../styles";
 import { columns } from "./columns";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
@@ -22,6 +22,7 @@ import { findImlData, findManyIml } from "../../service/iml";
 import { toast } from "react-toastify";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+import React from "react";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -38,12 +39,7 @@ const VisuallyHiddenInput = styled("input")({
 export function Iml() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
-  const column = [
-    {
-      sexo: "Sexo",
-      idade: "Idade",
-    },
-  ];
+  const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
   useEffect(() => {
     setLoading(true);
@@ -90,6 +86,12 @@ export function Iml() {
     }
   };
 
+  React.useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWindowSize(window?.innerWidth);
+    });
+  }, []);
+
   const handleClear = () => {
     setSearch({ column: "", value: "" });
     setRowsFiltered([]);
@@ -100,81 +102,75 @@ export function Iml() {
 
   return (
     <>
-      <Box sx={toolbar1}>
-        <Typography style={title}>Relatório IML</Typography>
-        <Box sx={{ display: "flex", gap: 1 }}>
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-            <Box sx={{ display: "flex", gap: "0.3125rem" }}>
-              <Box>
-                <FormControl sx={{ minWidth: 140 }} size="small">
-                  <InputLabel id="demo-select-small">Coluna</InputLabel>
-                  <Select
-                    name="column"
-                    value={search.column}
-                    labelId="demo-select-small"
-                    id="demo-select-small"
-                    label="coluna"
-                    onChange={handleColumn}
-                  >
-                    <MenuItem value={"dataEntrada"}>Data de entrada</MenuItem>
-                    <MenuItem value={"horaEntrada"}>Hora de entrada</MenuItem>
-                    <MenuItem value={"sexo"}>Sexo</MenuItem>
-                    <MenuItem value={"idade"}>Idade</MenuItem>
-                    <MenuItem value={"bairroDaRemocao"}>
-                      Bairro da remoção
-                    </MenuItem>
-                    <MenuItem value={"causaMorte"}>Causa da morte</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl size="small">
-                  <TextField
-                    name="value"
-                    color="secondary"
-                    variant="outlined"
-                    label="Pesquisar"
-                    value={search.value}
-                    onChange={handleValue}
-                    onKeyDown={({ key }) => key === "Enter" && handleSearch()}
-                    size="small"
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton
-                            type="submit"
-                            onClick={() => {
-                              handleSearch();
-                            }}
-                            aria-label="search"
-                          >
-                            <SearchIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => {
-                              handleClear();
-                            }}
-                            aria-label="delete"
-                          >
-                            <ClearIcon />
-                          </IconButton>
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </FormControl>
-              </Box>
-            </Box>
-          </Box>
-          {/* <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-          >
-            Importar arquivo
-            <VisuallyHiddenInput type="file" />
-          </Button> */}
+      <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
+        <Box style={windowSize < 800 ? {} : { paddingRight: "830px" }}>
+          <Typography sx={title}>Relatório IML</Typography>
         </Box>
+        <Box>
+          <FormControl sx={{ minWidth: 140 }} size="small" fullWidth>
+            <InputLabel id="demo-select-small">Coluna</InputLabel>
+            <Select
+              name="column"
+              value={search.column}
+              labelId="demo-select-small"
+              id="demo-select-small"
+              label="coluna"
+              onChange={handleColumn}
+            >
+              <MenuItem value={"dataEntrada"}>Data de entrada</MenuItem>
+              <MenuItem value={"horaEntrada"}>Hora de entrada</MenuItem>
+              <MenuItem value={"sexo"}>Sexo</MenuItem>
+              <MenuItem value={"idade"}>Idade</MenuItem>
+              <MenuItem value={"bairroDaRemocao"}>Bairro da remoção</MenuItem>
+              <MenuItem value={"causaMorte"}>Causa da morte</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+        <Box>
+          <FormControl size="small" fullWidth>
+            <TextField
+              name="value"
+              color="secondary"
+              variant="outlined"
+              label="Pesquisar"
+              value={search.value}
+              onChange={handleValue}
+              onKeyDown={({ key }) => key === "Enter" && handleSearch()}
+              size="small"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      type="submit"
+                      onClick={() => {
+                        handleSearch();
+                      }}
+                      aria-label="search"
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleClear();
+                      }}
+                      aria-label="delete"
+                    >
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </FormControl>
+        </Box>
+        <Button
+          component="label"
+          variant="contained"
+          startIcon={<CloudUploadIcon />}
+        >
+          Importar arquivo
+          <VisuallyHiddenInput type="file" />
+        </Button>
       </Box>
       {loading ? (
         <Box
@@ -192,4 +188,4 @@ export function Iml() {
       )}
     </>
   );
-} 
+}

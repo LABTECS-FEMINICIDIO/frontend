@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { TableGrid } from "../../components/TableGrid";
-import { title, toolbar1 } from "../../styles";
+import { title, toolbarWeb } from "../../styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import { columns } from "./columns";
 import { api } from "../../service/api";
@@ -90,7 +90,7 @@ export function Victims() {
 
   return (
     <Box sx={{ width: "95%" }}>
-      <Box sx={toolbar1}>
+      <Box sx={toolbarWeb}>
         <Typography sx={title}>Vítimas</Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
           <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>

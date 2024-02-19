@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { title, toolbar1 } from "../../styles";
+import { title, toolbarMobile, toolbarWeb } from "../../styles";
 import { TableGrid } from "../../components/TableGrid";
 import { columns } from "./columns";
 import { useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import { api } from "../../service/api";
 import { toast } from "react-toastify";
 import { CreateHoliday } from "./createHoliday";
 import UpdateIcon from '@mui/icons-material/Update';
+import React from "react";
 
 export function Calendar() {
   const [rows, setRows] = useState([])
@@ -15,6 +16,7 @@ export function Calendar() {
     const storedYear = localStorage.getItem('anoAtual');
     return storedYear ? parseInt(storedYear, 10) : new Date().getFullYear();
   });
+  const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
   useEffect(() => {
   const findCalendar = () => {
@@ -40,10 +42,18 @@ export function Calendar() {
     localStorage.setItem('anoAtual', anoAtualNovo.toString());
   };
 
+  React.useEffect(() => {
+    window.addEventListener("resize", () => {
+      setWindowSize(window?.innerWidth);
+    });
+  }, []);
+
   return (
     <>
-      <Box sx={toolbar1}>    
-        <Typography style={title}>Calendário</Typography>
+      <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>    
+      <Box style={windowSize < 800 ? {}: {paddingRight: "1050px"}}>
+          <Typography sx={title}>Calendário</Typography>
+        </Box>
         <Box sx={{display: "flex", flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 1}}>
         <Typography sx={{fontWeight: 'lighter'}}>Ano Atual: {anoAtual} </Typography>
         <Button onClick={handleAnoAtualChange} variant="outlined" startIcon={<UpdateIcon />}>Atualizar Ano</Button>

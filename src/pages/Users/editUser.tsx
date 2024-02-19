@@ -8,13 +8,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
-  FormControl,
-  IconButton,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
-  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -22,7 +16,6 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { colors } from "../../shared/theme";
 import { toast } from "react-toastify";
 import { findById, updateUser } from "../../service/users";
 import Cookies from "universal-cookie";

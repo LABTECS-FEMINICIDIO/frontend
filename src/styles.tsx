@@ -6,12 +6,17 @@ export const title = {
   color: colors.neutral_dark,
 };
 
-export const toolbar1 = {
+export const toolbarWeb = {
   display: "flex",
-  flex: 'wrap',
-  justifyContent: "space-between",
-  marginBottom: 3,
+  gap: "4px",
+  marginBottom: "30px",
   marginLeft: "10px",
+};
+
+export const toolbarMobile = {
+  display: "grid",
+  marginBottom: "30px",
+  gap: "4px",
 };
 
 export const button = {

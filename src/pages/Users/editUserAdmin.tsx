@@ -24,6 +24,7 @@ import { colors } from "../../shared/theme";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import { findById, updateUser } from "../../service/users";
+import { IUser } from "../../models/users";
 
 const schema = Yup.object()
   .shape({
@@ -39,7 +40,7 @@ type FormData = Yup.InferType<typeof schema>;
 export function EditUser({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState<IUser | null>(null);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const {
@@ -93,7 +94,9 @@ export function EditUser({ id }: { id: string }) {
           console.error("Erro ao buscar os dados do usuário:", error);
         });
     };
-  });
+
+    fetchUserData();
+  }, [id, open]);
 
   return (
     <>
@@ -131,19 +134,13 @@ export function EditUser({ id }: { id: string }) {
               error={!!errors.telefone?.message}
               variant="filled"
             />
-            <TextField
-              label={errors.senha?.message ?? "Senha"}
-              {...register("senha")}
-              error={!!errors.senha?.message}
-              variant="filled"
-            />
             <FormControl variant="filled">
-              <InputLabel>{errors.perfil?.message ?? "Perfil"}</InputLabel>
+              <InputLabel>Perfil</InputLabel>
               <Select
                 label={errors.perfil?.message ?? "Perfil"}
                 {...register("perfil")}
                 error={!!errors.perfil?.message}
-                defaultValue={""}
+                defaultValue={userData?.perfil}
               >
                 <MenuItem value={"Administrador"}>Administrador</MenuItem>
                 <MenuItem value={"Pesquisador"}>Pesquisador</MenuItem>
