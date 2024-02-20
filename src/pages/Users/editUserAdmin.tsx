@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   Dialog,
@@ -13,6 +12,7 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -112,6 +112,15 @@ export function EditUser({ id }: { id: string }) {
         <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
           {"Editar informações do usuário"}
         </DialogTitle>
+        <Typography
+          sx={{
+            marginLeft: 3,
+            marginRight: 3,
+            marginBottom: 3,
+          }}
+        >
+          {"Personalize as informações do usuário conforme desejado."}
+        </Typography>
         <Divider />
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ display: "grid", gap: 2 }}>
@@ -148,19 +157,6 @@ export function EditUser({ id }: { id: string }) {
               </Select>
             </FormControl>
           </DialogContent>
-          <Alert
-            severity="info"
-            sx={{
-              margin: "20px",
-              background: colors.primary_lightest,
-              color: colors.neutral_dark,
-            }}
-          >
-            Lembre-se, a senha padrão inicial é composta pelas três primeiras
-            letras do seu nome seguidas pelos três primeiros dígitos do seu
-            telefone. Após o primeiro login, é altamente recomendável redefinir
-            sua senha para garantir a segurança da sua conta.
-          </Alert>
           <DialogActions sx={{ marginRight: "20px", marginBottom: 3 }}>
             <Button autoFocus onClick={handleClose}>
               Cancelar

@@ -6,32 +6,33 @@ import { useEffect, useState } from "react";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
 import { CreateHoliday } from "./createHoliday";
-import UpdateIcon from '@mui/icons-material/Update';
+import UpdateIcon from "@mui/icons-material/Update";
 import React from "react";
 
 export function Calendar() {
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
   const [anoAtual, setAnoAtual] = useState<number>(() => {
     // Inicializa o ano atual com o valor armazenado no localStorage ou o ano atual real
-    const storedYear = localStorage.getItem('anoAtual');
+    const storedYear = localStorage.getItem("anoAtual");
     return storedYear ? parseInt(storedYear, 10) : new Date().getFullYear();
   });
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
   useEffect(() => {
-  const findCalendar = () => {
-    api.get(`https://brasilapi.com.br/api/feriados/v1/${anoAtual}`)
-      .then((response) => {
-        const rowsWithIds = response.data.map((row: any, index: number) => ({
-          ...row,
-          id: index + 1
-        }));
-        setRows(rowsWithIds);
-      })
-      .catch((error: any) => {
-        toast.error("Erro ao carregar calendário");
-      });
-  };
+    const findCalendar = () => {
+      api
+        .get(`https://brasilapi.com.br/api/feriados/v1/${anoAtual}`)
+        .then((response) => {
+          const rowsWithIds = response.data.map((row: any, index: number) => ({
+            ...row,
+            id: index + 1,
+          }));
+          setRows(rowsWithIds);
+        })
+        .catch((error: any) => {
+          toast.error("Erro ao carregar calendário");
+        });
+    };
     findCalendar();
   }, [anoAtual]);
 
@@ -39,7 +40,7 @@ export function Calendar() {
   const handleAnoAtualChange = () => {
     const anoAtualNovo = anoAtual + 1;
     setAnoAtual(anoAtualNovo);
-    localStorage.setItem('anoAtual', anoAtualNovo.toString());
+    localStorage.setItem("anoAtual", anoAtualNovo.toString());
   };
 
   React.useEffect(() => {
@@ -50,17 +51,23 @@ export function Calendar() {
 
   return (
     <>
-      <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>    
-      <Box style={windowSize < 800 ? {}: {paddingRight: "1050px"}}>
+      <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
+        <Box style={windowSize < 800 ? {} : { paddingRight: "1160px" }}>
           <Typography sx={title}>Calendário</Typography>
         </Box>
-        <Box sx={{display: "flex", flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: 1}}>
-        <Typography sx={{fontWeight: 'lighter'}}>Ano Atual: {anoAtual} </Typography>
-        <Button onClick={handleAnoAtualChange} variant="outlined" startIcon={<UpdateIcon />}>Atualizar Ano</Button>
-        <CreateHoliday/>
-        </Box>
+        <Button
+          onClick={handleAnoAtualChange}
+          variant="outlined"
+          startIcon={<UpdateIcon />}
+        >
+          Atualizar Ano
+        </Button>
+        <CreateHoliday />
       </Box>
       <TableGrid rows={rows} columns={columns} />
+      <Typography sx={{ fontWeight: "lighter" }}>
+        Ano Atual: {anoAtual}{" "}
+      </Typography>
     </>
   );
 }

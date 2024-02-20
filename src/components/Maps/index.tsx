@@ -1,11 +1,10 @@
 
-import { useEffect, useState } from "react";
 import { stylesMap } from "./map";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-import { Icon, LatLngExpression, icon, map } from 'leaflet'
+import { Icon, LatLngExpression } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { api } from "../../service/api";
 import MarkerClusterGroup from "react-leaflet-cluster";
+import { Box } from "@mui/material";
 
 interface IProps {
   vitimas: any[]
@@ -13,13 +12,6 @@ interface IProps {
 
 export function MapPage({vitimas}: IProps) {
   const position = [-3.059943, -59.988359] as LatLngExpression
-  // const [vitimas, setVitimas] = useState<any[]>([])
-
-  // useEffect(() => {
-  //   api.get("/api/vitimas/").then((res) => {
-  //     setVitimas(res.data)
-  //   })
-  // }, [])
 
   const myIcon: any = new Icon({
     iconUrl: "https://www.irmasclarissas.org.br/wp-content/uploads/2015/08/Map-Marker-PNG-File.png",
@@ -27,10 +19,8 @@ export function MapPage({vitimas}: IProps) {
   })
 
   return (
-    <div style={stylesMap.container}>
-
-
-      <MapContainer center={position} zoom={12} scrollWheelZoom={true} style={{ height: "500px", width: "50vw" }}>
+    <Box style={stylesMap.container}>
+      <MapContainer center={position} zoom={12} scrollWheelZoom={true} style={{ height: "500px", width: "100%" }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url={"https://tile.openstreetmap.org/{z}/{x}/{y}.png"}
@@ -64,8 +54,6 @@ export function MapPage({vitimas}: IProps) {
           ))}
         </MarkerClusterGroup>
       </MapContainer>
-
-
-    </div>
+    </Box>
   );
 }

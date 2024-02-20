@@ -23,7 +23,7 @@ const schema = Yup.object().shape({
 export function CreateSite() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { register, formState: { errors }, } = useForm({
     resolver: yupResolver(schema),
@@ -55,7 +55,7 @@ export function CreateSite() {
           sx={{
             marginLeft: 3,
             marginRight: 3,
-            marginBottom: 3,
+            marginBottom: 2,
           }}
         >
           {"Preencha as informações para cadastrar uma nova tag."}

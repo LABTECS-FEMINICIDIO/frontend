@@ -33,7 +33,7 @@ type FormData = Yup.InferType<typeof schema>;
 export function CreateProgram() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const [periodoPesquisa, setPeriodoPesquisa] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const {

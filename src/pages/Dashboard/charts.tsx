@@ -1,22 +1,13 @@
 import { Paper } from "@mui/material";
-import { click } from "@testing-library/user-event/dist/click";
 import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import { api } from "../../service/api";
 
 
 interface IProps {
   vitimas: any[]
 }
 export const DonutChart = ({vitimas}: IProps) => {
-  // const [vitimas, setVitimas] = useState([])
   const [series, setSeries] = useState<number[]>([])
-  
-  // useEffect(() => {
-  //   api.get("/api/vitimas/").then((res: any) => {
-  //     setVitimas(res.data)
-  //   })
-  // }, [])
 
   useEffect(() => {
     const zonaNorte: number = vitimas.filter((item: any) => (item.zona).toLowerCase() === "norte").length

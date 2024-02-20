@@ -52,7 +52,7 @@ export function EditUser() {
 
   const onSubmit = async (data: any) => {
     Object.keys(data).forEach((key) => {
-      if (data[key] == "") {
+      if (data[key] === "") {
         delete data[key];
       }
     });
@@ -66,6 +66,7 @@ export function EditUser() {
     try {
       const response = await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
+      reset();
       cookies.set("usernamef", response.data.nome);
       handleClose();
       setLoading(false)
@@ -170,7 +171,7 @@ export function EditUser() {
                 variant="filled"
               />
               <TextField
-                label={errors.senha?.message ?? "Senha"}
+                label={errors.senha?.message ?? "Nova senha"}
                 {...register("senha")}
                 error={!!errors.senha?.message}
                 variant="filled"

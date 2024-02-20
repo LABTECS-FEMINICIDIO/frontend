@@ -29,7 +29,7 @@ const schema = Yup.object().shape({
 export function CreateHoliday() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { register, handleSubmit, reset, setValue, formState: { errors }, watch } = useForm({
     resolver: yupResolver(schema),
@@ -61,13 +61,13 @@ export function CreateHoliday() {
           sx={{
             marginLeft: 3,
             marginRight: 3,
-            marginBottom: 3,
+            marginBottom: 1,
           }}
         >
           {"Preencha as informações para cadastrar feriado."}
         </Typography>
         <Divider sx={{ marginBottom: 2 }} />
-        <DialogContent sx={{ display: 'grid', gap: 2 }}>
+        <DialogContent sx={{ display: 'grid', gap: 1 }}>
           <TextField
             label={errors.dia?.message ?? "Dia"}
             {...register("dia")}
@@ -83,9 +83,9 @@ export function CreateHoliday() {
             type="number"
           />
           <TextField
-            label={errors.dia?.message ?? "Dia"}
-            {...register("dia")}
-            error={!!errors.dia?.message}
+            label={errors.ano?.message ?? "Ano"}
+            {...register("ano")}
+            error={!!errors.ano?.message}
             variant="filled"
             type="number"
           />

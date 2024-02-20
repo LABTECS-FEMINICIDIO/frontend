@@ -66,7 +66,6 @@ export function Dashboard() {
     if (search.column === "" || search.value === "") {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-
       if (search.column == "mes") {
         const findRows = vitimas.filter(
           (item) => item?.datadofato?.split("-")[1] == search.value
@@ -90,11 +89,18 @@ export function Dashboard() {
   return (
     <>
       {loading ? (
-        <Box sx={{height: "80vh", display: "flex", alignItems: "center", justifyContent: "center"}}>
+        <Box
+          sx={{
+            height: "80vh",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <CircularProgress />
         </Box>
       ) : (
-        <Box  sx={{height: "80vh"}}>
+        <Box sx={{ height: "80vh" }}>
           <Box
             sx={{
               marginLeft: "13px",
@@ -166,20 +172,16 @@ export function Dashboard() {
           <Box sx={{ display: "flex", gap: 2 }}>
             <Cards vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas} />
           </Box>
-          <Grid container gap={5}>
-            <Box sx={{height: "100%"}}>
-              {perfil != "visualizador" && (
-                <MapPage
-                  vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas}
-                />
-              )}
-            </Box>
-            <Grid>
-              <DonutChart
+          <Box sx={{ height: "50%", display: "flex" }}>
+            {perfil != "visualizador" && (
+              <MapPage
                 vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas}
               />
-            </Grid>
-          </Grid>
+            )}
+            <DonutChart
+              vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas}
+            />
+          </Box>
         </Box>
       )}
     </>

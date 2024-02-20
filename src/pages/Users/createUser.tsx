@@ -36,11 +36,11 @@ type FormData = Yup.InferType<typeof schema>;
 export function CreateUser() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { addCount } = useRefresh();
   
-  const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<FormData>({
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
     resolver: yupResolver(schema)
   });
 
@@ -111,12 +111,6 @@ export function CreateUser() {
             error={!!errors.telefone?.message}
             variant="filled"
           />
-{/*            <TextField
-            label={errors.senha?.message ?? "Senha"}
-            {...register("senha")}
-            error={!!errors.senha?.message}
-            variant="filled"
-          /> */}
           <FormControl variant="filled">
             <InputLabel>
               {errors.perfil?.message ?? "Perfil"}

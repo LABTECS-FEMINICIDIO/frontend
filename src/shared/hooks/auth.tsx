@@ -35,12 +35,6 @@ export function TokenProvider({ children }: TokenProviderProps) {
     if (token) {
       setPermission(true)
     }
-/*      await authToken(token).then(()=>{
-       setPermission(true)
-     }).catch((error:any)=>{
-       console.log({error})
-       setPermission(false)
-     })  */
   }
 
   async function Login(payload: ILogin) {

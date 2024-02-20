@@ -1,10 +1,8 @@
-import EditIcon from "@mui/icons-material/Edit";
-import { IconButton, useMediaQuery } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { table, tableContainer } from "./styles";
 import { ModalDelete } from "../ModalDelete/ModalDelete";
-import { api } from "../../service/api";
 
 interface TableGridProps {
   rows: any[];
@@ -33,10 +31,6 @@ export function TableGrid(props: TableGridProps) {
             subtitle={props.subtitleDelete}
             onDelete={() => (props.onDelete ? props.onDelete(row.id) : "")}
           ></ModalDelete>
-         {/*  <IconButton
-            onClick={() => (props.onEdit ? props.onEdit(row.id) : '')}>
-            <EditIcon />
-          </IconButton> */}
         </>
       ),
     },
@@ -53,13 +47,6 @@ export function TableGrid(props: TableGridProps) {
   const telaVitimas = window.location.pathname.includes("victims")
   console.log(window.location.pathname.includes("victims"))
 
-  const handleCellEditChange = (params: any) => {
-    // console.log("Edited Row:", params.row);
-    // console.log("Edited Field:", params.field);
-    // console.log("Edited Value:", params.row[`${params.field}`]);
-    console.log("teste", params)
-    // api.patch(`/api/vitimas/${params.row.id}`, )
-  };
 
   return (
     <Box sx={tableContainer}>
@@ -83,7 +70,6 @@ export function TableGrid(props: TableGridProps) {
           },
         }}
         pageSizeOptions={[10]}
-        // onCellEditStop={handleCellEditChange}
         disableColumnMenu
         onCellClick={handleOnCellClick}
         sx={table}

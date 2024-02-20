@@ -71,7 +71,6 @@ export function Sites() {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
       console.log(search.column, search.value);
-      //setCount(prevCount => prevCount + 1);
       const findRows = rows.filter(
         (item) =>
           String(item[search.column]).toLowerCase() ===
@@ -87,7 +86,6 @@ export function Sites() {
   const handleClear = () => {
     setSearch({ column: "", value: "" });
     setRowsFiltered([]);
-    //setCount(prevCount => prevCount + 1);
   };
 
   const filtered = rowsFiltered.length > 0;
@@ -171,7 +169,6 @@ export function Sites() {
         <TableGrid
           rows={filtered ? rowsFiltered : rows}
           columns={columns}
-          // titleDelete="Deseja realmente excluir este dado?"
         />
       )}
     </>
