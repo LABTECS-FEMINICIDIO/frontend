@@ -52,7 +52,7 @@ export function Calendar() {
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box style={windowSize < 800 ? {} : { paddingRight: "1160px" }}>
+        <Box style={windowSize < 800 ? {} : { paddingRight: "1160px", display: "flex", flexWrap: "wrap" }}>
           <Typography sx={title}>Calendário</Typography>
         </Box>
         <Button

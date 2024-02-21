@@ -22,21 +22,34 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from "file-saver";
 import React from "react";
+import { deleteVictims } from "../../service/victims";
+import { useRefresh } from "../../shared/hooks/useRefresh";
 
 export function Victims() {
   const [rows, setRows] = useState([]);
   const [search, setSearch] = useState({ column: "", value: "" });
   const [rowsFiltered, setRowsFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { count } = useRefresh();
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
   useEffect(() => {
+    listAll();
+  }, [count]);
+
+  const listAll = () => {
     setLoading(true);
-    api.get("/api/vitimas/").then((res) => {
-      setLoading(false);
-      setRows(res.data);
-    });
-  }, []);
+    api
+      .get("/api/vitimas/")
+      .then((res) => {
+        setLoading(false);
+        setRows(res.data);
+      })
+      .catch((error) => {
+        toast.error(error.response.data.detail);
+        setLoading(false);
+      });
+  };
 
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch((state) => ({
@@ -95,6 +108,19 @@ export function Victims() {
     } catch (error) {
       console.error("Erro ao exportar o arquivo:", error);
     }
+  };
+
+  const DeleteVictims = (vitimaId: string) => {
+    deleteVictims(vitimaId)
+      .then((response: any) => {
+        if (response.status === 200) {
+          listAll();
+          toast.success("Dados da vítima excluídos com sucesso");
+        }
+      })
+      .catch((error: any) => {
+        toast.error(error.response?.data.datails);
+      });
   };
 
   return (
@@ -205,7 +231,12 @@ export function Victims() {
           <CircularProgress />
         </Box>
       ) : (
-        <TableGrid rows={filtered ? rowsFiltered : rows} columns={columns} />
+        <TableGrid
+          rows={filtered ? rowsFiltered : rows}
+          columns={columns}
+          onDelete={DeleteVictims}
+          titleDelete="Excluir dados da vítima?"
+        />
       )}
     </Box>
   );

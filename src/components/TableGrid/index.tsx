@@ -42,7 +42,7 @@ export function TableGrid(props: TableGridProps) {
     }
   };
 
-  const columns = props.onEdit || props.onEdit ? [...props.columns, ...actionColumn] : [...props.columns];
+  const columns = props.onEdit || props.onDelete ? [...props.columns, ...actionColumn] : [...props.columns];
   const matches = useMediaQuery("(max-width:480px)");
   const telaVitimas = window.location.pathname.includes("victims")
   console.log(window.location.pathname.includes("victims"))

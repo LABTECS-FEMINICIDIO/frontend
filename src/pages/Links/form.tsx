@@ -179,7 +179,7 @@ export function Form(props: IPropsForm) {
             <MenuItem value={"Oeste"}>Oeste</MenuItem>
             <MenuItem value={"Leste"}>Leste</MenuItem>
             <MenuItem value={"Sul"}>Sul</MenuItem>
-            <MenuItem value={"Centro-Oente"}>Centro-Oeste</MenuItem>
+            <MenuItem value={"Centro-Oeste"}>Centro-Oeste</MenuItem>
             <MenuItem value={"Centro-Sul"}>Centro-Sul</MenuItem>
           </Select>
         </FormControl>

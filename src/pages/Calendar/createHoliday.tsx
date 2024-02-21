@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -20,10 +21,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const schema = Yup.object().shape({
-  dia: Yup.number().required('Dia é obrigatório'),
-  mes: Yup.number().required('Mês é obrigatório'),
-  ano: Yup.number().required('Ano é obrigatório'),
-  tipo: Yup.string().required('Tipo é obrigatório'),
+  dia: Yup.number().required("Dia é obrigatório").positive(),
+  mes: Yup.number().required("Mês é obrigatório").positive(),
+  ano: Yup.number().required("Ano é obrigatório").positive(),
+  tipo: Yup.string().required("Tipo é obrigatório"),
+  nome: Yup.string().required("Nome é obrigatório"),
 });
 
 export function CreateHoliday() {
@@ -31,7 +33,14 @@ export function CreateHoliday() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-  const { register, handleSubmit, reset, setValue, formState: { errors }, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors },
+    watch,
+  } = useForm({
     resolver: yupResolver(schema),
   });
 
@@ -67,32 +76,41 @@ export function CreateHoliday() {
           {"Preencha as informações para cadastrar feriado."}
         </Typography>
         <Divider sx={{ marginBottom: 2 }} />
-        <DialogContent sx={{ display: 'grid', gap: 1 }}>
+        <DialogContent
+          sx={{ display: "grid", gap: 1 }}
+        >
           <TextField
-            label={errors.dia?.message ?? "Dia"}
-            {...register("dia")}
-            error={!!errors.dia?.message}
+            label={errors.nome?.message ?? "Nome"}
+            {...register("nome")}
+            error={!!errors.nome?.message}
             variant="filled"
             type="number"
           />
-          <TextField
-            label={errors.mes?.message ?? "Mês"}
-            {...register("mes")}
-            error={!!errors.mes?.message}
-            variant="filled"
-            type="number"
-          />
-          <TextField
-            label={errors.ano?.message ?? "Ano"}
-            {...register("ano")}
-            error={!!errors.ano?.message}
-            variant="filled"
-            type="number"
-          />
+          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1 }}>
+            <TextField
+              label={errors.dia?.message ?? "Dia"}
+              {...register("dia")}
+              error={!!errors.dia?.message}
+              variant="filled"
+              type="number"
+            />
+            <TextField
+              label={errors.mes?.message ?? "Mês"}
+              {...register("mes")}
+              error={!!errors.mes?.message}
+              variant="filled"
+              type="number"
+            />
+            <TextField
+              label={errors.ano?.message ?? "Ano"}
+              {...register("ano")}
+              error={!!errors.ano?.message}
+              variant="filled"
+              type="number"
+            />
+          </Box>
           <FormControl variant="filled">
-            <InputLabel>
-              {errors.tipo?.message ?? "Tipo"}
-            </InputLabel>
+            <InputLabel>{errors.tipo?.message ?? "Tipo"}</InputLabel>
             <Select
               label={errors.tipo?.message ?? "Tipo"}
               {...register("tipo")}
@@ -104,11 +122,11 @@ export function CreateHoliday() {
             </Select>
           </FormControl>
         </DialogContent>
-        <DialogActions sx={{ marginBottom: 3, marginRight: '20px' }}>
+        <DialogActions sx={{ marginBottom: 3, marginRight: "20px" }}>
           <Button autoFocus onClick={handleClose}>
             Cancelar
           </Button>
-          <Button variant='contained' onClick={handleClose} autoFocus>
+          <Button variant="contained" onClick={handleClose} autoFocus>
             Cadastrar
           </Button>
         </DialogActions>
