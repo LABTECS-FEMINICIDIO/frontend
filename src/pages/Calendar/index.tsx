@@ -17,6 +17,7 @@ export function Calendar() {
     return storedYear ? parseInt(storedYear, 10) : new Date().getFullYear();
   });
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
+  const isBotaoAtualizarHabilitado = anoAtual !== new Date().getFullYear();
 
   useEffect(() => {
     const findCalendar = () => {
@@ -43,25 +44,41 @@ export function Calendar() {
     localStorage.setItem("anoAtual", anoAtualNovo.toString());
   };
 
-  React.useEffect(() => {
-    window.addEventListener("resize", () => {
-      setWindowSize(window?.innerWidth);
-    });
-  }, []);
+/*   // Função para voltar para o ano atual
+  const handleVoltarParaAnoAtual = () => {
+    const anoAtualReal = new Date().getFullYear();
+    setAnoAtual(anoAtualReal);
+    localStorage.setItem("anoAtual", anoAtualReal.toString());
+  }; */
 
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box style={windowSize < 800 ? {} : { paddingRight: "1160px", display: "flex", flexWrap: "wrap" }}>
+        <Box
+          style={
+            windowSize < 800
+              ? {}
+              : { paddingRight: "1130px", display: "flex", flexWrap: "wrap" }
+          }
+        >
           <Typography sx={title}>Calendário</Typography>
         </Box>
         <Button
           onClick={handleAnoAtualChange}
           variant="outlined"
           startIcon={<UpdateIcon />}
+          disabled={!isBotaoAtualizarHabilitado}
         >
           Atualizar Ano
         </Button>
+{/*         <Button
+          onClick={handleVoltarParaAnoAtual}
+          variant="outlined"
+          startIcon={<UpdateIcon />}
+          disabled={!isBotaoAtualizarHabilitado}
+        >
+          Voltar para o Ano Atual
+        </Button> */}
         <CreateHoliday />
       </Box>
       <TableGrid rows={rows} columns={columns} />

@@ -23,6 +23,7 @@ import { toast } from "react-toastify";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
+import { api } from "../../service/api";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -73,7 +74,6 @@ export function Iml() {
     if (search.column === "" || search.value === "") {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-      //setCount(prevCount => prevCount + 1);
       const findRows = rows.filter((item) =>
         String(item[search.column])
           .toLowerCase()
@@ -86,16 +86,39 @@ export function Iml() {
     }
   };
 
-  React.useEffect(() => {
-    window.addEventListener("resize", () => {
-      setWindowSize(window?.innerWidth);
-    });
-  }, []);
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      api
+        .post("api/uploadIml", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => findImlData())
+        .then((updatedData) => {
+          setRows(updatedData.data);
+          toast.success("Arquivo importado com sucesso");
+        })
+        .catch((error) => {
+          console.error("Erro ao importar o arquivo", error);
+          toast.error(error.response.data.detail);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  };
 
   const handleClear = () => {
     setSearch({ column: "", value: "" });
     setRowsFiltered([]);
-    //setCount(prevCount => prevCount + 1);
   };
 
   const filtered = rowsFiltered.length > 0;
@@ -103,7 +126,7 @@ export function Iml() {
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box style={windowSize < 800 ? {} : { paddingRight: "830px" }}>
+        <Box style={windowSize < 800 ? {} : { paddingRight: "800px" }}>
           <Typography sx={title}>Relatório IML</Typography>
         </Box>
         <Box>
@@ -169,7 +192,7 @@ export function Iml() {
           startIcon={<CloudUploadIcon />}
         >
           Importar arquivo
-          <VisuallyHiddenInput type="file" />
+          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
         </Button>
       </Box>
       {loading ? (

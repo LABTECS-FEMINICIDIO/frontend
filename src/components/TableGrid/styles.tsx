@@ -4,10 +4,10 @@ export const tableContainer = {
   display: 'flex',
   flex: 1,
   height: 'calc(100vh - 248px)',
+  width: 'calc(100vw - 200px)',
 };
 
 export const table = {
-  width: '100%',
   border: 0,
   borderRadius: '4px',
   '& .super-app-theme--header': {
@@ -27,5 +27,4 @@ export const table = {
   '& .MuiDataGrid-columnHeaderTitle': {
     fontWeight: '700px',
   },
-
 };

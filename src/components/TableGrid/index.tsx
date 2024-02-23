@@ -54,22 +54,22 @@ export function TableGrid(props: TableGridProps) {
         rows={props.rows}
         columns={columns.map((column: GridColDef) => ({
           ...column,
-          ...(matches === false && telaVitimas == false
+          ...(matches === false && telaVitimas === false
             ? {
               flex: 1,
             }
-            : { width: 230 }),
+            : { width: 150 }),
           sortable: false,
           headerClassName: "super-app-theme--header",
         }))}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 10,
+              pageSize: 25,
             },
           },
         }}
-        pageSizeOptions={[10]}
+        pageSizeOptions={[15]}
         disableColumnMenu
         onCellClick={handleOnCellClick}
         sx={table}

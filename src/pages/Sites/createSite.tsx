@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -14,20 +15,40 @@ import React from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+import { createSite } from "../../service/site";
+import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object().shape({
-  nomeSite: Yup.string().required('O nome do site é obrigatório'),
-  link: Yup.string().required('Link é obrigatório'),
-});
+  nome: Yup.string().required("O nome do site é obrigatório"),
+  link: Yup.string().required("Link é obrigatório"),
+}).required();
+type FormData = Yup.InferType<typeof schema>;;
 
 export function CreateSite() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const { addCount } = useRefresh();
 
-  const { register, formState: { errors }, } = useForm({
-    resolver: yupResolver(schema),
-});
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+    resolver: yupResolver(schema)
+  });
+
+  const onSubmit = (data: FormData) => { handleCreateSite(data) };
+
+  const handleCreateSite = (data: Yup.InferType<typeof schema>) => {
+    createSite(data)
+      .then(() => {
+        toast.success('Site cadastrado com sucesso');
+        reset();
+        addCount();
+        handleClose();
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.detail || 'Erro ao cadastrar site');
+      });
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,29 +81,31 @@ export function CreateSite() {
         >
           {"Preencha as informações para cadastrar uma nova tag."}
         </Typography>
-          <Divider sx={{marginBottom: 2}} />
-        <DialogContent sx={{display: 'grid', gap: 2}}>
-        <TextField
-        label={errors.nomeSite?.message ?? "Nome do site"}
-        {...register("nomeSite")}
-        error={!!errors.nomeSite?.message}
-        variant="filled"
-      />
-       <TextField
-        label={errors.link?.message ?? "Link"}
-        {...register("link")}
-        error={!!errors.link?.message}
-        variant="filled"
-      />
-        </DialogContent>
-        <DialogActions sx={{marginBottom: 3, marginRight: '20px'}}>
-          <Button autoFocus onClick={handleClose}>
-            Cancelar
-          </Button>
-          <Button variant='contained' onClick={handleClose} autoFocus>
-            Salvar
-          </Button>
-        </DialogActions>
+        <Divider sx={{ marginBottom: 2 }} />
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} >
+          <DialogContent sx={{ display: "grid", gap: 2 }}>
+            <TextField
+              label={errors.nome?.message ?? "Nome do site"}
+              {...register("nome")}
+              error={!!errors.nome?.message}
+              variant="filled"
+            />
+            <TextField
+              label={errors.link?.message ?? "Link"}
+              {...register("link")}
+              error={!!errors.link?.message}
+              variant="filled"
+            />
+          </DialogContent>
+          <DialogActions sx={{ marginBottom: 3, marginRight: "20px" }}>
+            <Button autoFocus onClick={handleClose}>
+              Cancelar
+            </Button>
+            <Button type="submit" variant="contained" onClick={handleClose} autoFocus>
+              Salvar
+            </Button>
+          </DialogActions>
+        </Box>
       </Dialog>
     </>
   );

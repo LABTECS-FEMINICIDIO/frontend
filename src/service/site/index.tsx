@@ -6,3 +6,6 @@ export function createProgramSearch(data: any){
 export function findManyProgramSearch(){
     return api.get('/api/agendamento-pesquisa/')
 }
+export function createSite(data: any){
+    return api.post('/api/referenceSite/', data)
+}

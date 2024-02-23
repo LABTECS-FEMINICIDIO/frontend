@@ -32,7 +32,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "zona",
-    headerName: "Zona",
+    headerName: "zona",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -45,7 +45,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "tipoarma2",
-    headerName: "Tipo de Arma 2",
+    headerName: "tipoarma2",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -58,7 +58,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "localdeocorrencia",
-    headerName: "Local de Ocorrência",
+    headerName: "localdeocorrencia",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -71,7 +71,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "loclesao1",
-    headerName: "Local de Lesão 1",
+    headerName: "loclesao1",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -84,7 +84,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "presencafilhofamiliar",
-    headerName: "Presença de Filho/Familiar",
+    headerName: "presencafilhofamiliar",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -97,7 +97,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "racacor1",
-    headerName: "Raça/Cor 1",
+    headerName: "racacor1",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -110,7 +110,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "loclesao2",
-    headerName: "Local de Lesão 2",
+    headerName: "loclesao2",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -123,7 +123,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "datadofato",
-    headerName: "Data do Fato",
+    headerName: "datadofato",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -136,7 +136,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "estciv2",
-    headerName: "Estado Civil 2",
+    headerName: "estciv2",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -149,7 +149,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "loclesao3",
-    headerName: "Local de Lesão 3",
+    headerName: "loclesao3",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -162,7 +162,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "gestacao",
-    headerName: "Gestação",
+    headerName: "gestacao",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -175,7 +175,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "diah",
-    headerName: "Dia H",
+    headerName: "diah",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -188,7 +188,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "bairro",
-    headerName: "Bairro",
+    headerName: "bairro",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -201,7 +201,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "hospitalizacao",
-    headerName: "Hospitalização",
+    headerName: "hospitalização",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -214,7 +214,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "filhosdescrever",
-    headerName: "Filhos Descrever",
+    headerName: "filhosdescrever",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -227,7 +227,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "horario",
-    headerName: "Horário",
+    headerName: "horario",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -240,7 +240,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "rua_beco_travessa_estrada_ramal",
-    headerName: "Rua/Beco/Travessa/Estrada/Ramal",
+    headerName: "rua_beco_travessa_estrada_ramal",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -253,7 +253,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "violsexual",
-    headerName: "Violência Sexual",
+    headerName: "violsexual",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -266,7 +266,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "turno",
-    headerName: "Turno",
+    headerName: "turno",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -279,7 +279,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "endcomplemento",
-    headerName: "Endereço Complemento",
+    headerName: "endcomplemento",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -292,7 +292,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "latrocinio",
-    headerName: "Latrocínio",
+    headerName: "latrocinio",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -305,7 +305,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "lat",
-    headerName: "Latitude",
+    headerName: "lat",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -318,7 +318,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "lng",
-    headerName: "Longitude",
+    headerName: "lng",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -331,7 +331,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "tipoarma1",
-    headerName: "Tipo de Arma 1",
+    headerName: "tipoarma1",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
 
@@ -344,7 +344,7 @@ export const columns: GridColDef[] = [
   },
   {
     field: "createdAt",
-    headerName: "Achado no dia",
+    headerName: "achado_no_dia",
     editable: true,
     renderCell: (params) => (
       <span>
@@ -354,6 +354,6 @@ export const columns: GridColDef[] = [
   },
   {
     field: "sites",
-    headerName: "Sites",
+    headerName: "sites",
   },
 ];

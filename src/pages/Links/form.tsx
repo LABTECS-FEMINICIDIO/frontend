@@ -39,7 +39,7 @@ const schema = Yup.object()
     presencafilhofamiliar: Yup.string(),
     compexcomp: Yup.string(),
     gestacao: Yup.string(),
-    filhosdescrever: Yup.number().typeError("Campo não pode estar vazio"),
+    filhosdescrever: Yup.number(),
     lat: Yup.string(),
     lng: Yup.string(),
   })
@@ -47,7 +47,7 @@ const schema = Yup.object()
 type FormData = Yup.InferType<typeof schema>;
 
 interface IPropsForm {
-  idSite: string
+  idSite: string;
 }
 
 export function Form(props: IPropsForm) {
@@ -61,16 +61,20 @@ export function Form(props: IPropsForm) {
 
   const onSubmit = (data: FormData) => {
     api.post("/api/vitimas/", data).then((res) => {
-      api.patch(`/api/site/${props.idSite}`, {
-        vitima_id: res.data.id
-      }).then((res) => {
-        toast.success("Vítima criada com sucesso!")
-      })
-    })
-  }
+      api
+        .patch(`/api/site/${props.idSite}`, {
+          vitima_id: res.data.id,
+        })
+        .then((res) => {
+          toast.success("Vítima criada com sucesso!");
+        });
+    });
+  };
   return (
     <>
-      <Box sx={{ display: "grid", gridTemplateColumns: 'repeat(2, 1fr)', gap: 1 }}>
+      <Box
+        sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 1 }}
+      >
         <TextField
           type="date"
           label={errors.datadofato?.message ?? "datadofato"}
@@ -87,6 +91,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.diah?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"dom"}>Dom</MenuItem>
             <MenuItem value={"seg"}>Seg</MenuItem>
             <MenuItem value={"ter"}>Ter</MenuItem>
@@ -110,6 +115,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.turno?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"madrugada"}>madrugada</MenuItem>
             <MenuItem value={"manha"}>manha</MenuItem>
             <MenuItem value={"tarde"}>tarde</MenuItem>
@@ -136,6 +142,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.racacor1?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"branca"}>branca</MenuItem>
             <MenuItem value={"indigena"}>indigena</MenuItem>
             <MenuItem value={"parda"}>parda</MenuItem>
@@ -151,6 +158,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.estciv2?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"solteira"}>solteira</MenuItem>
             <MenuItem value={"casada"}>casada</MenuItem>
             <MenuItem value={"viuva"}>viuva</MenuItem>
@@ -175,6 +183,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.zona?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"Norte"}>Norte</MenuItem>
             <MenuItem value={"Oeste"}>Oeste</MenuItem>
             <MenuItem value={"Leste"}>Leste</MenuItem>
@@ -206,6 +215,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.tipoarma1?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"faca"}>faca</MenuItem>
             <MenuItem value={"vidro"}>vidro</MenuItem>
             <MenuItem value={"pedra"}>pedra</MenuItem>
@@ -233,6 +243,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.tipoarma2?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"faca"}>faca</MenuItem>
             <MenuItem value={"vidro"}>vidro</MenuItem>
             <MenuItem value={"pedra"}>pedra</MenuItem>
@@ -260,6 +271,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.loclesao1?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"cabeca"}>cabeca</MenuItem>
             <MenuItem value={"pescoco"}>pescoco</MenuItem>
             <MenuItem value={"torax"}>torax</MenuItem>
@@ -275,6 +287,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.loclesao2?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"cabeca"}>cabeca</MenuItem>
             <MenuItem value={"pescoco"}>pescoco</MenuItem>
             <MenuItem value={"torax"}>torax</MenuItem>
@@ -290,6 +303,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.loclesao3?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"cabeca"}>cabeca</MenuItem>
             <MenuItem value={"pescoco"}>pescoco</MenuItem>
             <MenuItem value={"torax"}>torax</MenuItem>
@@ -307,6 +321,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.hospitalizacao?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -319,6 +334,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.violsexual?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -331,6 +347,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.latrocinio?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -345,6 +362,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.localdeocorrencia?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"domicilio"}>domicilio</MenuItem>
             <MenuItem value={"viapublica"}>via publica</MenuItem>
             <MenuItem value={"estabelecimento comercial"}>
@@ -381,6 +399,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.presencafilhofamiliar?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -393,6 +412,7 @@ export function Form(props: IPropsForm) {
             error={!!errors.gestacao?.message}
             defaultValue={""}
           >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
             <MenuItem value={"sim"}>sim</MenuItem>
             <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
@@ -416,8 +436,14 @@ export function Form(props: IPropsForm) {
           error={!!errors.lng?.message}
           variant="filled"
         />
-        <Box sx={{ marginTop: '10px', width: "203%" }}>
-          <Button sx={{ width: "100%" }} variant="contained" onClick={handleSubmit(onSubmit)} >Salvar</Button>
+        <Box sx={{ marginTop: "10px", width: "203%" }}>
+          <Button
+            sx={{ width: "100%" }}
+            variant="contained"
+            onClick={handleSubmit(onSubmit)}
+          >
+            Salvar
+          </Button>
         </Box>
       </Box>
     </>
