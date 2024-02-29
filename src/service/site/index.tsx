@@ -9,3 +9,6 @@ export function findManyProgramSearch(){
 export function createSite(data: any){
     return api.post('/api/referenceSite/', data)
 }
+export function deleteSite(siteId: string){
+    return api.delete('/api/item/'+siteId)
+}

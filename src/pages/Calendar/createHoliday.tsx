@@ -118,7 +118,8 @@ export function CreateHoliday() {
               defaultValue={""}
             >
               <MenuItem value={"0"}>Nacional</MenuItem>
-              <MenuItem value={"1"}>Local</MenuItem>
+              <MenuItem value={"1"}>Municipal</MenuItem>
+              <MenuItem value={"2"}>Estadual</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>

@@ -18,8 +18,11 @@ import { Form } from "./form";
 import { Content } from "./content";
 import Classification from "./classification";
 import { CircularProgress, Switch } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
-
+import { useRefresh } from "../../shared/hooks/useRefresh";
+import { count } from "console";
 export interface RowProps {
   nome: string;
   link: string;
@@ -34,10 +37,24 @@ export interface RowProps {
 
 export function Row(props: RowProps) {
   const [open, setOpen] = React.useState(false);
+  const { addCount, count } = useRefresh();
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
       props.refreshList();
     });
+  };
+
+  const DeleteSite = (siteId: string) => {
+    deleteSite(siteId)
+      .then((response: any) => {
+        if (response.status === 200) {
+          addCount();
+          toast.success("Link excluído com sucesso");
+        }
+      })
+      .catch((error: any) => {
+        toast.error(error?.response.data.detail);
+      });
   };
 
   return (
@@ -73,6 +90,13 @@ export function Row(props: RowProps) {
         <TableCell align="left">
           {props.lido}
           <Switch onChange={handleChangeLido} checked={props.lido} />
+        </TableCell>
+        <TableCell>
+        <IconButton
+          onClick={() => DeleteSite(props.id)}
+        >
+          <DeleteIcon />
+        </IconButton>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -125,12 +149,12 @@ export default function CollapsibleTable() {
 
   useEffect(() => {
     setLoading(true);
-    if (!findSitesFetched) {
+/*     if (!findSitesFetched) {
       api.get("/api/findSites/").then((res) => {
         setLoading(false);
         setFindSitesFetched(true);
       });
-    }
+    } */
     api
       .get("/api/site/")
       .then((res) => {
@@ -162,6 +186,7 @@ export default function CollapsibleTable() {
             <TableCell align="left">Assassinato?</TableCell>
             <TableCell align="left">Classificação</TableCell>
             <TableCell align="left">Lido</TableCell>
+            <TableCell align="right"></TableCell>
           </TableRow>
         </TableHead>
           <TableBody>

@@ -8,9 +8,10 @@ export const title = {
 
 export const toolbarWeb = {
   display: "flex",
-  gap: "4px",
+  justifyContent: "space-between",
   marginBottom: "30px",
   marginLeft: "10px",
+  width: "calc(100vw - 250px)"
 };
 
 export const toolbarMobile = {

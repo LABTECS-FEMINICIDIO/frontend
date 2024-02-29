@@ -126,11 +126,9 @@ export function Iml() {
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box style={windowSize < 800 ? {} : { paddingRight: "800px" }}>
-          <Typography sx={title}>Relatório IML</Typography>
-        </Box>
-        <Box>
-          <FormControl sx={{ minWidth: 140 }} size="small" fullWidth>
+        <Typography sx={title}>Relatório IML</Typography>
+      <Box sx={{display: "flex", gap: 1}}>
+          <FormControl sx={{ minWidth: 140 }} size="small">
             <InputLabel id="demo-select-small">Coluna</InputLabel>
             <Select
               name="column"
@@ -148,9 +146,7 @@ export function Iml() {
               <MenuItem value={"causaMorte"}>Causa da morte</MenuItem>
             </Select>
           </FormControl>
-        </Box>
-        <Box>
-          <FormControl size="small" fullWidth>
+          <FormControl size="small" sx={{ minWidth: 140 }}>
             <TextField
               name="value"
               color="secondary"
@@ -185,15 +181,15 @@ export function Iml() {
               }}
             />
           </FormControl>
+          <Button
+            component="label"
+            variant="contained"
+            startIcon={<CloudUploadIcon />}
+          >
+            Importar arquivo
+            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+          </Button>
         </Box>
-        <Button
-          component="label"
-          variant="contained"
-          startIcon={<CloudUploadIcon />}
-        >
-          Importar arquivo
-          <VisuallyHiddenInput type="file" onChange={handleFileChange} />
-        </Button>
       </Box>
       {loading ? (
         <Box

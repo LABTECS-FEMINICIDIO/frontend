@@ -65,7 +65,7 @@ export function Users() {
         }
       })
       .catch((error: any) => {
-        toast.error(error?.response.data.datails);
+        toast.error(error?.response.data.detail);
       });
   };
 
@@ -118,11 +118,9 @@ export function Users() {
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box style={windowSize < 800 ? {} : { paddingRight: "895px" }}>
-          <Typography sx={title}>Usuários</Typography>
-        </Box>
-        <Box>
-          <FormControl sx={{ minWidth: 140 }} size="small" fullWidth>
+        <Typography sx={title}>Usuários</Typography>
+        <Box sx={{display: "flex", gap: 1}}>
+          <FormControl sx={{ minWidth: 140 }} size="small">
             <InputLabel id="demo-select-small">Coluna</InputLabel>
             <Select
               name="column"
@@ -138,9 +136,7 @@ export function Users() {
               <MenuItem value={"acesso"}>Acesso</MenuItem>
             </Select>
           </FormControl>
-        </Box>
-        <Box>
-          <FormControl size="small" fullWidth>
+          <FormControl size="small" sx={{ minWidth: 140 }}>
             <TextField
               name="value"
               color="secondary"
@@ -175,8 +171,8 @@ export function Users() {
               }}
             />
           </FormControl>
+          <CreateUser />
         </Box>
-        <CreateUser />
       </Box>
       {loading ? (
         <Box

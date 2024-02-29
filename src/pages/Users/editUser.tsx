@@ -91,7 +91,7 @@ export function EditUser() {
     setLoading(true)
     const fetchUserData = () => {
       findById(id)
-        .then((response) => {
+        .then((response?) => {
           if (response && response.data) {
             setUserData(response.data);
             setValue("nome", response.data.nome);
@@ -105,9 +105,8 @@ export function EditUser() {
             setLoading(false)
           }
         })
-        .catch((error) => {
+        .catch((error: any) => {
           setLoading(false)
-          console.error("Erro ao buscar os dados do usuário:", error);
         });
     };
 

@@ -21,7 +21,7 @@ export const columns: GridColDef[] = [
     ),
   },
   {
-    field: "menu",
+    field: "pesquisar",
     headerName: "Pesquisar",
     renderCell: ({ row }) => {
 

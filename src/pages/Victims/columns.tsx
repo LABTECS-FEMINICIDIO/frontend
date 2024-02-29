@@ -9,12 +9,13 @@ export const columns: GridColDef[] = [
     headerName: "Nome",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+      const value = params.props.value;
 
       api.patch(`/api/vitimas/${params.row.id}`, {
-        nome: params.props.value
-      })
+        nome: value || 'N/A',
+      });
 
-      return params.props
+      return params.props;
     },
   },
   {
@@ -22,25 +23,27 @@ export const columns: GridColDef[] = [
     headerName: "Idade",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+      const value = params.props.value;
 
       api.patch(`/api/vitimas/${params.row.id}`, {
-        idade: Number(params.props.value)
-      })
+        idade: value ? Number(value) : 'N/A',
+      });
 
-      return params.props
+      return params.props;
     },
   },
   {
     field: "zona",
-    headerName: "zona",
+    headerName: "Zona",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
+      const value = params.props.value;
 
       api.patch(`/api/vitimas/${params.row.id}`, {
-        zona: params.props.value
-      })
+        zona: value || 'N/A',
+      });
 
-      return params.props
+      return params.props;
     },
   },
   {
@@ -48,10 +51,10 @@ export const columns: GridColDef[] = [
     headerName: "tipoarma2",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        tipoarma2: params.props.value
-      })
+        tipoarma2: value || 'N/A',
+      });
 
       return params.props
     },
@@ -61,9 +64,9 @@ export const columns: GridColDef[] = [
     headerName: "localdeocorrencia",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        localdeocorrencia: params.props.value
+        localdeocorrencia: value || 'N/A',
       })
 
       return params.props
@@ -74,10 +77,10 @@ export const columns: GridColDef[] = [
     headerName: "loclesao1",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        loclesao1: params.props.value
-      })
+        loclesao1: value || 'N/A',
+      });
 
       return params.props
     },
@@ -87,9 +90,9 @@ export const columns: GridColDef[] = [
     headerName: "presencafilhofamiliar",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        presencafilhofamiliar: params.props.value
+        presencafilhofamiliar: value || 'N/A',
       })
 
       return params.props
@@ -100,9 +103,9 @@ export const columns: GridColDef[] = [
     headerName: "racacor1",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        racacor1: params.props.value
+        racacor1: value || 'N/A',
       })
 
       return params.props
@@ -113,9 +116,9 @@ export const columns: GridColDef[] = [
     headerName: "loclesao2",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        loclesao2: params.props.value
+        loclesao2: value || 'N/A',
       })
 
       return params.props
@@ -126,9 +129,9 @@ export const columns: GridColDef[] = [
     headerName: "datadofato",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        datadofato: params.props.value
+        datadofato: value || 'N/A',
       })
 
       return params.props
@@ -139,9 +142,9 @@ export const columns: GridColDef[] = [
     headerName: "estciv2",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        estciv2: params.props.value
+        estciv2: value || 'N/A',
       })
 
       return params.props
@@ -152,9 +155,9 @@ export const columns: GridColDef[] = [
     headerName: "loclesao3",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        loclesao3: params.props.value
+        loclesao3: value || 'N/A',
       })
 
       return params.props
@@ -165,9 +168,9 @@ export const columns: GridColDef[] = [
     headerName: "gestacao",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        gestacao: params.props.value
+        gestacao: value || 'N/A',
       })
 
       return params.props
@@ -178,9 +181,9 @@ export const columns: GridColDef[] = [
     headerName: "diah",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        diah: params.props.value
+        diah: value || 'N/A',
       })
 
       return params.props
@@ -191,9 +194,9 @@ export const columns: GridColDef[] = [
     headerName: "bairro",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        bairro: params.props.value
+        bairro: value || 'N/A',
       })
 
       return params.props
@@ -204,9 +207,9 @@ export const columns: GridColDef[] = [
     headerName: "hospitalização",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        hospitalizacao: params.props.value
+        hospitalizacao:value || 'N/A',
       })
 
       return params.props
@@ -217,9 +220,9 @@ export const columns: GridColDef[] = [
     headerName: "filhosdescrever",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        filhosdescrever: params.props.value
+        filhosdescrever: value || 'N/A',
       })
 
       return params.props
@@ -230,9 +233,9 @@ export const columns: GridColDef[] = [
     headerName: "horario",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        horario: params.props.value
+        horario: value || 'N/A',
       })
 
       return params.props
@@ -243,9 +246,9 @@ export const columns: GridColDef[] = [
     headerName: "rua_beco_travessa_estrada_ramal",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        rua_beco_travessa_estrada_ramal: params.props.value
+        rua_beco_travessa_estrada_ramal: value || 'N/A',
       })
 
       return params.props
@@ -256,9 +259,9 @@ export const columns: GridColDef[] = [
     headerName: "violsexual",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        violsexual: params.props.value
+        violsexual: value || 'N/A',
       })
 
       return params.props
@@ -269,9 +272,9 @@ export const columns: GridColDef[] = [
     headerName: "turno",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        turno: params.props.value
+        turno: value || 'N/A',
       })
 
       return params.props
@@ -282,9 +285,9 @@ export const columns: GridColDef[] = [
     headerName: "endcomplemento",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        endcomplemento: params.props.value
+        endcomplemento: value || 'N/A',
       })
 
       return params.props
@@ -295,9 +298,9 @@ export const columns: GridColDef[] = [
     headerName: "latrocinio",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        latrocinio: params.props.value
+        latrocinio: value || 'N/A',
       })
 
       return params.props
@@ -308,9 +311,9 @@ export const columns: GridColDef[] = [
     headerName: "lat",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        lat: params.props.value
+        lat: value || 'N/A',
       })
 
       return params.props
@@ -321,9 +324,9 @@ export const columns: GridColDef[] = [
     headerName: "lng",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        lng: params.props.value
+        lng: value || 'N/A',
       })
 
       return params.props
@@ -334,9 +337,9 @@ export const columns: GridColDef[] = [
     headerName: "tipoarma1",
     editable: true,
     preProcessEditCellProps: (params: GridPreProcessEditCellProps) => {
-
+      const value = params.props.value;
       api.patch(`/api/vitimas/${params.row.id}`, {
-        tipoarma1: params.props.value
+        tipoarma1: value || 'N/A',
       })
 
       return params.props

@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
+import { deleteSite } from "../../service/site";
 
 export function Sites() {
   const [rows, setRows] = useState([]);
@@ -34,6 +35,10 @@ export function Sites() {
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
   useEffect(() => {
+    listAll();
+  }, [count]);
+
+  const listAll = () => {
     setLoading(true);
     api
       .get("/api/referenceSite/")
@@ -44,7 +49,7 @@ export function Sites() {
       .catch(() => {
         setLoading(false);
       });
-  }, [, count]);
+  };
 
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch((state) => ({
@@ -88,16 +93,27 @@ export function Sites() {
     setRowsFiltered([]);
   };
 
+  const DeleteSite = (siteId: string) => {
+    deleteSite(siteId)
+      .then((response: any) => {
+        if (response.status === 200) {
+          listAll();
+          toast.success("Site excluído com sucesso");
+        }
+      })
+      .catch((error: any) => {
+        toast.error(error?.response.data.detail);
+      });
+  };
+
   const filtered = rowsFiltered.length > 0;
 
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box style={windowSize < 800 ? {}: {paddingRight: "580px"}}>
-          <Typography sx={title}>Sites</Typography>
-        </Box>
-        <Box>
-          <FormControl sx={{ minWidth: 140 }} size="small" fullWidth>
+        <Typography sx={title}>Sites</Typography>
+        <Box sx={{ display: "flex", gap: 1}}>
+          <FormControl size="small" sx={{minWidth: "140px"}}>
             <InputLabel id="demo-select-small">Coluna</InputLabel>
             <Select
               name="column"
@@ -112,9 +128,7 @@ export function Sites() {
               <MenuItem value={"classificacao"}>Classificação</MenuItem>
             </Select>
           </FormControl>
-        </Box>
-        <Box>
-          <FormControl size="small" fullWidth>
+          <FormControl size="small" sx={{minWidth: "140px"}}>
             <TextField
               name="value"
               color="secondary"
@@ -149,10 +163,10 @@ export function Sites() {
               }}
             />
           </FormControl>
+          <CreateProgram />
+          <CreateTag />
+          <CreateSite />
         </Box>
-        <CreateProgram />
-        <CreateTag />
-        <CreateSite />
       </Box>
       {loading ? (
         <Box
@@ -169,6 +183,8 @@ export function Sites() {
         <TableGrid
           rows={filtered ? rowsFiltered : rows}
           columns={columns}
+          titleDelete="Excluir site?"
+          onDelete={DeleteSite}
         />
       )}
     </>

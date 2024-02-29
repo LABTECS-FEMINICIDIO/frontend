@@ -3,6 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { ResetPassword } from "./resetPassword";
 import { updateUser } from "../../service/users";
 import { EditUser } from "./editUserAdmin";
+import { parsePhoneNumberFromString, format } from 'libphonenumber-js';
 
 export const columns: GridColDef[] = [
   {
@@ -16,6 +17,16 @@ export const columns: GridColDef[] = [
   {
     field: "telefone",
     headerName: "Telefone",
+    renderCell(params) {
+      const phoneNumber = params.row.telefone;
+      const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
+      
+      return formattedPhoneNumber;
+    },
+  },
+  {
+    field: "perfil",
+    headerName: "Perfil",
   },
   {
     field: "resetarSenha",
@@ -51,4 +62,10 @@ export const columns: GridColDef[] = [
       );
     },
   },
+
 ];
+
+const formatPhoneNumber = (phoneNumber: string) => {
+  const parsedPhoneNumber = parsePhoneNumberFromString(phoneNumber, 'BR');
+  return parsedPhoneNumber ? parsedPhoneNumber.formatInternational() : phoneNumber;
+};

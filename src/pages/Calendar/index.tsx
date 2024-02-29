@@ -23,16 +23,26 @@ export function Calendar() {
       api
         .get(`https://brasilapi.com.br/api/feriados/v1/${anoAtual}`)
         .then((response) => {
-          const rowsWithIdsAndDays = response.data.map((row: any, index: any) => {
-            const data = new Date(`${row.date}T00:00:00.000Z`);
-            const diasDaSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
-            const diaSemana = diasDaSemana[data.getUTCDay()];
-            return {
-              ...row,
-              id: index + 1,
-              diaSemana: diaSemana,
-            };
-          });
+          const rowsWithIdsAndDays = response.data.map(
+            (row: any, index: any) => {
+              const data = new Date(`${row.date}T00:00:00.000Z`);
+              const diasDaSemana = [
+                "Domingo",
+                "Segunda-feira",
+                "Terça-feira",
+                "Quarta-feira",
+                "Quinta-feira",
+                "Sexta-feira",
+                "Sábado",
+              ];
+              const diaSemana = diasDaSemana[data.getUTCDay()];
+              return {
+                ...row,
+                id: index + 1,
+                diaSemana: diaSemana,
+              };
+            }
+          );
           setRows(rowsWithIdsAndDays);
         })
         .catch((error) => {
@@ -60,30 +70,24 @@ export function Calendar() {
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box
-          style={
-            windowSize < 800
-              ? {}
-              : { paddingRight: "880px", display: "flex", flexWrap: "wrap" }
-          }
-        >
-          <Typography sx={title}>Calendário</Typography>
+        <Typography sx={title}>Calendário</Typography>
+        <Box sx={{display: "flex", gap: 1}}>
+          <Button
+            onClick={handleAnoAtualChange}
+            variant="outlined"
+            startIcon={<UpdateIcon />}
+          >
+            Atualizar Ano
+          </Button>
+          <Button
+            onClick={handleVoltarParaAnoAtual}
+            variant="outlined"
+            startIcon={<UpdateIcon />}
+          >
+            Voltar para o Ano Atual
+          </Button>
+          <CreateHoliday />
         </Box>
-        <Button
-          onClick={handleAnoAtualChange}
-          variant="outlined"
-          startIcon={<UpdateIcon />}
-        >
-          Atualizar Ano
-        </Button>
-        <Button
-          onClick={handleVoltarParaAnoAtual}
-          variant="outlined"
-          startIcon={<UpdateIcon />}
-        >
-          Voltar para o Ano Atual
-        </Button>
-        <CreateHoliday />
       </Box>
       <TableGrid rows={rows} columns={columns} />
       <Typography sx={{ fontWeight: "lighter" }}>
