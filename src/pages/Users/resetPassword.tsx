@@ -27,7 +27,7 @@ import {
         toast.success('Senha atualizada com sucesso');
         handleClose();
       } catch (error: any) {
-        toast.error(error.response?.data?.message || 'Erro ao redefinir a senha');
+        toast.error(error?.response.data.detail || 'Erro ao redefinir a senha');
       }
     };
   

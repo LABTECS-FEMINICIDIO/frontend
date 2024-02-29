@@ -46,7 +46,7 @@ export function Victims() {
         setRows(res.data);
       })
       .catch((error) => {
-        toast.error(error.response.data.detail);
+        toast.error(error?.response.data.detail);
         setLoading(false);
       });
   };
@@ -113,7 +113,7 @@ export function Victims() {
         }
       })
       .catch((error: any) => {
-        toast.error(error.response?.data.datails);
+        toast.error(error?.response.data.datail);
       });
   };
 

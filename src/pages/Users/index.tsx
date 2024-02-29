@@ -43,7 +43,7 @@ export function Users() {
         setLoading(false);
       })
       .catch((error) => {
-        toast.error(error.response.data.detail);
+        toast.error(error?.response.data.detail);
         setLoading(false);
       });
   };
@@ -52,7 +52,7 @@ export function Users() {
     await findById(id)
       .then((response) => {})
       .catch((error) => {
-        toast.error(error.response.data.message);
+        toast.error(error?.response.data.detail);
       });
   };
 
@@ -65,7 +65,7 @@ export function Users() {
         }
       })
       .catch((error: any) => {
-        toast.error(error.response.data.datails);
+        toast.error(error?.response.data.datails);
       });
   };
 

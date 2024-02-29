@@ -13,6 +13,10 @@ export const columns: GridColDef[] = [
     }
   },
   {
+    field: "diaSemana",
+    headerName: "Dia da semana",
+  },
+  {
     field: "name",
     headerName: "Feriado",
   },

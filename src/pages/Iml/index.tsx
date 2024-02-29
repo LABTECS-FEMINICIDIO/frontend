@@ -108,7 +108,7 @@ export function Iml() {
         })
         .catch((error) => {
           console.error("Erro ao importar o arquivo", error);
-          toast.error(error.response.data.detail);
+          toast.error(error?.response.data.detail);
         })
         .finally(() => {
           setLoading(false);

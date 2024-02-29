@@ -17,23 +17,29 @@ export function Calendar() {
     return storedYear ? parseInt(storedYear, 10) : new Date().getFullYear();
   });
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
-  const isBotaoAtualizarHabilitado = anoAtual !== new Date().getFullYear();
 
   useEffect(() => {
     const findCalendar = () => {
       api
         .get(`https://brasilapi.com.br/api/feriados/v1/${anoAtual}`)
         .then((response) => {
-          const rowsWithIds = response.data.map((row: any, index: number) => ({
-            ...row,
-            id: index + 1,
-          }));
-          setRows(rowsWithIds);
+          const rowsWithIdsAndDays = response.data.map((row: any, index: any) => {
+            const data = new Date(`${row.date}T00:00:00.000Z`);
+            const diasDaSemana = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
+            const diaSemana = diasDaSemana[data.getUTCDay()];
+            return {
+              ...row,
+              id: index + 1,
+              diaSemana: diaSemana,
+            };
+          });
+          setRows(rowsWithIdsAndDays);
         })
-        .catch((error: any) => {
+        .catch((error) => {
           toast.error("Erro ao carregar calendário");
         });
     };
+
     findCalendar();
   }, [anoAtual]);
 
@@ -44,12 +50,12 @@ export function Calendar() {
     localStorage.setItem("anoAtual", anoAtualNovo.toString());
   };
 
-/*   // Função para voltar para o ano atual
+  // Função para voltar para o ano atual
   const handleVoltarParaAnoAtual = () => {
     const anoAtualReal = new Date().getFullYear();
     setAnoAtual(anoAtualReal);
     localStorage.setItem("anoAtual", anoAtualReal.toString());
-  }; */
+  };
 
   return (
     <>
@@ -58,7 +64,7 @@ export function Calendar() {
           style={
             windowSize < 800
               ? {}
-              : { paddingRight: "1130px", display: "flex", flexWrap: "wrap" }
+              : { paddingRight: "880px", display: "flex", flexWrap: "wrap" }
           }
         >
           <Typography sx={title}>Calendário</Typography>
@@ -67,18 +73,16 @@ export function Calendar() {
           onClick={handleAnoAtualChange}
           variant="outlined"
           startIcon={<UpdateIcon />}
-          disabled={!isBotaoAtualizarHabilitado}
         >
           Atualizar Ano
         </Button>
-{/*         <Button
+        <Button
           onClick={handleVoltarParaAnoAtual}
           variant="outlined"
           startIcon={<UpdateIcon />}
-          disabled={!isBotaoAtualizarHabilitado}
         >
           Voltar para o Ano Atual
-        </Button> */}
+        </Button>
         <CreateHoliday />
       </Box>
       <TableGrid rows={rows} columns={columns} />

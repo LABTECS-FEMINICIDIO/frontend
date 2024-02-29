@@ -48,7 +48,7 @@ export default function Register() {
       })
       .catch((error) => {
         setLoading(false);
-        toast.error(error.response.data.detail);
+        toast.error(error?.response.data.detail);
       });
   };
 

@@ -69,7 +69,7 @@ export function TableGrid(props: TableGridProps) {
             },
           },
         }}
-        pageSizeOptions={[15]}
+        pageSizeOptions={[25]}
         disableColumnMenu
         onCellClick={handleOnCellClick}
         sx={table}

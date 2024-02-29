@@ -52,9 +52,9 @@ export function TokenProvider({ children }: TokenProviderProps) {
       })
       .catch(error => {
         setPermission(false);
-        if (error.response.status === 401) {
+        if (error?.response.status === 401) {
           setPermission(false);
-          toast.error(error.response.data.detail);
+          toast.error(error?.response.data.detail);
         }
       });
   }

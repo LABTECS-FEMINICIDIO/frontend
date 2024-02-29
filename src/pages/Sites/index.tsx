@@ -93,7 +93,7 @@ export function Sites() {
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
-        <Box style={windowSize < 800 ? {}: {paddingRight: "600px"}}>
+        <Box style={windowSize < 800 ? {}: {paddingRight: "580px"}}>
           <Typography sx={title}>Sites</Typography>
         </Box>
         <Box>
