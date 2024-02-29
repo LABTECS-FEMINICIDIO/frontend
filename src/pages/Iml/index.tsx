@@ -24,6 +24,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
 import { api } from "../../service/api";
+import { SimpleTableIml } from "./table";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -203,7 +204,7 @@ export function Iml() {
           <CircularProgress />
         </Box>
       ) : (
-        <TableGrid rows={filtered ? rowsFiltered : rows} columns={columns} />
+        <SimpleTableIml  /* rows={filtered ? rowsFiltered : rows} *//>
       )}
     </>
   );

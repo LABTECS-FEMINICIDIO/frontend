@@ -26,7 +26,7 @@ import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object().shape({
-  nome: Yup.string().required("Nome é obrigatório"),
+  nome: Yup.string().required("Nome é obrigatório").uppercase('Letras devem ser maiúsculas'),
   email: Yup.string().required("Email é obrigatório"),
   telefone: Yup.string().required("O telefone é obrigatório"),
   perfil: Yup.string().required("O perfil é obrigatório"),
