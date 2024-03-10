@@ -10,6 +10,8 @@ import { DefaultLayout } from "../DefaultLayout";
 import SignIn from "../pages/Login";
 import { useToken } from "../shared/hooks/auth";
 import Register from "../pages/Login/register";
+import RecoveryCode from "../pages/RecoveryCode";
+import RecoveryPassword from "../pages/RecoveryPassword";
 
 export function AppRoutes() {
   const { permission, perfil } = useToken();
@@ -30,11 +32,15 @@ export function AppRoutes() {
           ))}
           <Route key={"login"} path="/" element={<SignIn />} />
           <Route key={"register"} path="/register" element={<Register />} />
+          <Route key={"recoveryCode"}  path="/recoveryCode" element={<RecoveryCode/>} />
+          <Route key={"recoveryPass"}  path="/recoveryPass" element={<RecoveryPassword/>} />
         </Route>
       ) : (
         <>
           <Route key={"login"} path="/" element={<SignIn />} />
           <Route key={"register"} path="/register" element={<Register />} />
+          <Route key={"recoveryCode"}  path="/recoveryCode" element={<RecoveryCode/>} />
+          <Route key={"recoveryPass"}  path="/recoveryPass" element={<RecoveryPassword/>} />
         </>
       )}
       <Route path="*" element={<NotFound />} />

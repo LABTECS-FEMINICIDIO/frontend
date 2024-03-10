@@ -166,9 +166,14 @@ export default function SignIn() {
                 >
                   {loading ? <CircularProgress /> : "ENTRAR"}
                 </Button>
+                <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
                 <Link href="/register" variant="body2" sx={{marginTop: 3}}>
                   Não possui cadastro? Registre-se
                 </Link>
+                <Link href="/recoveryCode" variant="body2" sx={{marginTop: 3}}>
+                  Esqueci minha senha
+                </Link>
+                </Box>
                 <Box sx={borda} />
               </Box>
             </Box>
