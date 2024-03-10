@@ -108,7 +108,7 @@ export default function RecoveryCode() {
             </Typography>
           </Box>
           <Alert severity="info" sx={{margin: '20px', background: colors.primary_lightest, color: colors.neutral_dark}}>
-          Você receberá um email com o código de redefinição de senha.
+          Você receberá um email com o código de redefinição de senha. O código irá expirar em 30 minutos.
           </Alert>
           <Box
             component="form"
