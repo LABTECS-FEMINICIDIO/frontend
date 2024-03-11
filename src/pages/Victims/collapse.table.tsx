@@ -16,11 +16,13 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
 import { colors } from "../../shared/theme";
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import DeleteIcon from '@mui/icons-material/Delete';
+import FileCopyIcon from "@mui/icons-material/FileCopy";
 import { deleteVictims } from "../../service/victims";
+import { formatarData } from "../../utils/formatDate";
+import { EditVictims } from "./editVictims";
+import { ModalDelete } from "../../components/ModalDelete/ModalDelete";
 
-export interface RowPropsVictims {
+export interface IRowsPropsVictims {
   datadofato: string;
   diah: string;
   horario: string;
@@ -54,17 +56,21 @@ export interface RowPropsVictims {
   vitima: string;
 }
 
-function Row(props: RowPropsVictims) {
+function Row(props: IRowsPropsVictims) {
   const [open, setOpen] = React.useState(false);
   const { addCount } = useRefresh();
 
   const copyAllInfoToClipboard = (info: string) => {
-    navigator.clipboard.writeText(info)
+    navigator.clipboard
+      .writeText(info)
       .then(() => {
         toast.success("Informações copiadas para a área de transferência");
       })
       .catch((error) => {
-        toast.error('Erro ao copiar informações para a área de transferência', error)
+        toast.error(
+          "Erro ao copiar informações para a área de transferência",
+          error
+        );
       });
   };
 
@@ -104,7 +110,7 @@ function Row(props: RowPropsVictims) {
       Gestação: ${props.gestacao}
       Número de Filhos: ${props.filhosdescrever}
     `;
-    
+
     copyAllInfoToClipboard(allInfo);
   };
 
@@ -113,13 +119,15 @@ function Row(props: RowPropsVictims) {
       .then((response: any) => {
         if (response.status === 200) {
           toast.success("Dados da vítima excluídos com sucesso");
-          addCount()
+          addCount();
         }
       })
       .catch((error: any) => {
         toast.error(error?.response.data.datail);
       });
   };
+
+  const dataFormatada = formatarData(props.datadofato);
 
   return (
     <React.Fragment>
@@ -134,19 +142,21 @@ function Row(props: RowPropsVictims) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {props.nome || 'N/A'}
+          {props.nome}
         </TableCell>
-        <TableCell align="left">{props.idade || 'N/A'}</TableCell>
-        <TableCell align="left">{props.datadofato || 'N/A'}</TableCell>
+        <TableCell align="left">{props.idade}</TableCell>
+        <TableCell align="left">{dataFormatada}</TableCell>
+        <TableCell align="left">{props.violsexual}</TableCell>
         <TableCell align="right">
           <IconButton onClick={copyAllInfo}>
             <FileCopyIcon />
           </IconButton>
-          <IconButton
-          onClick={() => DeleteVictims(props.id)}
-        >
-          <DeleteIcon />
-        </IconButton>
+          <ModalDelete
+            onDelete={() => DeleteVictims(props.id)}
+            title="Excluir vítima"
+            subtitle="Realmente deseja excluir esta vítima?"
+          />
+          <EditVictims idVictim={props.id} />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -167,88 +177,82 @@ function Row(props: RowPropsVictims) {
                     {/* Informações Básicas */}
                     <TableCell>
                       <Typography variant="subtitle1" gutterBottom>
-                        diah: {props.diah || 'N/A'} 
+                        diah: {props.diah}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      horario: {props.horario || 'N/A'}
+                        horario: {props.horario}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      diah: {props.diah || 'N/A'}
+                        turno: {props.turno}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      turno: {props.turno || 'N/A'}
+                        racacor1: {props.racacor1}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      racacor1: {props.racacor1 || 'N/A'}
-                      </Typography>
-                      <Typography variant="subtitle1" gutterBottom>
-                      estciv2: {props.estciv2 || 'N/A'}
+                        estciv2: {props.estciv2}
                       </Typography>
                     </TableCell>
 
                     {/* Detalhes da Localização */}
                     <TableCell>
                       <Typography variant="subtitle1" gutterBottom>
-                        Bairro: {props.bairro || 'N/A'}
+                        Bairro: {props.bairro}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        Rua: {props.rua_beco_travessa_estrada_ramal || 'N/A'}
+                        Rua: {props.rua_beco_travessa_estrada_ramal}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      endcomplemento: {props.endcomplemento || 'N/A'}
+                        endcomplemento: {props.endcomplemento}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      zona: {props.zona || 'N/A'}
+                        zona: {props.zona}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      lat: {props.lat || 'N/A'}
+                        lat: {props.lat}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                      lng: {props.lng || 'N/A'}
+                        lng: {props.lng}
                       </Typography>
                     </TableCell>
 
                     {/* Detalhes do Incidente */}
                     <TableCell>
                       <Typography variant="subtitle1" gutterBottom>
-                        tipoarma1: {props.tipoarma1 || 'N/A'}
+                        tipoarma1: {props.tipoarma1}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        tipoarma2: {props.tipoarma2 || 'N/A'}
+                        tipoarma2: {props.tipoarma2}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        loclesao1: {props.loclesao1 || 'N/A'}
+                        loclesao1: {props.loclesao1}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        loclesao2: {props.loclesao2 || 'N/A'}
+                        loclesao2: {props.loclesao2}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        loclesao3: {props.loclesao3 || 'N/A'}
+                        loclesao3: {props.loclesao3}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        hospitalizacao: {props.hospitalizacao || 'N/A'}
+                        hospitalizacao: {props.hospitalizacao}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        violsexual: {props.violsexual || 'N/A'}
+                        latrocinio: {props.latrocinio}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        latrocinio: {props.latrocinio || 'N/A'}
-                      </Typography>
-                      <Typography variant="subtitle1" gutterBottom>
-                        localdeocorrencia: {props.localdeocorrencia || 'N/A'}
+                        localdeocorrencia: {props.localdeocorrencia}
                       </Typography>
                     </TableCell>
 
                     {/* Detalhes da Família */}
                     <TableCell>
                       <Typography variant="subtitle1" gutterBottom>
-                        presencafilhofamiliar: {props.presencafilhofamiliar || 'N/A'}
+                        presencafilhofamiliar: {props.presencafilhofamiliar}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        gestacao: {props.gestacao || 'N/A'}
+                        gestacao: {props.gestacao}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        filhosdescrever: {props.filhosdescrever || 'N/A'}
+                        filhosdescrever: {props.filhosdescrever}
                       </Typography>
                     </TableCell>
                   </TableRow>
@@ -263,7 +267,7 @@ function Row(props: RowPropsVictims) {
 }
 
 export function TableVictims() {
-  const [rows, setRows] = React.useState<RowPropsVictims[]>([]);
+  const [rows, setRows] = React.useState<IRowsPropsVictims[]>([]);
   const [loading, setLoading] = React.useState(true);
   const { count } = useRefresh();
 
@@ -274,7 +278,7 @@ export function TableVictims() {
   const listAll = () => {
     setLoading(true);
     api
-      .get<RowPropsVictims[]>("/api/vitimas/")
+      .get<IRowsPropsVictims[]>("/api/vitimas/")
       .then((res) => {
         setLoading(false);
         setRows(res.data);
@@ -294,6 +298,7 @@ export function TableVictims() {
             <TableCell align="left">Nome</TableCell>
             <TableCell align="left">Idade</TableCell>
             <TableCell align="left">datadofato</TableCell>
+            <TableCell align="left">violsexual</TableCell>
             <TableCell align="left"></TableCell>
           </TableRow>
         </TableHead>

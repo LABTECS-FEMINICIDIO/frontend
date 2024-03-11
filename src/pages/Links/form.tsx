@@ -13,7 +13,7 @@ import {
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
 
-const schema = Yup.object()
+export const schema = Yup.object()
   .shape({
     datadofato: Yup.string().required(),
     diah: Yup.string(),

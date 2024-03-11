@@ -18,11 +18,10 @@ import { Form } from "./form";
 import { Content } from "./content";
 import Classification from "./classification";
 import { CircularProgress, Switch } from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
-import { count } from "console";
 export interface RowProps {
   nome: string;
   link: string;
@@ -38,6 +37,7 @@ export interface RowProps {
 export function Row(props: RowProps) {
   const [open, setOpen] = React.useState(false);
   const { addCount, count } = useRefresh();
+
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
       props.refreshList();
@@ -78,9 +78,12 @@ export function Row(props: RowProps) {
           </a>
         </TableCell>
         <TableCell align="left">
-          <Content props={props.conteudo} />
+          <Content idSite={props.id} props={props.conteudo}/>
         </TableCell>
-        <TableCell align="left">{props.feminicidio}</TableCell>
+        <TableCell align="left">
+          {props.feminicidio}
+          <Switch onChange={() => {}} checked={props.feminicidio} />
+        </TableCell>
         <TableCell align="left">
           <Classification
             classification={props.classificacao}
@@ -92,11 +95,9 @@ export function Row(props: RowProps) {
           <Switch onChange={handleChangeLido} checked={props.lido} />
         </TableCell>
         <TableCell>
-        <IconButton
-          onClick={() => DeleteSite(props.id)}
-        >
-          <DeleteIcon />
-        </IconButton>
+          <IconButton onClick={() => DeleteSite(props.id)}>
+            <DeleteIcon />
+          </IconButton>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -149,12 +150,12 @@ export default function CollapsibleTable() {
 
   useEffect(() => {
     setLoading(true);
-/*     if (!findSitesFetched) {
+    if (!findSitesFetched) {
       api.get("/api/findSites/").then((res) => {
         setLoading(false);
         setFindSitesFetched(true);
       });
-    } */
+    }
     api
       .get("/api/site/")
       .then((res) => {
@@ -169,37 +170,43 @@ export default function CollapsibleTable() {
   const currentRows = rows.slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-  
+
   return (
     <TableContainer component={Paper} sx={{ marginTop: "30px" }}>
-     { loading ? 
-               <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", height: "70vh"}}>
-               <CircularProgress />
-             </Box>
-     : <Table aria-label="collapsible table">
-        <TableHead sx={{ background: colors.primary_lightest }}>
-          <TableRow>
-            <TableCell />
-            <TableCell>Nome do Site</TableCell>
-            <TableCell align="left">Link</TableCell>
-            <TableCell align="left">Conteúdo</TableCell>
-            <TableCell align="left">Assassinato?</TableCell>
-            <TableCell align="left">Classificação</TableCell>
-            <TableCell align="left">Lido</TableCell>
-            <TableCell align="right"></TableCell>
-          </TableRow>
-        </TableHead>
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "70vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Table aria-label="collapsible table">
+          <TableHead sx={{ background: colors.primary_lightest }}>
+            <TableRow>
+              <TableCell />
+              <TableCell>Nome do Site</TableCell>
+              <TableCell align="left">Link</TableCell>
+              <TableCell align="left">Conteúdo</TableCell>
+              <TableCell align="left">Assassinato?</TableCell>
+              <TableCell align="left">Classificação</TableCell>
+              <TableCell align="left">Lido</TableCell>
+              <TableCell align="right"></TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {rows.map((row: RowProps) => (
-              <Row key={row.nome} {...row} refreshList={refreshList} />
+              <Row key={row.id} {...row} refreshList={refreshList} />
             ))}
           </TableBody>
-      </Table>}
-
+        </Table>
+      )}
     </TableContainer>
   );
-
-  
 }
 
 interface PaginationProps {

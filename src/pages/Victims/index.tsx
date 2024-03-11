@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Box,
   Button,
@@ -12,17 +13,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { TableGrid } from "../../components/TableGrid";
 import { title, toolbarMobile, toolbarWeb } from "../../styles";
 import { ChangeEvent, useEffect, useState } from "react";
-import { columns } from "./columns";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from "file-saver";
-import React from "react";
-import { deleteVictims } from "../../service/victims";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { TableVictims } from "./collapse.table";
 

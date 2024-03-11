@@ -1,4 +1,5 @@
 import { colors } from "./shared/theme";
+import { styled } from "@mui/material/styles";
 
 export const title = {
   fontWeight: 600,
@@ -9,9 +10,10 @@ export const title = {
 export const toolbarWeb = {
   display: "flex",
   justifyContent: "space-between",
+  alignItems: "center",
   marginBottom: "30px",
   marginLeft: "10px",
-  width: "calc(100vw - 250px)"
+  width: "calc(100vw - 250px)",
 };
 
 export const toolbarMobile = {
@@ -50,12 +52,34 @@ export const container = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: 0
+  padding: 0,
 };
 
 export const load = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  margin: 3
-}
+  margin: 3,
+};
+export const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
+export const grid1 = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: 1,
+  mb: 1,
+};
+export const grid2 = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr 1fr",
+  gap: 1,
+};

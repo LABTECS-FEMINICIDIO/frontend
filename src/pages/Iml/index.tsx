@@ -12,11 +12,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { TableGrid } from "../../components/TableGrid";
-import { title, toolbarMobile, toolbarWeb } from "../../styles";
-import { columns } from "./columns";
+import {
+  VisuallyHiddenInput,
+  title,
+  toolbarMobile,
+  toolbarWeb,
+} from "../../styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { styled } from "@mui/material/styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import { findImlData, findManyIml } from "../../service/iml";
 import { toast } from "react-toastify";
@@ -25,18 +27,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
 import { api } from "../../service/api";
 import { SimpleTableIml } from "./table";
-
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+import { saveAs } from "file-saver";
 
 export function Iml() {
   const [rows, setRows] = useState([]);
@@ -44,14 +35,20 @@ export function Iml() {
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
   useEffect(() => {
-    setLoading(true);
-    findManyIml();
-    findImlData()
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        await findManyIml();
+        const res = await findImlData();
         setRows(res.data);
+      } catch (error) {
+        console.error("Erro ao buscar dados do IML", error);
+      } finally {
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
+      }
+    };
+
+    fetchData();
   }, []);
 
   const [search, setSearch] = useState({ column: "", value: "" });
@@ -124,11 +121,27 @@ export function Iml() {
 
   const filtered = rowsFiltered.length > 0;
 
+  const handleExportClick = async () => {
+    try {
+      const response = await api.get("/api/iml/export-xlsx", {
+        responseType: "blob",
+      });
+  
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+  
+      saveAs(blob, "export.xlsx");
+    } catch (error) {
+      console.error("Erro ao exportar o arquivo:", error);
+    }
+  };
+
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
         <Typography sx={title}>Relatório IML</Typography>
-      <Box sx={{display: "flex", gap: 1}}>
+        <Box sx={{ display: "flex", gap: 1 }}>
           <FormControl sx={{ minWidth: 140 }} size="small">
             <InputLabel id="demo-select-small">Coluna</InputLabel>
             <Select
@@ -190,6 +203,13 @@ export function Iml() {
             Importar arquivo
             <VisuallyHiddenInput type="file" onChange={handleFileChange} />
           </Button>
+          <Button
+            component="label"
+            variant="contained"
+            onClick={handleExportClick}
+          >
+            Exportar
+          </Button>
         </Box>
       </Box>
       {loading ? (
@@ -204,7 +224,7 @@ export function Iml() {
           <CircularProgress />
         </Box>
       ) : (
-        <SimpleTableIml  /* rows={filtered ? rowsFiltered : rows} *//>
+        <SimpleTableIml /*  rows={filtered ? rowsFiltered : rows} */ />
       )}
     </>
   );

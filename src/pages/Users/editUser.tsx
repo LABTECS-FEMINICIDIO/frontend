@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   CircularProgress,
@@ -62,17 +61,17 @@ export function EditUser() {
   const id = cookies.get("idf");
 
   const handleUpadateUser = async (data: any) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
       reset();
       cookies.set("usernamef", response.data.nome);
       handleClose();
-      setLoading(false)
+      setLoading(false);
     } catch (error: any) {
-      toast.error(error?.response.data.detail || "Erro ao atualizar usuário");
-      setLoading(false)
+      toast.error(error?.response.data.details || "Erro ao atualizar usuário");
+      setLoading(false);
     }
   };
 
@@ -88,30 +87,30 @@ export function EditUser() {
   const matches = useMediaQuery("(max-width:480px)");
 
   useEffect(() => {
-    setLoading(true)
-    const fetchUserData = () => {
-      findById(id)
-        .then((response?) => {
-          if (response && response.data) {
-            setUserData(response.data);
-            setValue("nome", response.data.nome);
-            setValue("email", response.data.email);
-            setValue("telefone", response.data.telefone);
-            setLoading(false)
-          } else {
-            console.error(
-              "Erro ao buscar os dados do usuário: Resposta inválida"
-            );
-            setLoading(false)
-          }
-        })
-        .catch((error: any) => {
-          setLoading(false)
-        });
-    };
-
+    setLoading(true);
     fetchUserData();
-  }, [id, open]);
+  }, [id]);
+
+  const fetchUserData = () => {
+    findById(id)
+      .then((response?) => {
+        if (response && response.data) {
+          setUserData(response.data);
+          setValue("nome", response.data.nome);
+          setValue("email", response.data.email);
+          setValue("telefone", response.data.telefone);
+          setLoading(false);
+        } else {
+          console.error(
+            "Erro ao buscar os dados do usuário: Resposta inválida"
+          );
+          setLoading(false);
+        }
+      })
+      .catch((error: any) => {
+        setLoading(false);
+      });
+  };
 
   return (
     <>
@@ -149,7 +148,9 @@ export function EditUser() {
               <CircularProgress />
             </Box>
           ) : (
-            <DialogContent sx={{ display: "grid", gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+            <DialogContent
+              sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2 }}
+            >
               <TextField
                 label={errors.nome?.message ?? "Nome"}
                 {...register("nome")}

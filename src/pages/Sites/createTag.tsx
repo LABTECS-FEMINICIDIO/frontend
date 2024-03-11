@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
+import { colors } from "../../shared/theme";
 
 export function CreateTag() {
   const [open, setOpen] = useState(false);
@@ -51,7 +52,12 @@ export function CreateTag() {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    // Verificando se há pelo menos duas tags cadastradas antes de fechar o modal
+    if (tags.length >= 2) {
+      setOpen(false);
+    } else {
+      toast.warning("É necessário ter pelo menos duas tags cadastradas.");
+    }
   };
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
@@ -155,7 +161,15 @@ export function CreateTag() {
                     key={index}
                     label={tag}
                     onDelete={() => handleRemoverTag(tag)}
-                    sx={{ background: "#fff", mt: 2, mr: 1 }}
+                    sx={{
+                      background: "#fff",
+                      mt: 2,
+                      mr: 1,
+                      // Adicionando a classe 'tag-highlight' às duas primeiras tags
+                      ...(index < 2 && {
+                        '&.MuiChip-root': { backgroundColor: colors.primary_base, fontWeight: 'bold', color: colors.background_base },
+                      })
+                    }}
                   />
                 ))
               ) : (

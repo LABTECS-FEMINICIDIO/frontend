@@ -20,7 +20,6 @@ import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { colors } from "../../shared/theme";
 import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import { findById, updateUser } from "../../service/users";

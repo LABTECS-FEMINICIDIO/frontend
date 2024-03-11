@@ -84,7 +84,6 @@ export function CreateHoliday() {
             {...register("nome")}
             error={!!errors.nome?.message}
             variant="filled"
-            type="number"
           />
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1 }}>
             <TextField
@@ -120,6 +119,7 @@ export function CreateHoliday() {
               <MenuItem value={"0"}>Nacional</MenuItem>
               <MenuItem value={"1"}>Municipal</MenuItem>
               <MenuItem value={"2"}>Estadual</MenuItem>
+              <MenuItem value={"3"}>Ponto facultativo</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>
