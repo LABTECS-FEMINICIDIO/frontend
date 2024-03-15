@@ -9,22 +9,21 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Button, useMediaQuery } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { MenuList } from "./MenuList";
 import { Content } from "./Content";
-import { AppBar, ButtonStyled, Drawer, DrawerHeader } from "./styles";
+import { AppBar, Drawer, DrawerHeader } from "./styles";
 import Cookies from "universal-cookie";
-import { useToken } from "../../shared/hooks/auth";
 import { EditUser } from "../../pages/Users/editUser";
 //import { useToken } from '../../shared/hooks/auth';
 
 interface AppContainerProps {
   children?: React.ReactNode;
+  title?: string;
 }
 
-export function AppContainer({ children }: AppContainerProps) {
+export function AppContainer({ children, title }: AppContainerProps) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -35,8 +34,7 @@ export function AppContainer({ children }: AppContainerProps) {
   };
   const cookies = new Cookies();
 
-  const username = cookies.get("usernamef")
-
+  const username = cookies.get("usernamef");
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -84,7 +82,7 @@ export function AppContainer({ children }: AppContainerProps) {
             />
           </Box>
           <Box display="flex" alignItems="center" color="primary">
-            <EditUser/>
+            <EditUser />
 
             <Button variant="text" onClick={() => Logout()}>
               <LogoutIcon />
@@ -105,8 +103,8 @@ export function AppContainer({ children }: AppContainerProps) {
         <Divider />
         <MenuList open={open} />
       </Drawer>
+      {title === "Dashboard" ? children : <Content>{children}</Content>}
 
-      <Content>{children}</Content>
     </Box>
   );
 }

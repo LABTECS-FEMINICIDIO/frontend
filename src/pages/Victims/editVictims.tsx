@@ -69,7 +69,7 @@ export function EditVictims(props: IPropsForm) {
     }
   };
 
-  const fetchVictimData = () => {
+/*   const fetchVictimData = () => {
     findById(props.idVictim)
       .then((response) => {
         if (response && response.data) {
@@ -118,7 +118,7 @@ export function EditVictims(props: IPropsForm) {
 
   React.useEffect(() => {
     fetchVictimData();
-  }, []);
+  }, []); */
   
   const handleClose = () => {
     setOpen(false);

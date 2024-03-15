@@ -52,7 +52,7 @@ export function Iml() {
   }, []);
 
   const [search, setSearch] = useState({ column: "", value: "" });
-  const [rowsFiltered, setRowsFiltered] = useState([]);
+  const [rowsFiltered, setRowsFiltered] = useState<any>([]);
 
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch((state) => ({
@@ -224,7 +224,7 @@ export function Iml() {
           <CircularProgress />
         </Box>
       ) : (
-        <SimpleTableIml /*  rows={filtered ? rowsFiltered : rows} */ />
+        <SimpleTableIml  rows={filtered ? rowsFiltered : rows}  />
       )}
     </>
   );

@@ -169,6 +169,19 @@ export function Form(props: IPropsForm) {
             <MenuItem value={"uniao-estavel"}>uniao estavel</MenuItem>
           </Select>
         </FormControl>
+        <FormControl variant="filled">
+          <InputLabel>{errors.compexcomp?.message ?? "compexcomp"}</InputLabel>
+          <Select
+            label={errors.compexcomp?.message ?? "compexcomp"}
+            {...register("compexcomp")}
+            error={!!errors.compexcomp?.message}
+            defaultValue={""}
+          >
+            <MenuItem value={"N/A"}>N/A</MenuItem>
+            <MenuItem value={"sim"}>sim</MenuItem>
+            <MenuItem value={"nao"}>nao</MenuItem>
+          </Select>
+        </FormControl>
         <TextField
           label={errors.bairro?.message ?? "bairro"}
           {...register("bairro")}

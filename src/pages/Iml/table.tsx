@@ -12,7 +12,7 @@ import {
 import { findImlData, findManyIml } from "../../service/iml";
 import { colors } from "../../shared/theme";
 
-interface Row {
+export interface Row {
   id: number;
   dataEntrada: string;
   horaEntrada: string;
@@ -22,7 +22,10 @@ interface Row {
   causaMorte: string;
 }
 
-export const SimpleTableIml = () => {
+interface rowProps {
+  rows: Row[]
+}
+export const SimpleTableIml = (props:rowProps) => {
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
@@ -65,7 +68,7 @@ export const SimpleTableIml = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {props.rows
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <TableRow key={row.id}>

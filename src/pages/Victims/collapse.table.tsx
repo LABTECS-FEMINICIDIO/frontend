@@ -266,7 +266,12 @@ function Row(props: IRowsPropsVictims) {
   );
 }
 
-export function TableVictims() {
+
+interface ITableVctims{
+ rows: any
+}
+
+export function TableVictims(props: ITableVctims) {
   const [rows, setRows] = React.useState<IRowsPropsVictims[]>([]);
   const [loading, setLoading] = React.useState(true);
   const { count } = useRefresh();
@@ -303,7 +308,7 @@ export function TableVictims() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+          {props.rows.map((row: any, index: number) => (
             <Row key={index} {...row} />
           ))}
         </TableBody>

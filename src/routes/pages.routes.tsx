@@ -8,17 +8,17 @@ import { Calendar } from '../pages/Calendar';
 import EventIcon from '@mui/icons-material/Event';
 import { Iml } from '../pages/Iml';
 import TextSnippetIcon from '@mui/icons-material/TextSnippet';
-import { Dashboard } from '../pages/Dashboard';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Victims } from '../pages/Victims';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
+import { Dashboards } from '../pages/Dashboard';
 
 export const APP_PAGES = [
     {
         title: 'Dashboard',
         route: '/',
         icon: <DashboardIcon />,
-        component: <Dashboard />,
+        component: <Dashboards />,
         showMenu: true,
     },
     {
@@ -71,7 +71,7 @@ export const APP_PAGES_VISUALIZADOR = [
         title: 'Dashboard',
         route: '/',
         icon: <DashboardIcon />,
-        component: <Dashboard />,
+        component: <Dashboards />,
         showMenu: true,
     }
 ]
@@ -81,7 +81,7 @@ export const APP_PAGES_PESQUISADOR = [
         title: 'Dashboard',
         route: '/',
         icon: <DashboardIcon />,
-        component: <Dashboard />,
+        component: <Dashboards />,
         showMenu: true,
     },
     {

@@ -206,7 +206,7 @@ export function Victims() {
           <CircularProgress />
         </Box>
       ) : (
-        <TableVictims />
+        <TableVictims rows={filtered ? rowsFiltered : rows} />
       )}
     </>
   );

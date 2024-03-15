@@ -103,7 +103,7 @@ export default function RecoveryCode() {
             >
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" sx={{ fontWeight: "bold" }}>
+            <Typography component="h1" variant="h5" sx={{ fontWeight: "bold", mt: 2 }}>
               Recuperação de senha
             </Typography>
           </Box>
