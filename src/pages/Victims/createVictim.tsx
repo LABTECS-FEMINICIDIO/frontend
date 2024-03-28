@@ -20,101 +20,96 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 import React from "react";
-import { findById, updateVictims } from "../../service/victims";
-import EditIcon from "@mui/icons-material/Edit";
 import { useRefresh } from "../../shared/hooks/useRefresh";
-import { IVictims } from "../../models/victims";
 import { colors } from "../../shared/theme";
 import { grid1, grid2 } from "../../styles";
-import { schema } from "../Links/form";
+import { api } from "../../service/api";
+import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined";
 
 interface IPropsForm {
-  vitimaId: string;
+  vitimaId?: string;
+  idSite?: string;
 }
 
-export function EditVictims(props: IPropsForm) {
+export const schema = Yup.object()
+  .shape({
+    datadofato: Yup.date().required(),
+    diah: Yup.string(),
+    horario: Yup.string(),
+    turno: Yup.string(),
+    nome: Yup.string(),
+    idade: Yup.number(),
+    racacor1: Yup.string(),
+    estciv2: Yup.string(),
+    bairro: Yup.string(),
+    rua_beco_travessa_estrada_ramal: Yup.string(),
+    endcomplemento: Yup.string(),
+    tipoarma1: Yup.string(),
+    tipoarma2: Yup.string(),
+    loclesao1: Yup.string(),
+    loclesao2: Yup.string(),
+    zona: Yup.string(),
+    loclesao3: Yup.string(),
+    hospitalizacao: Yup.string(),
+    violsexual: Yup.string(),
+    latrocinio: Yup.string(),
+    localdeocorrencia: Yup.string(),
+    presencafilhofamiliar: Yup.string(),
+    compexcomp: Yup.string(),
+    gestacao: Yup.string(),
+    filhosdescrever: Yup.number(),
+    lat: Yup.string(),
+    lng: Yup.string(),
+    sites: Yup.array(),
+  })
+  .required();
+type FormData = Yup.InferType<typeof schema>;
+
+export function CreateVictim(props: IPropsForm) {
   const [loading, setLoading] = React.useState(true);
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
-  const [userData, setUserData] = React.useState<IVictims | null>(null);
+  const [links, setLinks] = React.useState<string[]>([]);
 
   const { addCount } = useRefresh();
 
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: any) => {
-    await handleUpadateUser(data);
-  };
-
-  const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
-    try {
-      await updateVictims(props.vitimaId, data);
-      toast.success("Informações da vítima atualizadas com sucesso");
+  const onSubmit = (data: any) => {
+    data.sites = links;
+    api.post("/api/vitimas/", data).then((res) => {
       addCount();
       handleClose();
-      reset();
-    } catch (error: any) {
-      toast.error(
-        error?.response.data.detail || "Erro ao atualizar dados da vítima"
-      );
-    }
+      toast.success("Vítima criada com sucesso!");
+    });
   };
 
-  const fetchVictimData = () => {
-    findById(props.vitimaId)
-      .then((response) => {
-        if (response && response.data) {
-          setUserData(response.data);
-          // Atribuir os valores dos campos do formulário com os valores recebidos da API
-          setValue("datadofato", response.data.datadofato || "");
-          setValue("diah", response.data.diah || "");
-          setValue("horario", response.data.horario || "");
-          setValue("turno", response.data.turno || "");
-          setValue("nome", response.data.nome || "");
-          setValue("idade", response.data.idade || "");
-          setValue("racacor1", response.data.racacor1 || "");
-          setValue("bairro", response.data.bairro || "");
-          setValue("endcomplemento", response.data.endcomplemento || "");
-          setValue("estciv2", response.data.estciv2 || "");
-          setValue("rua_beco_travessa_estrada_ramal", response.data.rua_beco_travessa_estrada_ramal || "");
-          setValue("tipoarma1", response.data.tipoarma1 || "");
-          setValue("tipoarma2", response.data.tipoarma2 || "");
-          setValue("loclesao1", response.data.loclesao1 || "");
-          setValue("loclesao2", response.data.loclesao2 || "");
-          setValue("loclesao3", response.data.loclesao3 || "");
-          setValue("hospitalizacao", response.data.hospitalizacao || "");
-          setValue("violsexual", response.data.violsexual || "");
-          setValue("latrocinio", response.data.latrocinio || "");
-          setValue("localdeocorrencia", response.data.localdeocorrencia || "");
-          setValue("presencafilhofamiliar", response.data.presencafilhofamiliar || "");
-          setValue("compexcomp", response.data.compexcomp || "");
-          setValue("gestacao", response.data.gestacao || "");
-          setValue("filhosdescrever", response.data.filhosdescrever || "");
-          setValue("lat", response.data.lat || "");
-          setValue("lng", response.data.lng || "");
-          setValue("zona", response.data.zona || "");
-        } else {
-          console.error("Erro ao buscar os dados da vítima");
-        }
-      })
-      .catch((error) => {
-        toast.error("Erro ao buscar os dados da vítima:", error);
-      });
+  const handleAddLink = () => {
+    // Adiciona um novo link ao estado de links
+    setLinks([...links, ""]);
   };
-  
 
-  React.useEffect(() => {
-    fetchVictimData();
-  }, []);
+  const handleRemoveLink = (index: number) => {
+    // Remove o link do estado de links com base no índice
+    const updatedLinks = [...links];
+    updatedLinks.splice(index, 1);
+    setLinks(updatedLinks);
+  };
+
+  const handleLinkChange = (index: number, value: string) => {
+    // Atualiza o link no estado de links com base no índice
+    const updatedLinks = [...links];
+    updatedLinks[index] = value;
+    setLinks(updatedLinks);
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -123,9 +118,9 @@ export function EditVictims(props: IPropsForm) {
 
   return (
     <>
-      <IconButton onClick={() => setOpen(true)}>
-        <EditIcon />
-      </IconButton>
+      <Button variant="contained" onClick={() => setOpen(true)}>
+        Cadastrar vítima
+      </Button>
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -139,7 +134,7 @@ export function EditVictims(props: IPropsForm) {
         }}
       >
         <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
-          {"Editar dados da vítima"}
+          {"Cadastrar vítima"}
         </DialogTitle>
         <Divider />
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -171,6 +166,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.racacor1?.message ?? "racacor1"}
                   {...register("racacor1")}
                   error={!!errors.racacor1?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"branca"}>branca</MenuItem>
@@ -186,6 +182,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.estciv2?.message ?? "estciv2"}
                   {...register("estciv2")}
                   error={!!errors.estciv2?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"solteira"}>solteira</MenuItem>
@@ -212,6 +209,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.diah?.message ?? "diah"}
                   {...register("diah")}
                   error={!!errors.diah?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"dom"}>Dom</MenuItem>
@@ -235,6 +233,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.turno?.message ?? "turno"}
                   {...register("turno")}
                   error={!!errors.turno?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"madrugada"}>madrugada</MenuItem>
@@ -268,6 +267,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.zona?.message ?? "Zona"}
                   {...register("zona")}
                   error={!!errors.zona?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"Norte"}>Norte</MenuItem>
@@ -325,6 +325,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.tipoarma1?.message ?? "tipoarma1"}
                   {...register("tipoarma1")}
                   error={!!errors.tipoarma1?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"faca"}>faca</MenuItem>
@@ -356,6 +357,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.tipoarma2?.message ?? "tipoarma2"}
                   {...register("tipoarma2")}
                   error={!!errors.tipoarma2?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"faca"}>faca</MenuItem>
@@ -397,6 +399,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.loclesao1?.message ?? "loclesao1"}
                   {...register("loclesao1")}
                   error={!!errors.loclesao1?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
@@ -414,6 +417,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.loclesao2?.message ?? "loclesao2"}
                   {...register("loclesao2")}
                   error={!!errors.loclesao2?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
@@ -431,6 +435,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.loclesao3?.message ?? "loclesao3"}
                   {...register("loclesao3")}
                   error={!!errors.loclesao3?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"cabeca"}>cabeca</MenuItem>
@@ -448,6 +453,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.hospitalizacao?.message ?? "hospitalizacao"}
                   {...register("hospitalizacao")}
                   error={!!errors.hospitalizacao?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -462,6 +468,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.violsexual?.message ?? "violsexual"}
                   {...register("violsexual")}
                   error={!!errors.violsexual?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -476,6 +483,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.latrocinio?.message ?? "latrocinio"}
                   {...register("latrocinio")}
                   error={!!errors.latrocinio?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -494,6 +502,7 @@ export function EditVictims(props: IPropsForm) {
                   }
                   {...register("localdeocorrencia")}
                   error={!!errors.localdeocorrencia?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"domicilio"}>domicilio</MenuItem>
@@ -541,6 +550,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.compexcomp?.message ?? "compexcomp"}
                   {...register("compexcomp")}
                   error={!!errors.compexcomp?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -559,6 +569,7 @@ export function EditVictims(props: IPropsForm) {
                   }
                   {...register("presencafilhofamiliar")}
                   error={!!errors.presencafilhofamiliar?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -573,6 +584,7 @@ export function EditVictims(props: IPropsForm) {
                   label={errors.gestacao?.message ?? "gestacao"}
                   {...register("gestacao")}
                   error={!!errors.gestacao?.message}
+                  defaultValue={""}
                 >
                   <MenuItem value={"N/A"}>N/A</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
@@ -587,6 +599,29 @@ export function EditVictims(props: IPropsForm) {
                 variant="filled"
               />
             </Box>
+            <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
+              Links de Referência:
+            </Typography>
+            <Box>
+              {links.map((link, index) => (
+                <Box key={index}>
+                  <TextField
+                    label={`Link ${index + 1}`}
+                    value={link}
+                    onChange={(e) => handleLinkChange(index, e.target.value)}
+                    variant="filled"
+                    sx={{width: '93%', mb: 1}}
+                  />
+                  <IconButton onClick={() => handleRemoveLink(index)}>
+                    <CancelOutlinedIcon />
+                  </IconButton>
+                </Box>
+              ))}
+            </Box>
+            {/* Botão para adicionar mais links de referência */}
+            <Button variant="contained" onClick={handleAddLink}>
+              Adicionar Link
+            </Button>
             <Box sx={{ marginTop: "10px", marginLeft: "75%" }}>
               <Button onClick={handleClose} variant="text">
                 Cancelar

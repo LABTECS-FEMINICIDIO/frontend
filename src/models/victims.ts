@@ -1,5 +1,5 @@
 export interface IVictims {
-    datadofato: string;
+    datadofato: Date;
     diah: string;
     horario: string;
     turno: string;

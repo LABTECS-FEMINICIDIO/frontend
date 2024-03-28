@@ -22,6 +22,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { saveAs } from "file-saver";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { TableVictims } from "./collapse.table";
+import { CreateVictim } from "./createVictim";
 
 export function Victims() {
   const [rows, setRows] = useState([]);
@@ -187,11 +188,12 @@ export function Victims() {
           </FormControl>
           <Button
             component="label"
-            variant="contained"
+            variant="outlined"
             onClick={handleExportClick}
           >
             Exportar
           </Button>
+          <CreateVictim/>
         </Box>
       </Box>
       {loading ? (

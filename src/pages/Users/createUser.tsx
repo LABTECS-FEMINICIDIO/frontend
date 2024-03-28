@@ -122,7 +122,8 @@ export function CreateUser() {
               defaultValue={""}
             >
               <MenuItem value={"Administrador"}>Administrador</MenuItem>
-              <MenuItem value={"Pesquisador"}>Pesquisador</MenuItem>
+              <MenuItem value={"Digitador"}>Digitador</MenuItem>
+              <MenuItem value={"Pesquisador"}>Editor</MenuItem>
               <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
             </Select>
           </FormControl>

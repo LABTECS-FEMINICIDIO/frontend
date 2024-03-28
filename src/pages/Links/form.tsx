@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 export const schema = Yup.object()
   .shape({
-    datadofato: Yup.string().required(),
+    datadofato: Yup.date(),
     diah: Yup.string(),
     horario: Yup.string(),
     turno: Yup.string(),
@@ -70,10 +70,11 @@ export function Form(props: IPropsForm) {
         });
     });
   };
+  
   return (
     <>
       <Box
-        sx={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 1 }}
+        sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1 }}
       >
         <TextField
           type="date"
@@ -449,9 +450,8 @@ export function Form(props: IPropsForm) {
           error={!!errors.lng?.message}
           variant="filled"
         />
-        <Box sx={{ marginTop: "10px", width: "203%" }}>
+        <Box sx={{ marginTop: "10px", width: "308%", display: 'flex', justifyContent: 'end' }}>
           <Button
-            sx={{ width: "100%" }}
             variant="contained"
             onClick={handleSubmit(onSubmit)}
           >

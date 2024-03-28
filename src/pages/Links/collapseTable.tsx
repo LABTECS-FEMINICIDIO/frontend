@@ -78,7 +78,7 @@ export function Row(props: RowProps) {
           </a>
         </TableCell>
         <TableCell align="left">
-          <Content idSite={props.id} props={props.conteudo}/>
+          <Content idSite={props.id} props={props.conteudo} />
         </TableCell>
         <TableCell align="left">
           {props.feminicidio}
@@ -112,14 +112,14 @@ export function Row(props: RowProps) {
                 aria-label="purchases"
                 sx={{ display: "flex", gap: 3 }}
               >
-                <TableBody>
+                <TableBody sx={{ display: "flex", gap: 5 }}>
                   <iframe
                     style={{ width: "50vw", height: "900px" }}
                     src={props.link}
-                  ></iframe>
-                </TableBody>
-                <TableBody>
+                  />
+                  <Box>
                   <Form idSite={props.id} />
+                  </Box>
                 </TableBody>
               </Table>
             </Box>
@@ -199,12 +199,18 @@ export default function CollapsibleTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row: RowProps) => (
+            {currentRows.map((row: RowProps) => (
               <Row key={row.id} {...row} refreshList={refreshList} />
             ))}
           </TableBody>
         </Table>
       )}
+      <Pagination
+        itemsPerPage={itemsPerPage}
+        totalItems={rows.length}
+        currentPage={currentPage}
+        paginate={paginate}
+      />
     </TableContainer>
   );
 }

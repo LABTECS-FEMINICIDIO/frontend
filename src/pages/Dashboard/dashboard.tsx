@@ -8,7 +8,7 @@ export function Dashboard() {
     <>
       <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1 }}>
         <iframe
-          src="http://localhost:7000/public/dashboard/690fc0f5-9cef-467a-b129-97e512c37b22"
+          src="http://24.199.108.245:3000/public/dashboard/284ce180-8847-4d64-8e0e-8937f47e889c"
           frameBorder="0"
           width="1650"
           height="670"

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { MapPage } from "../../components/Maps";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -68,9 +68,25 @@ export function Maps() {
   };
 
   return (
-    <Box>
-      <Cards vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas} />
-      <MapPage vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas} />
+    <Box sx={{ position: "relative" }}>
+      {loading && (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "70vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      {!loading && (
+        <>
+          <Cards vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas} />
+          <MapPage vitimas={rowsFiltered.length > 0 ? rowsFiltered : vitimas} />
+        </>
+      )}
     </Box>
   );
 }

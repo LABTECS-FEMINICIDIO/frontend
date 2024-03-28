@@ -54,6 +54,7 @@ export interface IRowsPropsVictims {
   zona: string;
   id: string;
   vitima: string;
+  sites: string[];
 }
 
 function Row(props: IRowsPropsVictims) {
@@ -156,7 +157,7 @@ function Row(props: IRowsPropsVictims) {
             title="Excluir vítima"
             subtitle="Realmente deseja excluir esta vítima?"
           />
-          <EditVictims idVictim={props.id} />
+          <EditVictims vitimaId={props.id} />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -170,6 +171,7 @@ function Row(props: IRowsPropsVictims) {
                     <TableCell>Detalhes da Localização</TableCell>
                     <TableCell>Detalhes da Morte</TableCell>
                     <TableCell>Detalhes da Família</TableCell>
+                    <TableCell>Link de referência</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -191,8 +193,10 @@ function Row(props: IRowsPropsVictims) {
                       <Typography variant="subtitle1" gutterBottom>
                         estciv2: {props.estciv2}
                       </Typography>
+                      <Typography variant="subtitle1" gutterBottom>
+                        compexcomp: {props.compexcomp}
+                      </Typography>
                     </TableCell>
-
                     {/* Detalhes da Localização */}
                     <TableCell>
                       <Typography variant="subtitle1" gutterBottom>
@@ -255,6 +259,25 @@ function Row(props: IRowsPropsVictims) {
                         filhosdescrever: {props.filhosdescrever}
                       </Typography>
                     </TableCell>
+
+                    {/* Sites */}
+                    <TableCell>
+                      {props.sites && props.sites.length > 0 && (
+                        <ul>
+                          {props.sites.map((site: any, index: number) => (
+                            <li key={index}>
+                              <a
+                                href={site.link}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                {site.link}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
@@ -266,9 +289,8 @@ function Row(props: IRowsPropsVictims) {
   );
 }
 
-
-interface ITableVctims{
- rows: any
+interface ITableVctims {
+  rows: any;
 }
 
 export function TableVictims(props: ITableVctims) {
