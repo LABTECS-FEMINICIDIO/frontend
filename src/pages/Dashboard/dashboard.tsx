@@ -26,7 +26,7 @@ export function Dashboard() {
       )}
       <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1 }}>
         <iframe
-          src="http://24.199.108.245:3000/public/dashboard/284ce180-8847-4d64-8e0e-8937f47e889c"
+          src="https://24.199.108.245:3000/public/dashboard/f9723e06-9c4d-401a-b6e9-fec9ab7c9ab3"
           frameBorder="0"
           width="1650"
           height="670"
