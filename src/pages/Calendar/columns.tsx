@@ -27,4 +27,12 @@ export const columns: GridColDef[] = [
       return params.value === "national" ? "Nacional" : params.value;
     },
   },
+  {
+    field: "pontoFacultativo",
+    headerName: "Facultativo?",
+    valueFormatter: (params) => {
+      return params.value === true ? "Sim" : "Não";
+    },
+  }
+
 ];

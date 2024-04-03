@@ -17,7 +17,10 @@ interface Holiday {
   date: string;
   name: string;
   diaSemana: string;
+  type:string;
+  pontoFacultativo: boolean;
 }
+
 
 export function Calendar() {
   const [rows, setRows] = useState<Holiday[]>([]);
@@ -68,6 +71,8 @@ export function Calendar() {
       diaSemana: getDiaSemana(
         new Date(holiday.ano, holiday.mes - 1, holiday.dia)
       ),
+      type: holiday.type,
+      pontoFacultativo: holiday.pontoFacultativo
     }));
   };
 
@@ -78,6 +83,8 @@ export function Calendar() {
       date: holiday.date,
       name: holiday.name,
       diaSemana: getDiaSemana(new Date(holiday.date)),
+      type: holiday.type,
+      pontoFacultativo: holiday.pontoFacultativo
     }));
   };
 

@@ -154,7 +154,7 @@ export function CreateHoliday() {
                 {/*  <MenuItem value={"3"}>Ponto facultativo</MenuItem> */}
               </Select>
             </FormControl>
-            <FormControl>
+            <FormControl sx={{mt: 2}}>
               <FormLabel id="pontoFacultativo"> Ponto facultativo? </FormLabel>
               <RadioGroup
                 row
