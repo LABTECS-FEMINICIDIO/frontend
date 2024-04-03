@@ -8,70 +8,127 @@ import { toast } from "react-toastify";
 import { CreateHoliday } from "./createHoliday";
 import UpdateIcon from "@mui/icons-material/Update";
 import React from "react";
+import { useRefresh } from "../../shared/hooks/useRefresh";
+import { deleteHoliday, findManyHoliday } from "../../service/calendar";
+
+// Definindo o tipo dos feriados
+interface Holiday {
+  id: string;
+  date: string;
+  name: string;
+  diaSemana: string;
+}
 
 export function Calendar() {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<Holiday[]>([]);
+  const [loading, setLoading] = useState(true);
   const [anoAtual, setAnoAtual] = useState<number>(() => {
-    // Inicializa o ano atual com o valor armazenado no localStorage ou o ano atual real
     const storedYear = localStorage.getItem("anoAtual");
     return storedYear ? parseInt(storedYear, 10) : new Date().getFullYear();
   });
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
+  const { count } = useRefresh();
 
   useEffect(() => {
-    const findCalendar = () => {
-      api
-        .get(`https://brasilapi.com.br/api/feriados/v1/${anoAtual}`)
-        .then((response) => {
-          const rowsWithIdsAndDays = response.data.map(
-            (row: any, index: any) => {
-              const data = new Date(`${row.date}T00:00:00.000Z`);
-              const diasDaSemana = [
-                "Domingo",
-                "Segunda-feira",
-                "Terça-feira",
-                "Quarta-feira",
-                "Quinta-feira",
-                "Sexta-feira",
-                "Sábado",
-              ];
-              const diaSemana = diasDaSemana[data.getUTCDay()];
-              return {
-                ...row,
-                id: index + 1,
-                diaSemana: diaSemana,
-              };
-            }
-          );
-          setRows(rowsWithIdsAndDays);
-        })
-        .catch((error) => {
-          toast.error("Erro ao carregar calendário");
-        });
-    };
+    listAll();
+  }, [count]);
 
-    findCalendar();
-  }, [anoAtual]);
+  const listAll = () => {
+    setLoading(true);
+    Promise.all([fetchBackendHolidays(), fetchApiBrasilHolidays()])
+      .then(([backendResponse, apiBrasilResponse]) => {
+        const backendHolidays = transformBackendData(backendResponse.data);
+        const apiBrasilHolidays = transformApiBrasilData(
+          apiBrasilResponse.data
+        );
+        const mergedHolidays = mergeData(backendHolidays, apiBrasilHolidays);
+        setRows(mergedHolidays);
+        setLoading(false);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+        setLoading(false);
+      });
+  };
 
-  // Função para atualizar o ano
+  const fetchBackendHolidays = () => {
+    return findManyHoliday();
+  };
+
+  const fetchApiBrasilHolidays = () => {
+    return api.get(`https://brasilapi.com.br/api/feriados/v1/${anoAtual}`);
+  };
+
+  const transformBackendData = (data: any[]) => {
+    // Transformar os dados do backend para o formato comum
+    return data.map((holiday) => ({
+      id: holiday.id,
+      date: `${holiday.ano}-${holiday.mes}-${holiday.dia}`,
+      name: holiday.name,
+      diaSemana: getDiaSemana(
+        new Date(holiday.ano, holiday.mes - 1, holiday.dia)
+      ),
+    }));
+  };
+
+  const transformApiBrasilData = (data: any[]) => {
+    // Transformar os dados da API Brasil para o formato comum
+    return data.map((holiday, index) => ({
+      id: `api-${index}`,
+      date: holiday.date,
+      name: holiday.name,
+      diaSemana: getDiaSemana(new Date(holiday.date)),
+    }));
+  };
+
+  const mergeData = (backendData: Holiday[], apiBrasilData: Holiday[]) => {
+    // Juntar os dados de ambos os endpoints
+    return [...backendData, ...apiBrasilData];
+  };
+
+  const getDiaSemana = (date: Date) => {
+    const diasDaSemana = [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado",
+    ];
+    return diasDaSemana[date.getUTCDay()];
+  };
+
   const handleAnoAtualChange = () => {
     const anoAtualNovo = anoAtual + 1;
     setAnoAtual(anoAtualNovo);
     localStorage.setItem("anoAtual", anoAtualNovo.toString());
   };
 
-  // Função para voltar para o ano atual
   const handleVoltarParaAnoAtual = () => {
     const anoAtualReal = new Date().getFullYear();
     setAnoAtual(anoAtualReal);
     localStorage.setItem("anoAtual", anoAtualReal.toString());
   };
 
+  const DeleteHoliday = (id: string) => {
+    deleteHoliday(id)
+      .then((response: any) => {
+        if (response.status === 200) {
+          listAll();
+          toast.success("Usuário excluído com sucesso");
+        }
+      })
+      .catch((error: any) => {
+        toast.error(error?.response.data.detail);
+      });
+  };
+
   return (
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
         <Typography sx={title}>Calendário</Typography>
-        <Box sx={{display: "flex", gap: 1}}>
+        <Box sx={{ display: "flex", gap: 1 }}>
           <Button
             onClick={handleAnoAtualChange}
             variant="outlined"
@@ -89,9 +146,15 @@ export function Calendar() {
           <CreateHoliday />
         </Box>
       </Box>
-      <TableGrid rows={rows} columns={columns} />
+      <TableGrid
+        rows={rows}
+        columns={columns}
+        onDelete={DeleteHoliday}
+        titleDelete="Excluir feriado"
+        subtitleDelete="Deseja mesmo excluir essa informação?"
+      />
       <Typography sx={{ fontWeight: "lighter" }}>
-        Ano Atual: {anoAtual}{" "}
+        Ano Atual: {anoAtual}
       </Typography>
     </>
   );

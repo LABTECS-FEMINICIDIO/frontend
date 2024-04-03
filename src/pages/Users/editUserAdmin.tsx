@@ -24,6 +24,7 @@ import { toast } from "react-toastify";
 import EditIcon from "@mui/icons-material/Edit";
 import { findById, updateUser } from "../../service/users";
 import { IUser } from "../../models/users";
+import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object()
   .shape({
@@ -41,6 +42,8 @@ export function EditUser({ id }: { id: string }) {
   const theme = useTheme();
   const [userData, setUserData] = useState<IUser | null>(null);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [loading, setLoading] = useState(true)
+  const { addCount } = useRefresh();
 
   const {
     register,
@@ -56,10 +59,13 @@ export function EditUser({ id }: { id: string }) {
   };
 
   const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
+    setLoading(true);
     try {
       await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
+      addCount();
       handleClose();
+      setLoading(false);
     } catch (error: any) {
       toast.error(error?.response.data.detail || "Erro ao atualizar usuário");
     }
@@ -73,34 +79,37 @@ export function EditUser({ id }: { id: string }) {
     setOpen(false);
   };
 
-  useEffect(() => {
-    const fetchUserData = () => {
-      findById(id)
-        .then((response) => {
-          if (response && response.data) {
-            setUserData(response.data);
-            setValue("nome", response.data.nome);
-            setValue("email", response.data.email);
-            setValue("perfil", response.data.perfil);
-            setValue("telefone", response.data.telefone);
-          } else {
-            console.error(
-              "Erro ao buscar os dados do usuário: Resposta inválida"
-            );
-          }
-        })
-        .catch((error) => {
-          console.error("Erro ao buscar os dados do usuário:", error);
-        });
-    };
+  const fetchUserData = () => {
+    findById(id)
+      .then((response) => {
+        if (response && response.data) {
+          setUserData(response.data);
+          setValue("nome", response.data.nome);
+          setValue("email", response.data.email);
+          setValue("perfil", response.data.perfil);
+          setValue("telefone", response.data.telefone);
+          setLoading(false);
+        } else {
+          console.error(
+            "Erro ao buscar os dados do usuário: Resposta inválida"
+          );
+        }
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Erro ao buscar os dados do usuário:", error);
+      });
+  };
 
+  const handleEditButtonClick = () => {
+    setLoading(true);
     fetchUserData();
-  }, [id, open]);
+  };
 
   return (
     <>
       <IconButton onClick={handleClickOpen}>
-        <EditIcon />
+        <EditIcon onClick={handleEditButtonClick} />
       </IconButton>
       <Dialog
         fullScreen={fullScreen}
@@ -108,64 +117,70 @@ export function EditUser({ id }: { id: string }) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
-          {"Editar informações do usuário"}
-        </DialogTitle>
-        <Typography
-          sx={{
-            marginLeft: 3,
-            marginRight: 3,
-            marginBottom: 3,
-          }}
-        >
-          {"Personalize as informações do usuário conforme desejado."}
-        </Typography>
-        <Divider />
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent sx={{ display: "grid", gap: 2 }}>
-            <TextField
-              label={errors.nome?.message ?? "Nome"}
-              {...register("nome")}
-              error={!!errors.nome?.message}
-              variant="filled"
-              fullWidth
-            />
-            <TextField
-              label={errors.email?.message ?? "E-mail"}
-              {...register("email")}
-              error={!!errors.email?.message}
-              variant="filled"
-            />
-            <TextField
-              label={errors.telefone?.message ?? "Telefone"}
-              {...register("telefone")}
-              error={!!errors.telefone?.message}
-              variant="filled"
-            />
-            <FormControl variant="filled">
-              <InputLabel>Perfil</InputLabel>
-              <Select
-                label={errors.perfil?.message ?? "Perfil"}
-                {...register("perfil")}
-                error={!!errors.perfil?.message}
-                defaultValue={userData?.perfil}
-              >
-                <MenuItem value={"Administrador"}>Administrador</MenuItem>
-                <MenuItem value={"Pesquisador"}>Pesquisador</MenuItem>
-                <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions sx={{ marginRight: "20px", marginBottom: 3 }}>
-            <Button autoFocus onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button type="submit" variant="contained" autoFocus>
-              Editar
-            </Button>
-          </DialogActions>
-        </Box>
+        {userData && (  // Verifica se os dados do usuário estão definidos
+          <>
+            <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
+              {"Editar informações do usuário"}
+            </DialogTitle>
+            <Typography
+              sx={{
+                marginLeft: 3,
+                marginRight: 3,
+                marginBottom: 3,
+              }}
+            >
+              {"Personalize as informações do usuário conforme desejado."}
+            </Typography>
+            <Divider />
+            <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+              <DialogContent sx={{ display: "grid", gap: 2 }}>
+                <TextField
+                  label={errors.nome?.message ?? "Nome"}
+                  {...register("nome")}
+                  error={!!errors.nome?.message}
+                  variant="filled"
+                  fullWidth
+                />
+                <TextField
+                  label={errors.email?.message ?? "E-mail"}
+                  {...register("email")}
+                  error={!!errors.email?.message}
+                  variant="filled"
+                />
+                <TextField
+                  label={errors.telefone?.message ?? "Telefone"}
+                  {...register("telefone")}
+                  error={!!errors.telefone?.message}
+                  variant="filled"
+                />
+                <FormControl variant="filled">
+                  <InputLabel>Perfil</InputLabel>
+                  <Select
+                    label={errors.perfil?.message ?? "Perfil"}
+                    {...register("perfil")}
+                    error={!!errors.perfil?.message}
+                    defaultValue={userData.perfil}
+                  >
+                    <MenuItem value={"Administrador"}>Administrador</MenuItem>
+                    <MenuItem value={"Digitador"}>Digitador</MenuItem>
+                    <MenuItem value={"Pesquisador"}>Editor</MenuItem>
+                    <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
+                  </Select>
+                </FormControl>
+              </DialogContent>
+              <DialogActions sx={{ marginRight: "20px", marginBottom: 3 }}>
+                <Button autoFocus onClick={handleClose}>
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="contained" autoFocus>
+                  Editar
+                </Button>
+              </DialogActions>
+            </Box>
+          </>
+        )}
       </Dialog>
     </>
   );
+  
 }

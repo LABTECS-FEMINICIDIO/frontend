@@ -85,7 +85,8 @@ export function CreateVictim(props: IPropsForm) {
 
   const onSubmit = (data: any) => {
     data.sites = links;
-    api.post("/api/vitimas/", data).then((res) => {
+    api.post("/api/vitimas/", data)
+    .then((res) => {
       addCount();
       handleClose();
       toast.success("Vítima criada com sucesso!");

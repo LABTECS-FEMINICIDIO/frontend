@@ -7,8 +7,12 @@ import {
   DialogTitle,
   Divider,
   FormControl,
+  FormControlLabel,
+  FormLabel,
   InputLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   TextField,
   Typography,
@@ -19,30 +23,53 @@ import React from "react";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRefresh } from "../../shared/hooks/useRefresh";
+import { toast } from "react-toastify";
+import { createHoliday } from "../../service/calendar";
 
-const schema = Yup.object().shape({
-  dia: Yup.number().required("Dia é obrigatório").positive(),
-  mes: Yup.number().required("Mês é obrigatório").positive(),
-  ano: Yup.number().required("Ano é obrigatório").positive(),
-  tipo: Yup.string().required("Tipo é obrigatório"),
-  nome: Yup.string().required("Nome é obrigatório"),
-});
+const schema = Yup.object()
+  .shape({
+    dia: Yup.number().required("Dia é obrigatório").positive(),
+    mes: Yup.number().required("Mês é obrigatório").positive(),
+    ano: Yup.number().required("Ano é obrigatório").positive(),
+    tipo: Yup.string().required("Tipo é obrigatório"),
+    nome: Yup.string().required("Nome é obrigatório"),
+    pontoFacultativo: Yup.boolean().required("Ponto facultativo é obrigatório"),
+  })
+  .required();
+type FormData = Yup.InferType<typeof schema>;
 
 export function CreateHoliday() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
+  const { addCount } = useRefresh();
+
   const {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
-    watch,
-  } = useForm({
+  } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+
+  const onSubmit = (data: FormData) => {
+    handleCreateHoliday(data);
+  };
+
+  const handleCreateHoliday = async (data: Yup.InferType<typeof schema>) => {
+    try {
+      await createHoliday(data);
+      toast.success("Feriado cadastrado com sucesso");
+      reset();
+      addCount();
+      handleClose();
+    } catch (error: any) {
+      toast.error(error?.response.data.detail);
+    }
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -76,61 +103,86 @@ export function CreateHoliday() {
           {"Preencha as informações para cadastrar feriado."}
         </Typography>
         <Divider sx={{ marginBottom: 2 }} />
-        <DialogContent
-          sx={{ display: "grid", gap: 1 }}
-        >
-          <TextField
-            label={errors.nome?.message ?? "Nome"}
-            {...register("nome")}
-            error={!!errors.nome?.message}
-            variant="filled"
-          />
-          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 1 }}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent sx={{ display: "grid", gap: 1 }}>
             <TextField
-              label={errors.dia?.message ?? "Dia"}
-              {...register("dia")}
-              error={!!errors.dia?.message}
+              label={errors.nome?.message ?? "Nome"}
+              {...register("nome")}
+              error={!!errors.nome?.message}
               variant="filled"
-              type="number"
             />
-            <TextField
-              label={errors.mes?.message ?? "Mês"}
-              {...register("mes")}
-              error={!!errors.mes?.message}
-              variant="filled"
-              type="number"
-            />
-            <TextField
-              label={errors.ano?.message ?? "Ano"}
-              {...register("ano")}
-              error={!!errors.ano?.message}
-              variant="filled"
-              type="number"
-            />
-          </Box>
-          <FormControl variant="filled">
-            <InputLabel>{errors.tipo?.message ?? "Tipo"}</InputLabel>
-            <Select
-              label={errors.tipo?.message ?? "Tipo"}
-              {...register("tipo")}
-              error={!!errors.tipo?.message}
-              defaultValue={""}
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr 1fr",
+                gap: 1,
+              }}
             >
-              <MenuItem value={"0"}>Nacional</MenuItem>
-              <MenuItem value={"1"}>Municipal</MenuItem>
-              <MenuItem value={"2"}>Estadual</MenuItem>
-              <MenuItem value={"3"}>Ponto facultativo</MenuItem>
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions sx={{ marginBottom: 3, marginRight: "20px" }}>
-          <Button autoFocus onClick={handleClose}>
-            Cancelar
-          </Button>
-          <Button variant="contained" onClick={handleClose} autoFocus>
-            Cadastrar
-          </Button>
-        </DialogActions>
+              <TextField
+                label={errors.dia?.message ?? "Dia"}
+                {...register("dia")}
+                error={!!errors.dia?.message}
+                variant="filled"
+                type="number"
+              />
+              <TextField
+                label={errors.mes?.message ?? "Mês"}
+                {...register("mes")}
+                error={!!errors.mes?.message}
+                variant="filled"
+                type="number"
+              />
+              <TextField
+                label={errors.ano?.message ?? "Ano"}
+                {...register("ano")}
+                error={!!errors.ano?.message}
+                variant="filled"
+                type="number"
+              />
+            </Box>
+            <FormControl variant="filled">
+              <InputLabel>{errors.tipo?.message ?? "Tipo"}</InputLabel>
+              <Select
+                label={errors.tipo?.message ?? "Tipo"}
+                {...register("tipo")}
+                error={!!errors.tipo?.message}
+                defaultValue={""}
+              >
+                <MenuItem value={"Nacional"}>Nacional</MenuItem>
+                <MenuItem value={"Municipal"}>Municipal</MenuItem>
+                <MenuItem value={"Estadual"}>Estadual</MenuItem>
+                {/*  <MenuItem value={"3"}>Ponto facultativo</MenuItem> */}
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel id="pontoFacultativo"> Ponto facultativo? </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby="pontoFacultativo"
+                name="pontoFacultativo"
+              >
+                <FormControlLabel
+                  value={true}
+                  control={<Radio {...register("pontoFacultativo")} />}
+                  label="Sim"
+                />
+                <FormControlLabel
+                  value={false}
+                  control={<Radio {...register("pontoFacultativo")} />}
+                  label="Não"
+                />
+              </RadioGroup>
+            </FormControl>
+          </DialogContent>
+          <DialogActions sx={{ marginBottom: 3, marginRight: "20px" }}>
+            <Button autoFocus onClick={handleClose}>
+              Cancelar
+            </Button>
+            <Button type="submit" variant="contained">
+              Cadastrar
+            </Button>
+          </DialogActions>
+        </Box>
       </Dialog>
     </>
   );

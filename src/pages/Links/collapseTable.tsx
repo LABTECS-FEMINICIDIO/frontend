@@ -44,6 +44,12 @@ export function Row(props: RowProps) {
     });
   };
 
+  const handleChangeAssassinato = () => {
+    api.patch(`/api/updateAssasinato/${props.id}`).then((res) => {
+      props.refreshList();
+    });
+  };
+
   const DeleteSite = (siteId: string) => {
     deleteSite(siteId)
       .then((response: any) => {
@@ -82,7 +88,7 @@ export function Row(props: RowProps) {
         </TableCell>
         <TableCell align="left">
           {props.feminicidio}
-          <Switch onChange={() => {}} checked={props.feminicidio} />
+          <Switch onChange={handleChangeAssassinato} checked={props.feminicidio} />
         </TableCell>
         <TableCell align="left">
           <Classification
