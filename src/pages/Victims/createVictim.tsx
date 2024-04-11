@@ -70,7 +70,7 @@ export function CreateVictim(props: IPropsForm) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
-  const [links, setLinks] = React.useState<string[]>([]);
+  //const [links, setLinks] = React.useState<string[]>([]);
 
   const { addCount } = useRefresh();
 
@@ -84,16 +84,15 @@ export function CreateVictim(props: IPropsForm) {
   });
 
   const onSubmit = (data: any) => {
-    data.sites = links;
-    api.post("/api/vitimas/", data)
-    .then((res) => {
+    //data.sites = links;
+    api.post("/api/vitimas/", data).then((res) => {
       addCount();
       handleClose();
       toast.success("Vítima criada com sucesso!");
     });
   };
 
-  const handleAddLink = () => {
+/*   const handleAddLink = () => {
     // Adiciona um novo link ao estado de links
     setLinks([...links, ""]);
   };
@@ -110,7 +109,7 @@ export function CreateVictim(props: IPropsForm) {
     const updatedLinks = [...links];
     updatedLinks[index] = value;
     setLinks(updatedLinks);
-  };
+  }; */
 
   const handleClose = () => {
     setOpen(false);
@@ -600,7 +599,7 @@ export function CreateVictim(props: IPropsForm) {
                 variant="filled"
               />
             </Box>
-            <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
+            {/* <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
               Links de Referência:
             </Typography>
             <Box>
@@ -619,10 +618,10 @@ export function CreateVictim(props: IPropsForm) {
                 </Box>
               ))}
             </Box>
-            {/* Botão para adicionar mais links de referência */}
+             Botão para adicionar mais links de referência 
             <Button variant="contained" onClick={handleAddLink}>
               Adicionar Link
-            </Button>
+            </Button> */}
             <Box sx={{ marginTop: "10px", marginLeft: "75%" }}>
               <Button onClick={handleClose} variant="text">
                 Cancelar

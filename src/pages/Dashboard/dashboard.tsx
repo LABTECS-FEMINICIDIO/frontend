@@ -30,7 +30,7 @@ export function Dashboard() {
           frameBorder="0"
           width="1650"
           height="670"
-          allowTransparency
+          allowTransparency= {true}
           onLoad={handleMetabaseLoad}
         />
       </Box>

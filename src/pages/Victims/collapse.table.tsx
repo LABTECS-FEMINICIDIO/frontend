@@ -322,8 +322,8 @@ export function TableVictims(props: ITableVctims) {
         <TableHead sx={{ background: colors.primary_lightest }}>
           <TableRow>
             <TableCell />
-            <TableCell align="left">Nome</TableCell>
-            <TableCell align="left">Idade</TableCell>
+            <TableCell align="left">nome</TableCell>
+            <TableCell align="left">idade</TableCell>
             <TableCell align="left">datadofato</TableCell>
             <TableCell align="left">violsexual</TableCell>
             <TableCell align="left"></TableCell>

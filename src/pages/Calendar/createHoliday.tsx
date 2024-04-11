@@ -32,8 +32,8 @@ const schema = Yup.object()
     dia: Yup.number().required("Dia é obrigatório").positive(),
     mes: Yup.number().required("Mês é obrigatório").positive(),
     ano: Yup.number().required("Ano é obrigatório").positive(),
-    tipo: Yup.string().required("Tipo é obrigatório"),
-    nome: Yup.string().required("Nome é obrigatório"),
+    type: Yup.string().required("Tipo é obrigatório"),
+    name: Yup.string().required("Nome é obrigatório"),
     pontoFacultativo: Yup.boolean().required("Ponto facultativo é obrigatório"),
   })
   .required();
@@ -106,9 +106,9 @@ export function CreateHoliday() {
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <DialogContent sx={{ display: "grid", gap: 1 }}>
             <TextField
-              label={errors.nome?.message ?? "Nome"}
-              {...register("nome")}
-              error={!!errors.nome?.message}
+              label={errors.name?.message ?? "Nome"}
+              {...register("name")}
+              error={!!errors.name?.message}
               variant="filled"
             />
             <Box
@@ -141,11 +141,11 @@ export function CreateHoliday() {
               />
             </Box>
             <FormControl variant="filled">
-              <InputLabel>{errors.tipo?.message ?? "Tipo"}</InputLabel>
+              <InputLabel>{errors.type?.message ?? "Tipo"}</InputLabel>
               <Select
-                label={errors.tipo?.message ?? "Tipo"}
-                {...register("tipo")}
-                error={!!errors.tipo?.message}
+                label={errors.type?.message ?? "Tipo"}
+                {...register("type")}
+                error={!!errors.type?.message}
                 defaultValue={""}
               >
                 <MenuItem value={"Nacional"}>Nacional</MenuItem>
