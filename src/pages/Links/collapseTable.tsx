@@ -22,7 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
-export interface RowProps {
+export interface Row {
   nome: string;
   link: string;
   conteudo: string;
@@ -34,9 +34,13 @@ export interface RowProps {
   refreshList: () => void;
 }
 
-export function Row(props: RowProps) {
+export interface Props {
+  search: { column: string; value: string };
+}
+
+export function Row(props: Row) {
   const [open, setOpen] = React.useState(false);
-  const { addCount, count } = useRefresh();
+  const { addCount } = useRefresh();
 
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
@@ -136,8 +140,8 @@ export function Row(props: RowProps) {
   );
 }
 
-export default function CollapsibleTable() {
-  const [rows, setRows] = useState([]);
+export default function CollapsibleTable({ search }: Props) {
+  const [rows, setRows] = useState<Row[]>([]);
   const [findSitesFetched, setFindSitesFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -146,7 +150,7 @@ export default function CollapsibleTable() {
   const refreshList = () => {
     setLoading(true);
     api
-      .get("/api/site/")
+      .get("/api/site/", { params: search })
       .then((res) => {
         setRows(res.data);
         setLoading(false);
@@ -205,7 +209,7 @@ export default function CollapsibleTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentRows.map((row: RowProps) => (
+            {currentRows.map((row: Row) => (
               <Row key={row.id} {...row} refreshList={refreshList} />
             ))}
           </TableBody>
