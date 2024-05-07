@@ -36,11 +36,13 @@ export interface Row {
 
 export interface Props {
   search: { column: string; value: string };
+  filterData: Row[]
 }
 
 export function Row(props: Row) {
   const [open, setOpen] = React.useState(false);
   const { addCount } = useRefresh();
+
 
   const handleChangeLido = () => {
     api.patch(`/api/updateLido/${props.id}`).then((res) => {
@@ -92,7 +94,10 @@ export function Row(props: Row) {
         </TableCell>
         <TableCell align="left">
           {props.feminicidio}
-          <Switch onChange={handleChangeAssassinato} checked={props.feminicidio} />
+          <Switch
+            onChange={handleChangeAssassinato}
+            checked={props.feminicidio}
+          />
         </TableCell>
         <TableCell align="left">
           <Classification
@@ -128,7 +133,7 @@ export function Row(props: Row) {
                     src={props.link}
                   />
                   <Box>
-                  <Form idSite={props.id} />
+                    <Form idSite={props.id} />
                   </Box>
                 </TableBody>
               </Table>
@@ -140,17 +145,25 @@ export function Row(props: Row) {
   );
 }
 
-export default function CollapsibleTable({ search }: Props) {
+export default function CollapsibleTable({ search, filterData }: Props) {
   const [rows, setRows] = useState<Row[]>([]);
   const [findSitesFetched, setFindSitesFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 10;
 
+useEffect(()=>{
+  if(search.value.length > 0){
+    setRows(filterData)
+    return
+  }
+  refreshList()
+},[filterData])
+
   const refreshList = () => {
     setLoading(true);
     api
-      .get("/api/site/", { params: search })
+      .get("/api/site")
       .then((res) => {
         setRows(res.data);
         setLoading(false);
@@ -167,7 +180,7 @@ export default function CollapsibleTable({ search }: Props) {
       });
     }
     api
-      .get("/api/site/")
+      .get("/api/site")
       .then((res) => {
         setRows(res.data);
         setLoading(false);
@@ -175,10 +188,10 @@ export default function CollapsibleTable({ search }: Props) {
       .catch(() => setLoading(false));
   }, [findSitesFetched]);
 
+  const currentRows = rows;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentRows = rows.slice(indexOfFirstItem, indexOfLastItem);
-
+  const currentRowsPaginated = rows.slice(indexOfFirstItem, indexOfLastItem);
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -209,7 +222,7 @@ export default function CollapsibleTable({ search }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentRows.map((row: Row) => (
+            {currentRowsPaginated.map((row: Row) => (
               <Row key={row.id} {...row} refreshList={refreshList} />
             ))}
           </TableBody>
@@ -217,7 +230,7 @@ export default function CollapsibleTable({ search }: Props) {
       )}
       <Pagination
         itemsPerPage={itemsPerPage}
-        totalItems={rows.length}
+        totalItems={currentRows.length}
         currentPage={currentPage}
         paginate={paginate}
       />
