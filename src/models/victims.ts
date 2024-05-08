@@ -26,4 +26,5 @@ export interface IVictims {
     filhosdescrever: number;
     lat: string;
     lng: string;
+    sites_in_bulk: string,
   }

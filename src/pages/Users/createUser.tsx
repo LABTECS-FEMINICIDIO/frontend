@@ -30,7 +30,7 @@ const schema = Yup.object()
     nome: Yup.string()
       .required("Nome é um campo obrigatório")
       .trim()
-      .matches(/^[A-Z\s]*$/, "Nome deve conter apenas letras"),
+      .matches(/^[A-Za-z\s]*$/, "Nome deve conter apenas letras"),
     email: Yup.string()
       .required("E-mail é um campo obrigatório")
       .email("E-mail deve ter um formato válido: exemplo@mail.com.br"),
@@ -71,7 +71,7 @@ export function CreateUser() {
       addCount();
       handleClose();
     } catch (error: any) {
-      toast.error(error?.response.data.detail);
+      toast.error(error?.response.data.message);
     }
   };
 
@@ -81,6 +81,7 @@ export function CreateUser() {
 
   const handleClose = () => {
     setOpen(false);
+    reset();
   };
 
   return (
