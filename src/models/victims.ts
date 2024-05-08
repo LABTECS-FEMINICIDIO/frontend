@@ -26,5 +26,4 @@ export interface IVictims {
     filhosdescrever: number;
     lat: string;
     lng: string;
-    crimepassion: string;
   }
