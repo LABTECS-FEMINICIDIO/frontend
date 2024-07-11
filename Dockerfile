@@ -12,6 +12,8 @@ COPY . .
 # Build the app
 RUN yarn build
 
+EXPOSE 3000
+
 # Bundle static assets with nginx
 FROM nginx:1.21.0-alpine as production
 ENV NODE_ENV production
