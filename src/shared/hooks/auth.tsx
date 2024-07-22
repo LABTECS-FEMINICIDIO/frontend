@@ -4,6 +4,7 @@ import { ILogin } from '../../models/login';
 import { login } from '../../service/auth';
 import api from '../../service/api';
 import { toast } from 'react-toastify';
+import {jwtDecode} from 'jwt-decode';
 
 interface TokenContextData {
   permission?: Boolean;
@@ -27,6 +28,16 @@ export function TokenProvider({ children }: TokenProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [username, setUsername] = useState("");
 
+  const decodeToken = (token: string) => {
+    try {
+      const decoded = jwtDecode(token);
+      return decoded;
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return null;
+    }
+  };
+
   const setAxiosToken = (token: string | null) => {
     if (token) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -47,15 +58,16 @@ export function TokenProvider({ children }: TokenProviderProps) {
   async function Login(payload: ILogin) {
     await login(payload)
       .then(response => {
-        const token = response.data.access_token;
+        const token = response.data.access_token; 
+        const tokenDecoded = decodeToken(token) as any
         cookies.set("@feminicidio_token", token);
         setAxiosToken(token);
         setToken(token);
-        setUsername(response.data.nome);
-        cookies.set("usernamef", response.data.nome);
-        cookies.set("idf", response.data.id);
+        setUsername(tokenDecoded!.sub.name);
+        cookies.set("usernamef", tokenDecoded!.sub.name);
+        cookies.set("idf", tokenDecoded!.sub.id);
         setPermission(true);
-        setPerfil(response.data.permission.toLowerCase());
+        setPerfil(tokenDecoded!.sub.role.toLowerCase());
         toast.success('Login realizado com sucesso');
       })
       .catch(error => {

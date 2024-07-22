@@ -7,7 +7,7 @@ import { parsePhoneNumberFromString, format } from 'libphonenumber-js';
 
 export const columns: GridColDef[] = [
   {
-    field: "nome",
+    field: "name",
     headerName: "Nome",
   },
   {
@@ -15,17 +15,17 @@ export const columns: GridColDef[] = [
     headerName: "E-mail",
   },
   {
-    field: "telefone",
+    field: "contact",
     headerName: "Telefone",
     renderCell(params) {
-      const phoneNumber = params.row.telefone;
+      const phoneNumber = params.row.contact;
       const formattedPhoneNumber = formatPhoneNumber(phoneNumber);
       
       return formattedPhoneNumber;
     },
   },
   {
-    field: "perfil",
+    field: "role",
     headerName: "Perfil",
   },
   {
@@ -38,18 +38,18 @@ export const columns: GridColDef[] = [
     },
   },
   {
-    field: 'Acesso',
+    field: 'isBlocked',
     headerName: 'Acesso',
     renderCell: (params) => {
      
      const handleClick = async(id:string) => {
         const data: any = {
-          acesso: (!params.row.acesso)
+          isBlocked: (!params.row.isBlocked)
         } 
         await updateUser(id, data)
       }
       return (
-        <Switch key={params.row.acesso} defaultChecked={params.row.acesso} onClick={() => handleClick(params.row.id)}  />
+        <Switch key={params.row.isBlocked} defaultChecked={params.row.isBlocked} onClick={() => handleClick(params.row.id)}  />
       )
     },
   },

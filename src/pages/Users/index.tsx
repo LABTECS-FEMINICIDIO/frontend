@@ -49,11 +49,7 @@ export function Users() {
   };
 
   const OpenModalEdit = async (id: string) => {
-    await findById(id)
-      .then((response) => {})
-      .catch((error) => {
-        toast.error(error?.response.data.detail);
-      });
+
   };
 
   const DeleteUser = (userId: string) => {
@@ -138,9 +134,9 @@ export function Users() {
               label="coluna"
               onChange={handleColumn}
             >
-              <MenuItem value={"nome"}>Nome</MenuItem>
+              <MenuItem value={"name"}>Nome</MenuItem>
               <MenuItem value={"email"}>Email</MenuItem>
-              <MenuItem value={"telefone"}>Telefone</MenuItem>
+              <MenuItem value={"contact"}>Telefone</MenuItem>
               <MenuItem value={"acesso"}>Acesso</MenuItem>
             </Select>
           </FormControl>

@@ -21,3 +21,21 @@ api.interceptors.request.use(addTokenToHeaders, (error) => {
 });
 
 export default api;
+
+export const apiAuth = axios.create({
+  baseURL: process.env.REACT_APP_API_AUTH
+})
+
+export const addTokenToHeadersApiAuth = (config: any) => {
+  const cookie = new Cookies();
+  const Token = cookie.get('@feminicidio_token');
+  if (Token) {
+    config.headers.Authorization = `Bearer ${Token}`;
+  }
+  return config;
+};
+
+apiAuth.interceptors.request.use(addTokenToHeaders, (error) => {
+  return Promise.reject(error);
+});
+

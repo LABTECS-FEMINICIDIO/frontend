@@ -33,7 +33,7 @@ export const APP_PAGES = [
         route: '/iml',
         icon: <TextSnippetIcon />,
         component: <Iml />,
-        showMenu: true,
+        showMenu: false,
     },
     {
         title: 'Links',

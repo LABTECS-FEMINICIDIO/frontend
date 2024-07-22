@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { ILogin } from '../../models/login';
 import {api} from '../api';
 
@@ -8,7 +9,8 @@ export async function authToken(token: string) {
 export async function login(data: ILogin) {
     const payload = {
       email: data.email,
-      senha: data.senha,
+      password: data.senha,
     };
+    return await axios.post(`${process.env.REACT_APP_API_AUTH}/api/v1/auth/login`, payload)
     return await api.post('/api/login', payload);
   }

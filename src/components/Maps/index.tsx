@@ -11,7 +11,7 @@ interface IProps {
 }
 
 export function MapPage({vitimas}: IProps) {
-  const position = [-3.059943, -59.988359] as LatLngExpression
+  const position = [-8.763879, -63.884268] as LatLngExpression
 
   const myIcon: any = new Icon({
     iconUrl: "https://www.irmasclarissas.org.br/wp-content/uploads/2015/08/Map-Marker-PNG-File.png",

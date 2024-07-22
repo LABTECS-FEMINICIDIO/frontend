@@ -1,5 +1,5 @@
 import { IUser } from "../../models/users";
-import { api } from "../api";
+import { api, apiAuth } from "../api";
 
 export function createUser(data: any){
     return api.post('/api/usuarios/', data)
@@ -8,7 +8,7 @@ export function registerUser(data: any){
     return api.post('/api/usuarios/visualizador/', data)
 }
 export function findManyUsers(){
-    return api.get('/api/usuarios/')
+    return apiAuth.get('/api/v1/users')
 }
 export async function findById(id: string) {
     return api.get('api/usuarios/' + id);

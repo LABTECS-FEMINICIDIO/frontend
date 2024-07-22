@@ -12,8 +12,10 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  MenuItem,
   OutlinedInput,
   Paper,
+  Select,
 } from "@mui/material";
 import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
@@ -23,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useToken } from "../../shared/hooks/auth";
+import { toast } from "react-toastify";
 
 const schema = yup.object({
   email: yup.string()
@@ -37,6 +40,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
   const { Login, token, permission } = useToken();
+  const [cidade, setCidade] = React.useState("")
   const [loading, setLoading] = React.useState(false);
   const {
     register,
@@ -47,9 +51,14 @@ export default function SignIn() {
   });
 
   const onSubmit = (data: FormData) => handleLogin(data);
-
+  
   const handleLogin = async (data: yup.InferType<typeof schema>) => {
     setLoading(true);
+    if(cidade == ""){
+      toast.error("Selecione uma cidade")
+      setLoading(false);
+      return
+    }
     await Login(data);
     setLoading(false);
   };
@@ -61,6 +70,21 @@ export default function SignIn() {
   }, []);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleChangeState = (state: string) => {
+    const objLinks = {
+      "manaus": {
+        "front": "http://www.labtecs.com.br:3000/",
+        "back": "http://www.labtecs.com.br:4555"
+      },
+      "porto-velho": {
+        "front": "https://www.monitorafeminicidio.com/",
+        "back": "https://api.monitorafeminicidio.com"
+      }
+    }
+
+    setCidade(state)
+  }
 
   const handleMouseDownPassword = (
     event: React.MouseEvent<HTMLButtonElement>
@@ -159,6 +183,17 @@ export default function SignIn() {
                   marginTop: 3,
                 }}
               >
+                <FormControl variant="filled">
+                <InputLabel>{"Cidade"}</InputLabel>
+                <Select
+                  label={"Cidade"}
+                  onChange={(e) => handleChangeState(e.target.value)}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"manaus"}>Manaus</MenuItem>
+                  <MenuItem value={"porto-velho"}>Porto velho</MenuItem>
+                </Select>
+              </FormControl>
                 <Button
                   type="submit"
                   variant="contained"
