@@ -4,6 +4,7 @@ import { ResetPassword } from "./resetPassword";
 import { updateUser } from "../../service/users";
 import { EditUser } from "./editUserAdmin";
 import { parsePhoneNumberFromString, format } from 'libphonenumber-js';
+import { States } from "./states";
 
 export const columns: GridColDef[] = [
   {
@@ -29,11 +30,21 @@ export const columns: GridColDef[] = [
     headerName: "Perfil",
   },
   {
+    field: "cidades",
+    headerName: "Cidades",
+    align: "right",
+    renderCell(params) {
+      return (
+       <States estados={params.row.permission} userEmail={params.row.email}/>
+      );
+    },
+  },
+  {
     field: "resetarSenha",
     headerName: "Resetar Senha",
     renderCell(params) {
       return (
-       <ResetPassword userId={params.row.id}/>
+       <ResetPassword userId={params.row.email}/>
       );
     },
   },
@@ -43,13 +54,15 @@ export const columns: GridColDef[] = [
     renderCell: (params) => {
      
      const handleClick = async(id:string) => {
+      console.log("aaa", params.row.isBlocked)
         const data: any = {
           isBlocked: (!params.row.isBlocked)
-        } 
+        }
+      console.log("bbbb", data)
         await updateUser(id, data)
       }
       return (
-        <Switch key={params.row.isBlocked} defaultChecked={params.row.isBlocked} onClick={() => handleClick(params.row.id)}  />
+        <Switch key={params.row.isBlocked} defaultChecked={!params.row.isBlocked} onClick={() => handleClick(params.row.id)}  />
       )
     },
   },
@@ -58,7 +71,7 @@ export const columns: GridColDef[] = [
     headerName: "",
     renderCell(params) {
       return (
-       <EditUser id={params.row.id}/>
+       <EditUser id={params.row.id} user={params.row}/>
       );
     },
   },

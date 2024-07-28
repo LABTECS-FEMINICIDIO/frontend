@@ -1,8 +1,8 @@
 export interface IUser{
-    nome: string
+    name: string
     email: string
-    telefone: string
-    perfil: string
-    senha: string
-    acesso: boolean
+    contact: string
+    role: string
+    password: string
+    isBlocked: boolean
 }

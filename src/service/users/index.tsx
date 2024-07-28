@@ -2,10 +2,14 @@ import { IUser } from "../../models/users";
 import { api, apiAuth } from "../api";
 
 export function createUser(data: any){
-    return api.post('/api/usuarios/', data)
+    return apiAuth.post('/api/v1/users', data)
 }
 export function registerUser(data: any){
-    return api.post('/api/usuarios/visualizador/', data)
+    const dataWithRole = {
+        ...data,
+        role: 2
+    }
+    return apiAuth.post('/api/v1/users', dataWithRole)
 }
 export function findManyUsers(){
     return apiAuth.get('/api/v1/users')
@@ -14,11 +18,24 @@ export async function findById(id: string) {
     return api.get('api/usuarios/' + id);
 }
 export function createPassword(userId: string){
-    return api.post('/api/usuarios/reset/' +userId)
+    return apiAuth.post('/api/v1/auth/password-reset', {
+        email: userId
+    })
 }
 export function deleteUser(userId: string){
-    return api.delete('/api/usuarios/'+userId)
+    return apiAuth.delete('/api/v1/users/'+userId)
 }
 export function updateUser(userId?: string, data?: any){
-    return api.patch('/api/usuarios/'+userId, data)
+    const dict: any = {
+        Administrador: 1,
+        Digitador: 4,
+        Editor: 3,
+        Visualizador: 2
+    }
+
+    if (Object.keys(data).includes("role")){
+        data.role = dict[data.role] 
+    }
+
+    return apiAuth.patch('/api/v1/users/'+userId, data)
 }

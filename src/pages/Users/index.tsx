@@ -49,7 +49,11 @@ export function Users() {
   };
 
   const OpenModalEdit = async (id: string) => {
-
+    // await findById(id)
+    // .then((response) => {})
+    // .catch((error) => {
+    //   toast.error(error?.response.data.detail);
+    // });
   };
 
   const DeleteUser = (userId: string) => {

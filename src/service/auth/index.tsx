@@ -12,5 +12,4 @@ export async function login(data: ILogin) {
       password: data.senha,
     };
     return await axios.post(`${process.env.REACT_APP_API_AUTH}/api/v1/auth/login`, payload)
-    return await api.post('/api/login', payload);
   }

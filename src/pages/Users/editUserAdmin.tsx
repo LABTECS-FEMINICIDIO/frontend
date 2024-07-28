@@ -28,24 +28,24 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object()
   .shape({
-    nome: Yup.string()
+    name: Yup.string()
       .trim()
       .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras')
       .optional(),
     email: Yup.string()
       .email("E-mail deve ter um formato válido: exemplo@mail.com.br")
       .optional(),
-    telefone: Yup.string()
+    contact: Yup.string()
       .matches(/^[0-9]+$/, 'Telefone deve conter apenas números')
       .optional(),
-    perfil: Yup.string().optional(),
-    senha: Yup.string().optional(),
+    role: Yup.string().optional(),
+    password: Yup.string().optional(),
   })
   .required();
 
 type FormData = Yup.InferType<typeof schema>;
 
-export function EditUser({ id }: { id: string }) {
+export function EditUser({ id, user }: { id: string , user: any}) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const [userData, setUserData] = useState<IUser | null>(null);
@@ -81,37 +81,46 @@ export function EditUser({ id }: { id: string }) {
 
   const handleClickOpen = () => {
     setOpen(true);
+    fillUserData();
   };
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  const fetchUserData = () => {
-    findById(id)
-      .then((response) => {
-        if (response && response.data) {
-          setUserData(response.data);
-          setValue("nome", response.data.nome);
-          setValue("email", response.data.email);
-          setValue("perfil", response.data.perfil);
-          setValue("telefone", response.data.telefone);
-          setLoading(false);
-        } else {
-          console.error(
-            "Erro ao buscar os dados do usuário: Resposta inválida"
-          );
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.error("Erro ao buscar os dados do usuário:", error);
-      });
-  };
+  // const fetchUserData = () => {
+  //   findById(id)
+  //     .then((response) => {
+  //       if (response && response.data) {
+  //         setUserData(response.data);
+  //         setValue("nome", response.data.nome);
+  //         setValue("email", response.data.email);
+  //         setValue("perfil", response.data.perfil);
+  //         setValue("telefone", response.data.telefone);
+  //         setLoading(false);
+  //       } else {
+  //         console.error(
+  //           "Erro ao buscar os dados do usuário: Resposta inválida"
+  //         );
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       setLoading(false);
+  //       console.error("Erro ao buscar os dados do usuário:", error);
+  //     });
+  // };
 
+  const fillUserData = () => {
+    console.log("user dasta", user)
+    setValue("name", user.name)
+    setValue("email", user.email);
+    setValue("role", user.role);
+    setValue("contact", user.contact);
+    setLoading(false);
+}
   const handleEditButtonClick = () => {
     setLoading(true);
-    fetchUserData();
+    fillUserData();
   };
 
   return (
@@ -125,7 +134,7 @@ export function EditUser({ id }: { id: string }) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        {userData && (  // Verifica se os dados do usuário estão definidos
+        {user && (  // Verifica se os dados do usuário estão definidos
           <>
             <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
               {"Editar informações do usuário"}
@@ -143,9 +152,9 @@ export function EditUser({ id }: { id: string }) {
             <Box component="form" onSubmit={handleSubmit(onSubmit)}>
               <DialogContent sx={{ display: "grid", gap: 2 }}>
                 <TextField
-                  label={errors.nome?.message ?? "Nome"}
-                  {...register("nome")}
-                  error={!!errors.nome?.message}
+                  label={errors.name?.message ?? "Nome"}
+                  {...register("name")}
+                  error={!!errors.name?.message}
                   variant="filled"
                   fullWidth
                 />
@@ -156,22 +165,22 @@ export function EditUser({ id }: { id: string }) {
                   variant="filled"
                 />
                 <TextField
-                  label={errors.telefone?.message ?? "Telefone"}
-                  {...register("telefone")}
-                  error={!!errors.telefone?.message}
+                  label={errors.contact?.message ?? "Telefone"}
+                  {...register("contact")}
+                  error={!!errors.contact?.message}
                   variant="filled"
                 />
                 <FormControl variant="filled">
                   <InputLabel>Perfil</InputLabel>
                   <Select
-                    label={errors.perfil?.message ?? "Perfil"}
-                    {...register("perfil")}
-                    error={!!errors.perfil?.message}
-                    defaultValue={userData.perfil}
+                    label={errors.role?.message ?? "Perfil"}
+                    {...register("role")}
+                    error={!!errors.role?.message}
+                    defaultValue={user?.role}
                   >
                     <MenuItem value={"Administrador"}>Administrador</MenuItem>
                     <MenuItem value={"Digitador"}>Digitador</MenuItem>
-                    <MenuItem value={"Editor"}>Editor</MenuItem>
+                    <MenuItem value={"Pesquisador"}>Editor</MenuItem>
                     <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
                   </Select>
                 </FormControl>

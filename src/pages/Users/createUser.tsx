@@ -27,17 +27,17 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object()
   .shape({
-    nome: Yup.string()
+    name: Yup.string()
       .required("Nome é um campo obrigatório")
       .trim()
       .matches(/^[A-Za-z\s]*$/, "Nome deve conter apenas letras"),
     email: Yup.string()
       .required("E-mail é um campo obrigatório")
       .email("E-mail deve ter um formato válido: exemplo@mail.com.br"),
-    telefone: Yup.string()
+    contact: Yup.string()
       .required("Telefone é um campo obrigatório")
       .matches(/^[0-9]+$/, "Telefone deve conter apenas números"),
-    perfil: Yup.string().required("O perfil é obrigatório"),
+    role: Yup.number().required("O perfil é obrigatório"),
   })
   .required();
 
@@ -84,6 +84,10 @@ export function CreateUser() {
     reset();
   };
 
+  const onError = (errors: any) => {
+    console.log('Form Errors:', errors);
+  };
+
   return (
     <>
       <Button variant="contained" onClick={handleClickOpen}>
@@ -108,12 +112,12 @@ export function CreateUser() {
           {"Preencha as informações para cadastrar um novo usuário."}
         </Typography>
         <Divider />
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit, onError)}>
           <DialogContent sx={{ display: "grid", gap: 2 }}>
             <TextField
-              label={errors.nome?.message ?? "Nome"}
-              {...register("nome")}
-              error={!!errors.nome?.message}
+              label={errors.name?.message ?? "Nome"}
+              {...register("name")}
+              error={!!errors.name?.message}
               variant="filled"
               fullWidth
             />
@@ -124,23 +128,23 @@ export function CreateUser() {
               variant="filled"
             />
             <TextField
-              label={errors.telefone?.message ?? "Telefone"}
-              {...register("telefone")}
-              error={!!errors.telefone?.message}
+              label={errors.contact?.message ?? "Telefone"}
+              {...register("contact")}
+              error={!!errors.contact?.message}
               variant="filled"
             />
             <FormControl variant="filled">
-              <InputLabel>{errors.perfil?.message ?? "Perfil"}</InputLabel>
+              <InputLabel>{errors.role?.message ?? "Perfil"}</InputLabel>
               <Select
-                label={errors.perfil?.message ?? "Perfil"}
-                {...register("perfil")}
-                error={!!errors.perfil?.message}
+                label={errors.role?.message ?? "Perfil"}
+                {...register("role")}
+                error={!!errors.role?.message}
                 defaultValue={""}
               >
-                <MenuItem value={"Administrador"}>Administrador</MenuItem>
-                <MenuItem value={"Digitador"}>Digitador</MenuItem>
-                <MenuItem value={"Pesquisador"}>Editor</MenuItem>
-                <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
+                <MenuItem value={1}>Administrador</MenuItem>
+                <MenuItem value={4}>Digitador</MenuItem>
+                <MenuItem value={3}>Editor</MenuItem>
+                <MenuItem value={2}>Visualizador</MenuItem>
               </Select>
             </FormControl>
           </DialogContent>

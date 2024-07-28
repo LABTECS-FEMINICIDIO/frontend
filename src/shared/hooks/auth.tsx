@@ -60,21 +60,22 @@ export function TokenProvider({ children }: TokenProviderProps) {
       .then(response => {
         const token = response.data.access_token; 
         const tokenDecoded = decodeToken(token) as any
+        const parsedToken = JSON.parse(tokenDecoded.sub)
         cookies.set("@feminicidio_token", token);
         setAxiosToken(token);
         setToken(token);
-        setUsername(tokenDecoded!.sub.name);
-        cookies.set("usernamef", tokenDecoded!.sub.name);
-        cookies.set("idf", tokenDecoded!.sub.id);
+        setUsername(parsedToken.name);
+        cookies.set("usernamef", parsedToken.name);
+        cookies.set("idf", parsedToken.id);
         setPermission(true);
-        setPerfil(tokenDecoded!.sub.role.toLowerCase());
+        setPerfil(parsedToken.role.toLowerCase());
         toast.success('Login realizado com sucesso');
       })
       .catch(error => {
-        setPermission(false);
         if (error?.response.status === 401) {
           toast.error(error?.response.data.detail);
         }
+        setPermission(false);
       });
   }
 

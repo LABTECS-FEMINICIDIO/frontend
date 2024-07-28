@@ -17,14 +17,14 @@ import { toast } from "react-toastify";
 import { registerUser } from "../../service/users";
 
 const schema = yup.object({
-  nome: yup.string()
+  name: yup.string()
     .required("Nome é um campo obrigatório")
     .trim()
     .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras'),
   email: yup.string()
     .required("E-mail é um campo obrigatório")
     .email("E-mail deve ter um formato válido: exemplo@mail.com.br"),
-  telefone: yup.string()
+  contact: yup.string()
     .required("Telefone é um campo obrigatório")
     .matches(/^[0-9]+$/, 'Telefone deve conter apenas números'),
 }).required();
@@ -116,9 +116,9 @@ export default function Register() {
               required
               fullWidth
               id="nome"
-              label={errors.nome?.message ?? "Nome"}
-              error={!!errors.nome?.message}
-              {...register("nome")}
+              label={errors.name?.message ?? "Nome"}
+              error={!!errors.name?.message}
+              {...register("name")}
               autoComplete="nome"
               autoFocus
             />
@@ -138,10 +138,10 @@ export default function Register() {
               required
               fullWidth
               id="telefone"
-              label={errors.telefone?.message ?? "Telefone"}
-              error={!!errors.telefone?.message}
-              {...register("telefone")}
-              autoComplete="telefone"
+              label={errors.contact?.message ?? "Telefone"}
+              error={!!errors.contact?.message}
+              {...register("contact")}
+              autoComplete="contact"
               autoFocus
             />
             <Box
