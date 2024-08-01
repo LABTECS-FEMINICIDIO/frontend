@@ -5,6 +5,7 @@ import { updateUser } from "../../service/users";
 import { EditUser } from "./editUserAdmin";
 import { parsePhoneNumberFromString, format } from 'libphonenumber-js';
 import { States } from "./states";
+import { toast } from "react-toastify";
 
 export const columns: GridColDef[] = [
   {
@@ -32,7 +33,7 @@ export const columns: GridColDef[] = [
   {
     field: "cidades",
     headerName: "Cidades",
-    align: "right",
+    align: "left",
     renderCell(params) {
       return (
        <States estados={params.row.permission} userEmail={params.row.email}/>
@@ -58,8 +59,13 @@ export const columns: GridColDef[] = [
         const data: any = {
           isBlocked: (!params.row.isBlocked)
         }
-      console.log("bbbb", data)
-        await updateUser(id, data)
+
+        try {
+          await updateUser(id, data)
+          toast.success("Acesso atualizado com sucesso")
+        } catch {
+          toast.error("Ocorreu um erro")
+        }
       }
       return (
         <Switch key={params.row.isBlocked} defaultChecked={!params.row.isBlocked} onClick={() => handleClick(params.row.id)}  />

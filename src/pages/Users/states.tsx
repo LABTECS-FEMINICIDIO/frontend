@@ -19,6 +19,7 @@ import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { toast } from "react-toastify";
 import { apiAuth } from "../../service/api";
+import { useRefresh } from "../../shared/hooks/useRefresh";
 
 export function States({ estados, userEmail }: { estados: string[], userEmail: string }) {
   const [open, setOpen] = useState(false);
@@ -27,6 +28,7 @@ export function States({ estados, userEmail }: { estados: string[], userEmail: s
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const { addCount } = useRefresh();
 
   const { handleSubmit, control, reset } = useForm();
 
@@ -60,6 +62,7 @@ export function States({ estados, userEmail }: { estados: string[], userEmail: s
       .then(response => {
         toast.success("City added successfully!");
         handleClose();
+        addCount()
       })
       .catch(error => {
         toast.error("Failed to add city.");
@@ -74,6 +77,7 @@ export function States({ estados, userEmail }: { estados: string[], userEmail: s
       .then(response => {
         toast.success("City removed successfully!");
         handleClose();
+        addCount()
         setAddCityOpen(false)
       })
       .catch(error => {
