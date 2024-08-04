@@ -48,7 +48,9 @@ export function AppContainer({ children, title }: AppContainerProps) {
     const cookie = new Cookies();
     cookie.remove("@feminicidio_token");
     localStorage.removeItem("@feminicidio_token");
-
+    cookie.remove("selectedStateF");
+    cookie.remove("usernamef");
+    cookie.remove("idf");
     window.location.href = "/";
   }
 

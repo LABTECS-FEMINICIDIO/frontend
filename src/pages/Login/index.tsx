@@ -39,7 +39,7 @@ type FormData = yup.InferType<typeof schema>;
 export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
-  const { Login, token, permission } = useToken();
+  const { Login, token, permission, handleSelectedState } = useToken();
   const [cidade, setCidade] = React.useState("")
   const [loading, setLoading] = React.useState(false);
   const {
@@ -72,17 +72,7 @@ export default function SignIn() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleChangeState = (state: string) => {
-    const objLinks = {
-      "manaus": {
-        "front": "http://www.labtecs.com.br:3000/",
-        "back": "http://www.labtecs.com.br:4555"
-      },
-      "porto-velho": {
-        "front": "https://www.monitorafeminicidio.com/",
-        "back": "https://api.monitorafeminicidio.com"
-      }
-    }
-
+    handleSelectedState(state)
     setCidade(state)
   }
 
@@ -190,8 +180,8 @@ export default function SignIn() {
                   onChange={(e) => handleChangeState(e.target.value)}
                   defaultValue={""}
                 >
-                  <MenuItem value={"manaus"}>Manaus</MenuItem>
-                  <MenuItem value={"porto-velho"}>Porto velho</MenuItem>
+                  <MenuItem value={"Manaus"}>Manaus</MenuItem>
+                  <MenuItem value={"Porto-velho"}>Porto velho</MenuItem>
                 </Select>
               </FormControl>
                 <Button

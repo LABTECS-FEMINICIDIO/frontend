@@ -120,3 +120,99 @@ export const APP_PAGES_EDITOR = [
         showMenu: true,
     },
 ]
+
+// ---------------------------------PORTO VELHO-----------------------------------------
+
+export const APP_PAGES_PORTO_VELHO = [
+    {
+        title: 'Dashboard',
+        route: '/',
+        icon: <DashboardIcon />,
+        component: <Dashboards />,
+        showMenu: true,
+    },
+    {
+        title: 'Sites',
+        route: '/sites',
+        icon: <ScreenSearchDesktopIcon />,
+        component: <Sites />,
+        showMenu: true,
+    },
+    {
+        title: 'Links',
+        route: '/links',
+        icon: <AddLinkOutlinedIcon />,
+        component: <Links />,
+        showMenu: true,
+    },
+    {
+        title: 'Usuários',
+        route: '/users',
+        icon: <GroupAddIcon />,
+        component: <Users />,
+        showMenu: true,
+    },
+    {
+        title: 'Vítimas',
+        route: '/victims',
+        icon: <ContactPageIcon />,
+        component: <Victims />,
+        showMenu: true,
+    },
+    {
+        title: 'Calendário',
+        route: '/calendar',
+        icon: <EventIcon />,
+        component: <Calendar />,
+        showMenu: true,
+    },
+]
+
+
+export const APP_PAGES_VISUALIZADOR_PORTO_VELHO = [
+    {
+        title: 'Dashboard',
+        route: '/',
+        icon: <DashboardIcon />,
+        component: <Dashboards />,
+        showMenu: true,
+    }
+]
+
+export const APP_PAGES_EDITOR_PORTO_VELHO = [
+    {
+        title: 'Dashboard',
+        route: '/',
+        icon: <DashboardIcon />,
+        component: <Dashboards />,
+        showMenu: true,
+    },
+    {
+        title: 'Sites',
+        route: '/sites',
+        icon: <ScreenSearchDesktopIcon />,
+        component: <Sites />,
+        showMenu: true,
+    },
+    {
+        title: 'Links',
+        route: '/links',
+        icon: <AddLinkOutlinedIcon />,
+        component: <Links />,
+        showMenu: true,
+    },
+    {
+        title: 'Vítimas',
+        route: '/victims',
+        icon: <ContactPageIcon />,
+        component: <Victims />,
+        showMenu: true,
+    },
+    {
+        title: 'Calendário',
+        route: '/calendar',
+        icon: <EventIcon />,
+        component: <Calendar />,
+        showMenu: true,
+    },
+]

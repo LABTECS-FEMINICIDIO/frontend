@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { NotFound } from "../pages/NotFound";
 import {
   APP_PAGES,
   APP_PAGES_EDITOR,
   APP_PAGES_VISUALIZADOR,
+  APP_PAGES_EDITOR_PORTO_VELHO,
+  APP_PAGES_PORTO_VELHO,
+  APP_PAGES_VISUALIZADOR_PORTO_VELHO
 } from "./pages.routes";
 import { DefaultLayout } from "../DefaultLayout";
 import SignIn from "../pages/Login";
@@ -12,16 +15,38 @@ import { useToken } from "../shared/hooks/auth";
 import Register from "../pages/Login/register";
 import RecoveryCode from "../pages/RecoveryCode";
 import RecoveryPassword from "../pages/RecoveryPassword";
+import Cookies from "universal-cookie";
 
 export function AppRoutes() {
   const { permission, perfil } = useToken();
-  const [pagesRender] = useState(
+  const [pagesRender, setPagesRender] = useState(
     perfil === "visualizador"
       ? APP_PAGES_VISUALIZADOR
       : perfil === "pesquisador"
       ? APP_PAGES_EDITOR
       : APP_PAGES
   );
+
+
+  useEffect(() => {
+    const cookie = new Cookies()
+
+    const city = cookie.get("selectedStateF")
+  
+    if (city == "Manaus"){
+      setPagesRender(perfil === "visualizador"
+      ? APP_PAGES_VISUALIZADOR
+      : perfil === "pesquisador"
+      ? APP_PAGES_EDITOR
+      : APP_PAGES)
+    }else{
+      setPagesRender(perfil === "visualizador"
+      ? APP_PAGES_VISUALIZADOR
+      : perfil === "pesquisador"
+      ? APP_PAGES_EDITOR
+      : APP_PAGES)
+    }
+  }, [])
 
   return (
     <Routes>

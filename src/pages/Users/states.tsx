@@ -60,13 +60,12 @@ export function States({ estados, userEmail }: { estados: string[], userEmail: s
 
     apiAuth.patch(`/api/v1/users/${selectedCity}/${encodedEmail}/true`)
       .then(response => {
-        toast.success("City added successfully!");
+        toast.success("Cidade adicionada com sucesso!");
         handleClose();
         addCount()
       })
       .catch(error => {
-        toast.error("Failed to add city.");
-        console.error("There was an error adding the city!", error);
+        toast.error("Erro ao adicionar cidade.");
       });
   };
 

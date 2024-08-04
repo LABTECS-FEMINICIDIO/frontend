@@ -5,13 +5,21 @@ import { Icon, LatLngExpression } from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { Box } from "@mui/material";
+import Cookies from "universal-cookie";
 
 interface IProps {
   vitimas: any[]
 }
 
 export function MapPage({vitimas}: IProps) {
-  const position = [-8.763879, -63.884268] as LatLngExpression
+
+  const positions: any = {
+    "Manaus": [-3.059943, -59.988359],
+    "Porto-velho": [-8.763879, -63.884268]
+  }
+  const cookies = new Cookies()
+  const selectecCity: any = cookies.get("selectedStateF")
+  const position = positions[selectecCity] as LatLngExpression
 
   const myIcon: any = new Icon({
     iconUrl: "https://www.irmasclarissas.org.br/wp-content/uploads/2015/08/Map-Marker-PNG-File.png",

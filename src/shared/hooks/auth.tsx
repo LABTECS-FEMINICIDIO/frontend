@@ -12,6 +12,8 @@ interface TokenContextData {
   token: any;
   username: string;
   perfil: string;
+  handleSelectedState: (state: string) => void;
+  selectedState: string
 }
 
 interface TokenProviderProps {
@@ -27,6 +29,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
   const [perfil, setPerfil] = useState("");
   const [token, setToken] = useState<string | null>(null);
   const [username, setUsername] = useState("");
+  const [selectedState, setSelectedState] = useState("")
 
   const decodeToken = (token: string) => {
     try {
@@ -51,6 +54,14 @@ export function TokenProvider({ children }: TokenProviderProps) {
     if (storedToken) {
       setToken(storedToken);
       setAxiosToken(storedToken);
+      const tokenDecoded = decodeToken(storedToken) as any
+      const parsedToken = JSON.parse(tokenDecoded.sub)
+      setUsername(parsedToken.name);
+      cookies.set("usernamef", parsedToken.name);
+      cookies.set("idf", parsedToken.id);
+      const selectedStatePreviours = cookies.get("selectedStateF")
+      setSelectedState(selectedStatePreviours)
+      setPerfil(parsedToken.role.toLowerCase());
       setPermission(true);
     }
   }, []);
@@ -61,26 +72,34 @@ export function TokenProvider({ children }: TokenProviderProps) {
         const token = response.data.access_token; 
         const tokenDecoded = decodeToken(token) as any
         const parsedToken = JSON.parse(tokenDecoded.sub)
+        const parsedState = tokenDecoded.state
         cookies.set("@feminicidio_token", token);
+        if(!parsedState.filter((item: string) => item == selectedState)){
+          toast.error("Este usuário não possui permissão para esta cidade")
+          setPermission(false);
+        }
         setAxiosToken(token);
         setToken(token);
         setUsername(parsedToken.name);
         cookies.set("usernamef", parsedToken.name);
         cookies.set("idf", parsedToken.id);
-        setPermission(true);
+        cookies.set("selectedStateF", selectedState)
         setPerfil(parsedToken.role.toLowerCase());
+        setPermission(true);
         toast.success('Login realizado com sucesso');
       })
       .catch(error => {
-        if (error?.response.status === 401) {
-          toast.error(error?.response.data.detail);
-        }
+        console.log(error)
         setPermission(false);
       });
   }
 
+  const handleSelectedState = (state: string) => {
+    setSelectedState(state)
+  }
+
   return (
-    <TokenContext.Provider value={{ permission, Login, token, username, perfil }}>
+    <TokenContext.Provider value={{ permission, Login, token, username, perfil, handleSelectedState, selectedState }}>
       {children}
     </TokenContext.Provider>
   );
