@@ -31,9 +31,6 @@ export function AppRoutes() {
   useEffect(() => {
     const cookie = new Cookies();
     const city = cookie.get("selectedStateF");
-    
-    console.log("Perfil:", perfil);
-    console.log("Cidade:", city);
 
     if (city === "Manaus") {
       setPagesRender(

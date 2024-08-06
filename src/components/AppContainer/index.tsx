@@ -72,7 +72,7 @@ export function AppContainer({ children, title }: AppContainerProps) {
 
   const { handleSelectedState } = useToken();
 
-  const [city, setCity] = React.useState("")
+  const [city, setCity] = React.useState(cookies.get("selectedStateF"))
 
   const handleChangeState = (state: string) => {
     const storedToken = cookies.get('@feminicidio_token');
@@ -116,7 +116,7 @@ export function AppContainer({ children, title }: AppContainerProps) {
             />
           </Box>
           <Box display="flex" alignItems="center" color="primary">
-            <FormControl variant="filled" size="small">
+            <FormControl variant="filled" size="small" sx={{minWidth: "100px"}}>
                 <InputLabel>{"Cidade"}</InputLabel>
                 <Select
                   label={"Cidade"}
