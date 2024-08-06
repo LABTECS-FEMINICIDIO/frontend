@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { NotFound } from "../pages/NotFound";
 import {
@@ -16,43 +16,51 @@ import Register from "../pages/Login/register";
 import RecoveryCode from "../pages/RecoveryCode";
 import RecoveryPassword from "../pages/RecoveryPassword";
 import Cookies from "universal-cookie";
+interface Page {
+  title: string;
+  route: string;
+  icon: JSX.Element;
+  component: JSX.Element;
+  showMenu: boolean;
+}
 
 export function AppRoutes() {
   const { permission, perfil } = useToken();
-  const [pagesRender, setPagesRender] = useState(
-    perfil === "visualizador"
-      ? APP_PAGES_VISUALIZADOR
-      : perfil === "pesquisador"
-      ? APP_PAGES_EDITOR
-      : APP_PAGES
-  );
-
+  const [pagesRender, setPagesRender] = useState<Page[]>([]);
 
   useEffect(() => {
-    const cookie = new Cookies()
+    const cookie = new Cookies();
+    const city = cookie.get("selectedStateF");
+    
+    console.log("Perfil:", perfil);
+    console.log("Cidade:", city);
 
-    const city = cookie.get("selectedStateF")
-  
-    if (city == "Manaus"){
-      setPagesRender(perfil === "visualizador"
-      ? APP_PAGES_VISUALIZADOR
-      : perfil === "pesquisador"
-      ? APP_PAGES_EDITOR
-      : APP_PAGES)
-    }else{
-      setPagesRender(perfil === "visualizador"
-      ? APP_PAGES_VISUALIZADOR
-      : perfil === "pesquisador"
-      ? APP_PAGES_EDITOR
-      : APP_PAGES)
+    if (city === "Manaus") {
+      console.log("Usando APP_PAGES");
+      setPagesRender(
+        perfil === "visualizador"
+        ? APP_PAGES_VISUALIZADOR
+        : perfil === "pesquisador"
+        ? APP_PAGES_EDITOR
+        : APP_PAGES
+      );
+    } else {
+      console.log("Usando APP_PAGES_PORTO_VELHO");
+      setPagesRender(
+        perfil === "visualizador"
+        ? APP_PAGES_VISUALIZADOR_PORTO_VELHO
+        : perfil === "pesquisador"
+        ? APP_PAGES_EDITOR_PORTO_VELHO
+        : APP_PAGES_PORTO_VELHO
+      );
     }
-  }, [])
+  }, [perfil]);
 
   return (
     <Routes>
       {permission && pagesRender.length > 0 ? (
         <Route path="/" element={<DefaultLayout />}>
-          {pagesRender.map(({ route, component }) => (
+          {pagesRender?.map(({ route, component }) => (
             <Route key={route} path={route} element={component} />
           ))}
           <Route key={"login"} path="/" element={<SignIn />} />

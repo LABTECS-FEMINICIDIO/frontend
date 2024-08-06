@@ -8,9 +8,10 @@ import {
 } from '@mui/material';
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { APP_PAGES, APP_PAGES_EDITOR, APP_PAGES_VISUALIZADOR } from '../../../routes/pages.routes';
+import { APP_PAGES, APP_PAGES_EDITOR, APP_PAGES_EDITOR_PORTO_VELHO, APP_PAGES_PORTO_VELHO, APP_PAGES_VISUALIZADOR, APP_PAGES_VISUALIZADOR_PORTO_VELHO } from '../../../routes/pages.routes';
 import { colors } from '../../../shared/theme';
 import { useToken } from '../../../shared/hooks/auth';
+import Cookies from 'universal-cookie';
 
 interface MenuListProps {
   open?: boolean;
@@ -25,13 +26,42 @@ export function MenuList({ open }: MenuListProps) {
   };
   const { perfil } = useToken();
   
-  const [pagesRender] = React.useState(
+  const [pagesRender, setPagesRender] = React.useState(
     perfil === "visualizador"
       ? APP_PAGES_VISUALIZADOR
       : perfil === "pesquisador"
       ? APP_PAGES_EDITOR
       : APP_PAGES
   );
+
+  React.useEffect(() => {
+    const cookie = new Cookies();
+    const city = cookie.get("selectedStateF");
+    
+    console.log("Perfil:", perfil);
+    console.log("Cidade:", city);
+
+    if (city === "Manaus") {
+      console.log("Usando APP_PAGES");
+      setPagesRender(
+        perfil === "visualizador"
+        ? APP_PAGES_VISUALIZADOR
+        : perfil === "pesquisador"
+        ? APP_PAGES_EDITOR
+        : APP_PAGES
+      );
+    } else {
+      console.log("Usando APP_PAGES_PORTO_VELHO");
+      setPagesRender(
+        perfil === "visualizador"
+        ? APP_PAGES_VISUALIZADOR_PORTO_VELHO
+        : perfil === "pesquisador"
+        ? APP_PAGES_EDITOR_PORTO_VELHO
+        : APP_PAGES_PORTO_VELHO
+      );
+    }
+  }, [perfil]);
+
 
   return (
     <List>
