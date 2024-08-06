@@ -173,7 +173,7 @@ export default function SignIn() {
                   marginTop: 3,
                 }}
               >
-                <FormControl variant="filled">
+              <FormControl variant="filled">
                 <InputLabel>{"Cidade"}</InputLabel>
                 <Select
                   label={"Cidade"}
@@ -181,7 +181,7 @@ export default function SignIn() {
                   defaultValue={""}
                 >
                   <MenuItem value={"Manaus"}>Manaus</MenuItem>
-                  <MenuItem value={"Porto-velho"}>Porto velho</MenuItem>
+                  <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
                 </Select>
               </FormControl>
                 <Button

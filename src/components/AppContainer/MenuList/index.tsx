@@ -24,7 +24,7 @@ export function MenuList({ open }: MenuListProps) {
   const handleNavigate = (page: string) => {
     navigate(page);
   };
-  const { perfil } = useToken();
+  const { perfil, selectedState } = useToken();
   
   const [pagesRender, setPagesRender] = React.useState(
     perfil === "visualizador"
@@ -42,7 +42,6 @@ export function MenuList({ open }: MenuListProps) {
     console.log("Cidade:", city);
 
     if (city === "Manaus") {
-      console.log("Usando APP_PAGES");
       setPagesRender(
         perfil === "visualizador"
         ? APP_PAGES_VISUALIZADOR
@@ -51,7 +50,6 @@ export function MenuList({ open }: MenuListProps) {
         : APP_PAGES
       );
     } else {
-      console.log("Usando APP_PAGES_PORTO_VELHO");
       setPagesRender(
         perfil === "visualizador"
         ? APP_PAGES_VISUALIZADOR_PORTO_VELHO
@@ -60,7 +58,7 @@ export function MenuList({ open }: MenuListProps) {
         : APP_PAGES_PORTO_VELHO
       );
     }
-  }, [perfil]);
+  }, [perfil, selectedState]);
 
 
   return (

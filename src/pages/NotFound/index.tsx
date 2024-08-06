@@ -8,6 +8,10 @@ export function NotFound() {
       const cookie = new Cookies();
       cookie.remove('@feminicidio_token');
       localStorage.removeItem('@feminicidio_token');
+      cookie.remove('idf');
+      localStorage.removeItem('idf');
+      cookie.remove('selectedStateF');
+      cookie.remove('usernamef');
       window.location.href = '/';
     } 
   return (

@@ -14,8 +14,9 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-import { api } from "../../service/api";
+import { api, apiAuth } from "../../service/api";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -29,12 +30,15 @@ const schema = yup
   .required();
 type FormData = yup.InferType<typeof schema>;
 
-
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 
 export default function RecoveryPass() {
 
   const {
     register,
+    setValue,
     handleSubmit,
     reset,
     formState: { errors },
@@ -42,17 +46,27 @@ export default function RecoveryPass() {
     resolver: yupResolver(schema),
   });
 
+
   const onSubmit = (data: FormData) => handleRegister(data);
   const [loading, setLoading] = React.useState(false);
+
+  const query = useQuery();
+  const email = query.get('email');
+  const code = query.get('code');
+
+  React.useEffect(() => {
+    setValue("email", email as string)
+    setValue("recovery_code", code as string)
+  }, [])
 
   const handleRegister = async (data: yup.InferType<typeof schema>) => {
     setLoading(true);
 
     
-    api.post("/api/mudarSenha/", {
+    apiAuth.post("/api/v1/auth/change-my-password", {
         "email": data.email,
-        "recovery_code": data.recovery_code,
-        "new_password": data.new_password
+        "passwordRecoveryCode": data.recovery_code,
+        "newPassword": data.new_password
     }).then((res) => {
         toast.success(res.data.message)
         setLoading(false)
@@ -64,7 +78,7 @@ export default function RecoveryPass() {
             window.location.href = '/';
         }, 6000)
     }).catch((err) => {
-        toast.error(err.response.data.detail)
+        toast.error(err.response.data.message)
         setLoading(false)
         reset()
     })

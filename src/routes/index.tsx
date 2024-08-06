@@ -25,7 +25,7 @@ interface Page {
 }
 
 export function AppRoutes() {
-  const { permission, perfil } = useToken();
+  const { permission, perfil, selectedState } = useToken();
   const [pagesRender, setPagesRender] = useState<Page[]>([]);
 
   useEffect(() => {
@@ -36,7 +36,6 @@ export function AppRoutes() {
     console.log("Cidade:", city);
 
     if (city === "Manaus") {
-      console.log("Usando APP_PAGES");
       setPagesRender(
         perfil === "visualizador"
         ? APP_PAGES_VISUALIZADOR
@@ -45,7 +44,6 @@ export function AppRoutes() {
         : APP_PAGES
       );
     } else {
-      console.log("Usando APP_PAGES_PORTO_VELHO");
       setPagesRender(
         perfil === "visualizador"
         ? APP_PAGES_VISUALIZADOR_PORTO_VELHO
@@ -54,7 +52,7 @@ export function AppRoutes() {
         : APP_PAGES_PORTO_VELHO
       );
     }
-  }, [perfil]);
+  }, [perfil, selectedState]);
 
   return (
     <Routes>

@@ -139,6 +139,13 @@ export const APP_PAGES_PORTO_VELHO = [
         showMenu: true,
     },
     {
+        title: 'Relatório IML',
+        route: '/iml',
+        icon: <TextSnippetIcon />,
+        component: <Iml />,
+        showMenu: true,
+    },
+    {
         title: 'Links',
         route: '/links',
         icon: <AddLinkOutlinedIcon />,
@@ -192,6 +199,13 @@ export const APP_PAGES_EDITOR_PORTO_VELHO = [
         route: '/sites',
         icon: <ScreenSearchDesktopIcon />,
         component: <Sites />,
+        showMenu: true,
+    },
+    {
+        title: 'Relatório IML',
+        route: '/iml',
+        icon: <TextSnippetIcon />,
+        component: <Iml />,
         showMenu: true,
     },
     {

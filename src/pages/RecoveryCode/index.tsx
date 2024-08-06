@@ -14,7 +14,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
-import { api } from "../../service/api";
+import { apiAuth } from "../../service/api";
 
 const schema = yup
   .object({
@@ -42,7 +42,7 @@ export default function RecoveryCode() {
   const handleRegister = async (data: yup.InferType<typeof schema>) => {
     setLoading(true);
     
-    api.post("/api/recuperarSenha/", data).then((res) => {
+    apiAuth.post("/api/v1/auth/reset-my-password", data).then((res) => {
         toast.success(res.data.message, {
           autoClose: false
         })
@@ -53,7 +53,7 @@ export default function RecoveryCode() {
         setLoading(false)
         reset()
     }).catch((err) => {
-        toast.error(err.response.data.detail)
+        toast.error(err.response.data.message)
         setLoading(false)
         reset()
     })

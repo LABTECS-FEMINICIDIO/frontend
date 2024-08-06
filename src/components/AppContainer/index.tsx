@@ -9,13 +9,16 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Button, useMediaQuery } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, useMediaQuery } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { MenuList } from "./MenuList";
 import { Content } from "./Content";
 import { AppBar, Drawer, DrawerHeader } from "./styles";
 import Cookies from "universal-cookie";
 import { EditUser } from "../../pages/Users/editUser";
+import { useToken } from "../../shared/hooks/auth";
+import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 //import { useToken } from '../../shared/hooks/auth';
 
 interface AppContainerProps {
@@ -40,6 +43,17 @@ export function AppContainer({ children, title }: AppContainerProps) {
     setOpen(true);
   };
 
+  const decodeToken = (token: string) => {
+    try {
+      const decoded = jwtDecode(token);
+      return decoded;
+    } catch (error) {
+      console.error("Invalid token:", error);
+      return null;
+    }
+  };
+
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -55,6 +69,24 @@ export function AppContainer({ children, title }: AppContainerProps) {
   }
 
   const matches = useMediaQuery("(max-width:480px)");
+
+  const { handleSelectedState } = useToken();
+
+  const [city, setCity] = React.useState("")
+
+  const handleChangeState = (state: string) => {
+    const storedToken = cookies.get('@feminicidio_token');
+    const tokenDecoded = decodeToken(storedToken) as any
+    const parsedState = tokenDecoded.state
+ 
+    if(parsedState.filter((item: any) => item.city == state).length == 0){
+        toast.error("Este usuário não possui permissão para esta cidade")
+        return
+      }
+    handleSelectedState(state)
+    cookies.set("selectedStateF", state)
+    setCity(state)
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -84,8 +116,19 @@ export function AppContainer({ children, title }: AppContainerProps) {
             />
           </Box>
           <Box display="flex" alignItems="center" color="primary">
+            <FormControl variant="filled" size="small">
+                <InputLabel>{"Cidade"}</InputLabel>
+                <Select
+                  label={"Cidade"}
+                  onChange={(e) => handleChangeState(e.target.value)}
+                  defaultValue={city}
+                  value={city}
+                >
+                  <MenuItem value={"Manaus"}>Manaus</MenuItem>
+                  <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
+                </Select>
+              </FormControl>
             <EditUser />
-
             <Button variant="text" onClick={() => Logout()}>
               <LogoutIcon />
             </Button>
