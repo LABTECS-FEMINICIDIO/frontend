@@ -1,16 +1,17 @@
 import { Box, CircularProgress } from "@mui/material";
 import { MapPage } from "../../components/Maps";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast, useToast } from "react-toastify";
 import { api } from "../../service/api";
 import { Cards } from "./cards";
+import { useToken } from "../../shared/hooks/auth";
 
 export function Maps() {
   const [rowsFiltered, setRowsFiltered] = useState<any[]>([]);
   const [search, setSearch] = useState({ column: "", value: "" });
   const [loading, setLoading] = useState(true);
   const [vitimas, setVitimas] = useState<any[]>([]);
-
+  const { selectedState } = useToken()
   useEffect(() => {
     setLoading(true);
     api
@@ -22,7 +23,7 @@ export function Maps() {
       .catch(() => {
         setLoading(false);
       });
-  }, []);
+  }, [,selectedState]);
 
   const handleValue = (event: any) => {
     setSearch((state) => ({

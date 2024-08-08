@@ -26,6 +26,8 @@ export function MapPage({vitimas}: IProps) {
     iconSize: [40, 40]
   })
 
+  const vitimasWithPosition = vitimas.filter((item) => item.lat != "NA" || item.lng != "NA")
+
   return (
     <Box style={stylesMap.container}>
       <MapContainer center={position} zoom={12} scrollWheelZoom={true} style={{ height: "500px", width: "100%" }}>
@@ -34,7 +36,7 @@ export function MapPage({vitimas}: IProps) {
           url={"https://tile.openstreetmap.org/{z}/{x}/{y}.png"}
         />
         <MarkerClusterGroup>
-          {vitimas.map((marker, index) => (
+          {vitimasWithPosition.map((marker, index) => (
             <Marker icon={myIcon} key={index} position={{
               lat: Number(marker.lat),
               lng: Number(marker.lng)
