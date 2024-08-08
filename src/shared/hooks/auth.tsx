@@ -92,6 +92,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
       .catch(error => {
         console.log(error)
         setPermission(false);
+        toast.error(error.response.data.message)
       });
   }
 
