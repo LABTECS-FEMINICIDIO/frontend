@@ -19,7 +19,6 @@ import { EditUser } from "../../pages/Users/editUser";
 import { useToken } from "../../shared/hooks/auth";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-//import { useToken } from '../../shared/hooks/auth';
 
 interface AppContainerProps {
   children?: React.ReactNode;

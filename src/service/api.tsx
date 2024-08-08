@@ -1,7 +1,5 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
-import { useToken } from '../shared/hooks/auth';
-import { useEffect } from 'react';
 
 const cookie = new Cookies();
 const selectedState = cookie.get('selectedStateF');

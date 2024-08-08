@@ -184,24 +184,10 @@ export function Form(props: IPropsForm) {
             <MenuItem value={"solteira"}>solteira</MenuItem>
             <MenuItem value={"casada"}>casada</MenuItem>
             <MenuItem value={"viuva"}>viuva</MenuItem>
-            {/* <MenuItem value={"separada"}>separada</MenuItem> */}
             <MenuItem value={"separada judicialmente-divorciada"}>
             separada judicialmente-divorciada
             </MenuItem>
             <MenuItem value={"uniao-estavel"}>uniao estavel</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl variant="filled">
-          <InputLabel>{errors.compexcomp?.message ?? "compexcomp"}</InputLabel>
-          <Select
-            label={errors.compexcomp?.message ?? "compexcomp"}
-            {...register("compexcomp")}
-            error={!!errors.compexcomp?.message}
-            defaultValue={""}
-          >
-            <MenuItem value={"NA"}>NA</MenuItem>
-            <MenuItem value={"sim"}>sim</MenuItem>
-            <MenuItem value={"nao"}>nao</MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -211,9 +197,9 @@ export function Form(props: IPropsForm) {
           variant="filled"
         />
         <FormControl variant="filled">
-          <InputLabel>{errors.zona?.message ?? "Zona"}</InputLabel>
+          <InputLabel>{errors.zona?.message ?? "zona"}</InputLabel>
           <Select
-            label={errors.zona?.message ?? "Zona"}
+            label={errors.zona?.message ?? "zona"}
             {...register("zona")}
             error={!!errors.zona?.message}
             defaultValue={""}
@@ -241,6 +227,18 @@ export function Form(props: IPropsForm) {
           label={errors.endcomplemento?.message ?? "endcomplemento"}
           {...register("endcomplemento")}
           error={!!errors.endcomplemento?.message}
+          variant="filled"
+        />
+                <TextField
+          label={errors.lat?.message ?? "X_lat"}
+          {...register("lat")}
+          error={!!errors.lat?.message}
+          variant="filled"
+        />
+        <TextField
+          label={errors.lng?.message ?? "Y_long"}
+          {...register("lng")}
+          error={!!errors.lng?.message}
           variant="filled"
         />
         <FormControl variant="filled">
@@ -447,6 +445,19 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
+          <InputLabel>{errors.compexcomp?.message ?? "compexcomp"}</InputLabel>
+          <Select
+            label={errors.compexcomp?.message ?? "compexcomp"}
+            {...register("compexcomp")}
+            error={!!errors.compexcomp?.message}
+            defaultValue={""}
+          >
+            <MenuItem value={"NA"}>NA</MenuItem>
+            <MenuItem value={"sim"}>sim</MenuItem>
+            <MenuItem value={"nao"}>nao</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl variant="filled">
           <InputLabel>{errors.gestacao?.message ?? "gestacao"}</InputLabel>
           <Select
             label={errors.gestacao?.message ?? "gestacao"}
@@ -466,18 +477,6 @@ export function Form(props: IPropsForm) {
           variant="filled"
           type="number"
           inputProps={{ min: 0 }}
-        />
-        <TextField
-          label={errors.lat?.message ?? "X_Lati"}
-          {...register("lat")}
-          error={!!errors.lat?.message}
-          variant="filled"
-        />
-        <TextField
-          label={errors.lng?.message ?? "Y_Long"}
-          {...register("lng")}
-          error={!!errors.lng?.message}
-          variant="filled"
         />
         <Box
           sx={{

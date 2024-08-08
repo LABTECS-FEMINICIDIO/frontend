@@ -1,4 +1,3 @@
-import { IUser } from "../../models/users";
 import { api, apiAuth } from "../api";
 
 export function createUser(data: any){
