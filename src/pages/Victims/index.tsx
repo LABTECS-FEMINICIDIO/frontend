@@ -23,6 +23,7 @@ import { saveAs } from "file-saver";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { TableVictims } from "./collapse.table";
 import { CreateVictim } from "./createVictim";
+import { useToken } from "../../shared/hooks/auth";
 
 export function Victims() {
   const [rows, setRows] = useState([]);
@@ -31,10 +32,11 @@ export function Victims() {
   const [loading, setLoading] = useState(true);
   const { count } = useRefresh();
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
+  const { selectedState } = useToken()
 
   useEffect(() => {
     listAll();
-  }, [count]);
+  }, [count, selectedState]);
 
   const listAll = () => {
     setLoading(true);

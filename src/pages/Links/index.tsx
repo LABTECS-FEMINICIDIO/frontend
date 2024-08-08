@@ -18,11 +18,13 @@ import { toast } from "react-toastify";
 import { format } from "date-fns";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
+import { useToken } from "../../shared/hooks/auth";
 
 export function Links() {
   const [lastUpdateTime, setLastUpdateTime] = React.useState("");
   const [search, setSearch] = useState({ column: "", value: "" });
   const [filterRows, setFilterRows] = useState([]);
+  const { selectedState } = useToken()
 
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch((state) => ({
@@ -81,7 +83,7 @@ export function Links() {
 
   React.useEffect(() => {
     fetchLastUpdateTime();
-  }, []);
+  }, [selectedState]);
 
   let formattedLastUpdateTime = "";
 

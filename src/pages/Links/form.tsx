@@ -184,9 +184,9 @@ export function Form(props: IPropsForm) {
             <MenuItem value={"solteira"}>solteira</MenuItem>
             <MenuItem value={"casada"}>casada</MenuItem>
             <MenuItem value={"viuva"}>viuva</MenuItem>
-            <MenuItem value={"separada"}>separada</MenuItem>
-            <MenuItem value={"judicialmente-divorciada"}>
-              judicialmente-divorciada
+            {/* <MenuItem value={"separada"}>separada</MenuItem> */}
+            <MenuItem value={"separada judicialmente-divorciada"}>
+            separada judicialmente-divorciada
             </MenuItem>
             <MenuItem value={"uniao-estavel"}>uniao estavel</MenuItem>
           </Select>

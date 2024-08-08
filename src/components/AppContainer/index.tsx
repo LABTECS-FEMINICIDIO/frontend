@@ -116,7 +116,7 @@ export function AppContainer({ children, title }: AppContainerProps) {
             />
           </Box>
           <Box display="flex" alignItems="center" color="primary">
-            <FormControl variant="filled" size="small" sx={{minWidth: "100px"}}>
+            <FormControl variant="filled" size="small" sx={{minWidth: "100px", marginRight: "10px"}}>
                 <InputLabel>{"Cidade"}</InputLabel>
                 <Select
                   label={"Cidade"}

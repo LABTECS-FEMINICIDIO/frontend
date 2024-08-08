@@ -25,6 +25,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import React from "react";
 import { deleteSite } from "../../service/site";
+import { useToken } from "../../shared/hooks/auth";
 
 export function Sites() {
   const [rows, setRows] = useState([]);
@@ -33,10 +34,11 @@ export function Sites() {
   const [rowsFiltered, setRowsFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
+  const { selectedState } = useToken()
 
   useEffect(() => {
     listAll();
-  }, [count]);
+  }, [count, selectedState]);
 
   const listAll = () => {
     setLoading(true);

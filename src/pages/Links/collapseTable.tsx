@@ -23,6 +23,7 @@ import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { formatDate } from "../../utils/date";
+import { useToken } from "../../shared/hooks/auth";
 export interface Row {
   nome: string;
   link: string;
@@ -158,6 +159,7 @@ export default function CollapsibleTable({ search, filterData }: Props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 10;
+  const { selectedState } = useToken()
 
   useEffect(() => {
     if (search.value.length > 0) {
@@ -165,7 +167,7 @@ export default function CollapsibleTable({ search, filterData }: Props) {
       return;
     }
     refreshList();
-  }, [filterData]);
+  }, [filterData, selectedState]);
 
   const refreshList = () => {
     setLoading(true);
@@ -193,7 +195,7 @@ export default function CollapsibleTable({ search, filterData }: Props) {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, [findSitesFetched]);
+  }, [findSitesFetched, selectedState]);
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

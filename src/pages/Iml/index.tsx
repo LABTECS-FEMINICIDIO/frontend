@@ -28,12 +28,15 @@ import React from "react";
 import { api } from "../../service/api";
 import { SimpleTableIml } from "./table";
 import { saveAs } from "file-saver";
+import { useToken } from "../../shared/hooks/auth";
 
 export function Iml() {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
+  const { selectedState } = useToken()
 
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -49,7 +52,7 @@ export function Iml() {
     };
 
     fetchData();
-  }, []);
+  }, [selectedState]);
 
   const [search, setSearch] = useState({ column: "", value: "" });
   const [rowsFiltered, setRowsFiltered] = useState<any>([]);
