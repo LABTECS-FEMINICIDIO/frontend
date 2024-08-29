@@ -681,7 +681,7 @@ export function EditVictims(props: IPropsForm) {
                   <MenuItem value={"area de mata na zona rural"}>
                     area de mata na zona rural
                   </MenuItem>
-                  <MenuItem value={"colecao hidrica"}>coleção hidrica</MenuItem>
+                  <MenuItem value={"colecao hidrica"}>colecao hidrica</MenuItem>
                 </Select>
               </FormControl>
             </Box>

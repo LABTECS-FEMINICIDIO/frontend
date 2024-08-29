@@ -20,7 +20,7 @@ const schema = yup.object({
   name: yup.string()
     .required("Nome é um campo obrigatório")
     .trim()
-    .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras'),
+    .matches(/^[a-zA-ZÀ-ÿ\s]*$/, 'Nome deve conter apenas letras'),
   email: yup.string()
     .required("E-mail é um campo obrigatório")
     .email("E-mail deve ter um formato válido: exemplo@mail.com.br"),

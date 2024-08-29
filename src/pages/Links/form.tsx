@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
@@ -12,6 +12,9 @@ import {
 } from "@mui/material";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 const formatLatLng = (value: any) => {
   const parts = value.split(".");
@@ -52,17 +55,7 @@ export const schema = Yup.object()
       .integer("Deve ser um número inteiro")
       .optional(),
     lat: Yup.string(),
-    /*       .matches(
-        /^-?\d{1}\.\d{18}$/,
-        "Latitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
-      )
-      .transform(formatLatLng), */
     lng: Yup.string(),
-    /*       .matches(
-        /^-?\d{1}\.\d{18}$/,
-        "Longitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
-      )
-      .transform(formatLatLng), */
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -76,9 +69,23 @@ export function Form(props: IPropsForm) {
     register,
     handleSubmit,
     formState: { errors },
+    control,
+    setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const datadofato = watch("datadofato");
+
+  useEffect(() => {
+    if (datadofato) {
+      const date = new Date(datadofato);
+      const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
+      const dayOfWeek = weekdays[date.getDay()];
+      setValue("diah", dayOfWeek);
+    }
+  }, [datadofato, setValue]);
 
   const onSubmit = (data: FormData) => {
     api.post("/api/vitimas/", data).then((res) => {
@@ -107,21 +114,23 @@ export function Form(props: IPropsForm) {
         />
         <FormControl variant="filled">
           <InputLabel>{errors.diah?.message ?? "diah"}</InputLabel>
-          <Select
-            label={errors.diah?.message ?? "diah"}
-            {...register("diah")}
-            error={!!errors.diah?.message}
-            defaultValue={""}
-          >
-            <MenuItem value={"NA"}>NA</MenuItem>
-            <MenuItem value={"dom"}>dom</MenuItem>
-            <MenuItem value={"seg"}>seg</MenuItem>
-            <MenuItem value={"ter"}>ter</MenuItem>
-            <MenuItem value={"qua"}>qua</MenuItem>
-            <MenuItem value={"qui"}>qui</MenuItem>
-            <MenuItem value={"sex"}>sex</MenuItem>
-            <MenuItem value={"sab"}>sab</MenuItem>
-          </Select>
+          <Controller
+            name="diah"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+              <Select {...field} error={!!errors.diah?.message}>
+                <MenuItem value={"NA"}>NA</MenuItem>
+                <MenuItem value={"dom"}>dom</MenuItem>
+                <MenuItem value={"seg"}>seg</MenuItem>
+                <MenuItem value={"ter"}>ter</MenuItem>
+                <MenuItem value={"qua"}>qua</MenuItem>
+                <MenuItem value={"qui"}>qui</MenuItem>
+                <MenuItem value={"sex"}>sex</MenuItem>
+                <MenuItem value={"sab"}>sab</MenuItem>
+              </Select>
+            )}
+          />
         </FormControl>
         <TextField
           label={errors.horario?.message ?? "horario"}
@@ -424,7 +433,7 @@ export function Form(props: IPropsForm) {
             <MenuItem value={"area de mata na zona rural"}>
               area de mata na zona rural
             </MenuItem>
-            <MenuItem value={"colecao hidrica"}>coleção hidrica</MenuItem>
+            <MenuItem value={"colecao hidrica"}>colecao hidrica</MenuItem>
           </Select>
         </FormControl>
         <FormControl variant="filled">
