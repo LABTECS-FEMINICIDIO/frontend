@@ -80,10 +80,12 @@ export function Form(props: IPropsForm) {
 
   useEffect(() => {
     if (datadofato) {
+      console.log("antes",datadofato)
       const date = new Date(datadofato);
       const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
       const dayOfWeek = weekdays[date.getDay()];
       setValue("diah", dayOfWeek);
+      console.log("depois",date)
     }
   }, [datadofato, setValue]);
 
