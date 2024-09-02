@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Box,
@@ -18,7 +18,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { colors } from "../../shared/theme";
 import { grid1, grid2 } from "../../styles";
@@ -28,14 +28,6 @@ interface IPropsForm {
   vitimaId?: string;
   idSite?: string;
 }
-
-const formatLatLng = (value: any) => {
-  const parts = value.split(".");
-  if (parts[0].length === 1) {
-    parts[0] = "0" + parts[0];
-  }
-  return parts.join(".").padEnd(19, "0");
-};
 
 export const schema = Yup.object()
   .shape({
@@ -68,17 +60,7 @@ export const schema = Yup.object()
       .integer("Deve ser um número inteiro")
       .optional(),
     lat: Yup.string(),
-    /*       .matches(
-        /^-?\d{1}\.\d{18}$/,
-        "Latitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
-      )
-      .transform(formatLatLng), */
     lng: Yup.string(),
-    /*       .matches(
-        /^-?\d{1}\.\d{18}$/,
-        "Longitude deve ter 19 dígitos, incluindo o sinal e a vírgula"
-      )
-      .transform(formatLatLng), */
     sites_in_bulk: Yup.string(),
   })
   .required();
@@ -97,9 +79,23 @@ export function CreateVictim(props: IPropsForm) {
     handleSubmit,
     reset,
     formState: { errors },
+    control,
+    setValue,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const datadofato = watch("datadofato");
+
+  useEffect(() => {
+    if (datadofato) {
+      const date = new Date(datadofato);
+      const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
+      const dayOfWeek = weekdays[date.getDay()];
+      setValue("diah", dayOfWeek);
+    }
+  }, [datadofato, setValue]);
 
   const onSubmit = (data: any) => {
     api.post("/api/vitimas/", data).then((res) => {
@@ -202,21 +198,23 @@ export function CreateVictim(props: IPropsForm) {
               />
               <FormControl variant="filled">
                 <InputLabel>{errors.diah?.message ?? "diah"}</InputLabel>
-                <Select
-                  label={errors.diah?.message ?? "diah"}
-                  {...register("diah")}
-                  error={!!errors.diah?.message}
-                  defaultValue={""}
-                >
-                  <MenuItem value={"NA"}>NA</MenuItem>
-                  <MenuItem value={"dom"}>Dom</MenuItem>
-                  <MenuItem value={"seg"}>Seg</MenuItem>
-                  <MenuItem value={"ter"}>Ter</MenuItem>
-                  <MenuItem value={"qua"}>Qua</MenuItem>
-                  <MenuItem value={"qui"}>Qui</MenuItem>
-                  <MenuItem value={"sex"}>Sex</MenuItem>
-                  <MenuItem value={"sab"}>Sab</MenuItem>
-                </Select>
+                <Controller
+                  name="diah"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <Select {...field} error={!!errors.diah?.message}>
+                      <MenuItem value={"NA"}>NA</MenuItem>
+                      <MenuItem value={"dom"}>dom</MenuItem>
+                      <MenuItem value={"seg"}>seg</MenuItem>
+                      <MenuItem value={"ter"}>ter</MenuItem>
+                      <MenuItem value={"qua"}>qua</MenuItem>
+                      <MenuItem value={"qui"}>qui</MenuItem>
+                      <MenuItem value={"sex"}>sex</MenuItem>
+                      <MenuItem value={"sab"}>sab</MenuItem>
+                    </Select>
+                  )}
+                />
               </FormControl>
               <TextField
                 label={errors.horario?.message ?? "horario"}
@@ -258,24 +256,6 @@ export function CreateVictim(props: IPropsForm) {
                 error={!!errors.bairro?.message}
                 variant="filled"
               />
-              <FormControl variant="filled">
-                <InputLabel>{errors.zona?.message ?? "Zona"}</InputLabel>
-                <Select
-                  label={errors.zona?.message ?? "Zona"}
-                  {...register("zona")}
-                  error={!!errors.zona?.message}
-                  defaultValue={""}
-                >
-                  <MenuItem value={"NA"}>NA</MenuItem>
-                  <MenuItem value={"norte"}>norte</MenuItem>
-                  <MenuItem value={"oeste"}>oeste</MenuItem>
-                  <MenuItem value={"leste"}>leste</MenuItem>
-                  <MenuItem value={"sul"}>sul</MenuItem>
-                  <MenuItem value={"centrooeste"}>centrooeste</MenuItem>
-                  <MenuItem value={"centrosul"}>centrosul</MenuItem>
-                  <MenuItem value={"rural"}>rural</MenuItem>
-                </Select>
-              </FormControl>
               <TextField
                 label={
                   errors.rua_beco_travessa_estrada_ramal?.message ??
@@ -291,14 +271,32 @@ export function CreateVictim(props: IPropsForm) {
                 error={!!errors.endcomplemento?.message}
                 variant="filled"
               />
+              <FormControl variant="filled">
+                <InputLabel>{errors.zona?.message ?? "zona"}</InputLabel>
+                <Select
+                  label={errors.zona?.message ?? "zona"}
+                  {...register("zona")}
+                  error={!!errors.zona?.message}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"NA"}>NA</MenuItem>
+                  <MenuItem value={"norte"}>norte</MenuItem>
+                  <MenuItem value={"oeste"}>oeste</MenuItem>
+                  <MenuItem value={"leste"}>leste</MenuItem>
+                  <MenuItem value={"sul"}>sul</MenuItem>
+                  <MenuItem value={"centrooeste"}>centrooeste</MenuItem>
+                  <MenuItem value={"centrosul"}>centrosul</MenuItem>
+                  <MenuItem value={"rural"}>rural</MenuItem>
+                </Select>
+              </FormControl>
               <TextField
-                label={errors.lat?.message ?? "X_Lati"}
+                label={errors.lat?.message ?? "Y_lat"}
                 {...register("lat")}
                 error={!!errors.lat?.message}
                 variant="filled"
               />
               <TextField
-                label={errors.lng?.message ?? "Y_Long"}
+                label={errors.lng?.message ?? "X_long"}
                 {...register("lng")}
                 error={!!errors.lng?.message}
                 variant="filled"
@@ -560,7 +558,6 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.compexcomp?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -579,7 +576,6 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.presencafilhofamiliar?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>
@@ -594,7 +590,6 @@ export function CreateVictim(props: IPropsForm) {
                   error={!!errors.gestacao?.message}
                   defaultValue={""}
                 >
-                  <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"sim"}>sim</MenuItem>
                   <MenuItem value={"nao"}>nao</MenuItem>
                 </Select>

@@ -13,16 +13,7 @@ import {
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
 
-const formatLatLng = (value: any) => {
-  const parts = value.split(".");
-  if (parts[0].length === 1) {
-    parts[0] = "0" + parts[0];
-  }
-  return parts.join(".").padEnd(19, "0");
-};
 
 export const schema = Yup.object()
   .shape({
@@ -241,13 +232,13 @@ export function Form(props: IPropsForm) {
           variant="filled"
         />
                 <TextField
-          label={errors.lat?.message ?? "X_lat"}
+          label={errors.lat?.message ?? "Y_lat"}
           {...register("lat")}
           error={!!errors.lat?.message}
           variant="filled"
         />
         <TextField
-          label={errors.lng?.message ?? "Y_long"}
+          label={errors.lng?.message ?? "X_long"}
           {...register("lng")}
           error={!!errors.lng?.message}
           variant="filled"
