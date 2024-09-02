@@ -6,7 +6,7 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { CircularProgress, Paper } from "@mui/material";
+import { Alert, CircularProgress, Paper } from "@mui/material";
 import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
 import imagemLogin from "../../assets/laco-login.svg";
@@ -16,18 +16,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { registerUser } from "../../service/users";
 
-const schema = yup.object({
-  name: yup.string()
-    .required("Nome é um campo obrigatório")
-    .trim()
-    .matches(/^[a-zA-ZÀ-ÿ\s]*$/, 'Nome deve conter apenas letras'),
-  email: yup.string()
-    .required("E-mail é um campo obrigatório")
-    .email("E-mail deve ter um formato válido: exemplo@mail.com.br"),
-  contact: yup.string()
-    .required("Telefone é um campo obrigatório")
-    .matches(/^[0-9]+$/, 'Telefone deve conter apenas números'),
-}).required();
+const schema = yup
+  .object({
+    name: yup
+      .string()
+      .required("Nome é um campo obrigatório")
+      .trim()
+      .matches(/^[a-zA-ZÀ-ÿ\s]*$/, "Nome deve conter apenas letras"),
+    email: yup
+      .string()
+      .required("E-mail é um campo obrigatório")
+      .email("E-mail deve ter um formato válido: exemplo@mail.com.br"),
+    contact: yup
+      .string()
+      .required("Telefone é um campo obrigatório")
+      .matches(/^[0-9]+$/, "Telefone deve conter apenas números"),
+  })
+  .required();
 
 type FormData = yup.InferType<typeof schema>;
 
@@ -97,7 +102,11 @@ export default function Register() {
             }}
           >
             <Avatar
-              sx={{ backgroundColor: colors.primary_dark, marginLeft: "45px", marginTop: '30px' }}
+              sx={{
+                backgroundColor: colors.primary_dark,
+                marginLeft: "45px",
+                marginTop: "30px",
+              }}
             >
               <LockOutlinedIcon />
             </Avatar>
@@ -144,6 +153,19 @@ export default function Register() {
               autoComplete="contact"
               autoFocus
             />
+            <Alert
+              severity="info"
+              sx={{
+                margin: "20px",
+                background: colors.primary_lightest,
+                color: colors.neutral_dark,
+              }}
+            >
+              Lembre-se, a senha padrão inicial é composta pelas três primeiras
+              letras do seu nome seguidas pelos três últimos dígitos do seu
+              telefone. Após o primeiro login, é altamente recomendável
+              redefinir sua senha para garantir a segurança da sua conta.
+            </Alert>
             <Box
               sx={{
                 display: "grid",
