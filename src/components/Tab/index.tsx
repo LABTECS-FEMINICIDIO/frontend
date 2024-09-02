@@ -54,7 +54,7 @@ export default function BasicTabs() {
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Dashboard" {...a11yProps(0)} />
+          <Tab label="Gráficos" {...a11yProps(0)} />
           <Tab label="Mapa" {...a11yProps(1)} />
         </Tabs>
       </Box>

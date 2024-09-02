@@ -15,7 +15,7 @@ import { Dashboards } from '../pages/Dashboard';
 
 export const APP_PAGES = [
     {
-        title: 'Dashboard',
+        title: 'Visualizações',
         route: '/',
         icon: <DashboardIcon />,
         component: <Dashboards />,
@@ -68,7 +68,7 @@ export const APP_PAGES = [
 
 export const APP_PAGES_VISUALIZADOR = [
     {
-        title: 'Dashboard',
+        title: 'Visualizações',
         route: '/',
         icon: <DashboardIcon />,
         component: <Dashboards />,
@@ -78,7 +78,7 @@ export const APP_PAGES_VISUALIZADOR = [
 
 export const APP_PAGES_EDITOR = [
     {
-        title: 'Dashboard',
+        title: 'Visualizações',
         route: '/',
         icon: <DashboardIcon />,
         component: <Dashboards />,
@@ -125,7 +125,7 @@ export const APP_PAGES_EDITOR = [
 
 export const APP_PAGES_PORTO_VELHO = [
     {
-        title: 'Dashboard',
+        title: 'Visualizações',
         route: '/',
         icon: <DashboardIcon />,
         component: <Dashboards />,
@@ -178,7 +178,7 @@ export const APP_PAGES_PORTO_VELHO = [
 
 export const APP_PAGES_VISUALIZADOR_PORTO_VELHO = [
     {
-        title: 'Dashboard',
+        title: 'Visualizações',
         route: '/',
         icon: <DashboardIcon />,
         component: <Dashboards />,
@@ -188,7 +188,7 @@ export const APP_PAGES_VISUALIZADOR_PORTO_VELHO = [
 
 export const APP_PAGES_EDITOR_PORTO_VELHO = [
     {
-        title: 'Dashboard',
+        title: 'Visualizações',
         route: '/',
         icon: <DashboardIcon />,
         component: <Dashboards />,
