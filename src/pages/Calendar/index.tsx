@@ -37,6 +37,8 @@ export function Calendar() {
     listAll();
   }, [count, anoAtual]);
 
+  console.log("--------->", rows)
+
   const listAll = () => {
     setLoading(true);
     Promise.all([fetchBackendHolidays(), fetchApiBrasilHolidays()])
@@ -99,13 +101,24 @@ export function Calendar() {
       pontoFacultativo: holiday.pontoFacultativo
     }));
   };
-  
   const formatDate = (dateString: string) => {
+    if (!dateString) return ''; // Retorna string vazia se `dateString` for indefinido
+
+    // Verifica se o formato da data está no formato yyyy-mm-dd
+    if (dateString.includes('-')) {
+        const [year, month, day] = dateString.split('-');
+        return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+    }
+
+    // Assume que a data já está no formato dd/mm/yyyy
     const [day, month, year] = dateString.split('/');
-    const formattedDay = day.padStart(2, '0'); 
-    const formattedMonth = month.padStart(2, '0');
-    return `${formattedDay}/${formattedMonth}/${year}`;
-  };
+    if (!day || !month || !year) {
+        return dateString; // Retorna a data original se o formato estiver incorreto
+    }
+
+    return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+};
+
 
   const transformApiBrasilData = (data: any[]) => {
     // Transformar os dados da API Brasil para o formato comum
@@ -181,19 +194,28 @@ export function Calendar() {
 
   const handleSearch = () => {
     if (search.column === "" || search.value === "") {
-      toast.error("Campo coluna e pesquisa não pode ser vazio");
+        toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-      const findRows = rows.filter((item: any) =>
-        String(item[search.column])
-          .toLowerCase()
-          .includes(String(search.value).toLowerCase())
-      );
-      if (findRows.length === 0) {
-        toast.error("Nenhum resultado encontrado para esta pesquisa.");
-      }
-      setRowsFiltered(findRows);
+        const findRows = rows.filter((item: any) => {
+            // Verifica se a coluna é 'date' para tratar de forma especial
+            if (search.column === 'date') {
+                // Converte a data de item.date para o formato dd/mm/yyyy
+                const itemDate = item.date ? formatDate(item.date) : '';
+                const searchDate = formatDate(search.value);
+                return itemDate.includes(searchDate);
+            }
+            // Caso contrário, realiza a comparação normal
+            return String(item[search.column])
+                .toLowerCase()
+                .includes(String(search.value).toLowerCase());
+        });
+
+        if (findRows.length === 0) {
+            toast.error("Nenhum resultado encontrado para esta pesquisa.");
+        }
+        setRowsFiltered(findRows);
     }
-  };
+};
 
   const handleClear = () => {
     setSearch({ column: "", value: "" });
