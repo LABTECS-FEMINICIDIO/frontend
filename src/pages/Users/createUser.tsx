@@ -15,6 +15,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  CircularProgress
 } from "@mui/material";
 import React from "react";
 import * as Yup from "yup";
@@ -49,6 +50,7 @@ export function CreateUser() {
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { addCount } = useRefresh();
+  const [loading, setLoading] = React.useState(false);
 
   const {
     register,
@@ -65,12 +67,15 @@ export function CreateUser() {
 
   const handleCreateUser = async (data: Yup.InferType<typeof schema>) => {
     try {
+      setLoading(true);
       await createUser(data);
+      setLoading(false);
       toast.success("Usuário cadastrado com sucesso");
       reset();
       addCount();
       handleClose();
     } catch (error: any) {
+      setLoading(false);
       toast.error(error?.response.data.message);
     }
   };
@@ -157,7 +162,7 @@ export function CreateUser() {
             }}
           >
             Lembre-se, a senha padrão inicial é composta pelas três primeiras
-            letras do seu nome seguidas pelos três últimos dígitos do seu
+            letras do seu nome seguidas pelos três primeiros dígitos do seu
             telefone. Após o primeiro login, é altamente recomendável redefinir
             sua senha para garantir a segurança da sua conta.
           </Alert>
@@ -166,7 +171,7 @@ export function CreateUser() {
               Cancelar
             </Button>
             <Button type="submit" variant="contained" autoFocus>
-              Cadastrar
+            {loading ? <CircularProgress /> : "Cadastrar"}
             </Button>
           </DialogActions>
         </Box>

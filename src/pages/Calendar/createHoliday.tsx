@@ -18,6 +18,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  CircularProgress
 } from "@mui/material";
 import React from "react";
 import * as Yup from "yup";
@@ -43,6 +44,7 @@ export function CreateHoliday() {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
+  const [loading, setLoading] = React.useState(false);
 
   const { addCount } = useRefresh();
 
@@ -61,12 +63,15 @@ export function CreateHoliday() {
 
   const handleCreateHoliday = async (data: Yup.InferType<typeof schema>) => {
     try {
+      setLoading(true);
       await createHoliday(data);
+      setLoading(false);
       toast.success("Feriado cadastrado com sucesso");
       reset();
       addCount();
       handleClose();
     } catch (error: any) {
+      setLoading(false);
       toast.error(error?.response.data.detail);
     }
   };
@@ -178,8 +183,9 @@ export function CreateHoliday() {
             <Button autoFocus onClick={handleClose}>
               Cancelar
             </Button>
+            
             <Button type="submit" variant="contained">
-              Cadastrar
+            {loading ? <CircularProgress /> : "Cadastrar"}
             </Button>
           </DialogActions>
         </Box>

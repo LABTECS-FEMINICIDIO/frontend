@@ -1,11 +1,8 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import {
   CircularProgress,
   FormControl,
@@ -17,7 +14,6 @@ import {
   Paper,
   Select,
 } from "@mui/material";
-import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
 import imagemLogin from "../../assets/laco-login.svg";
 import * as yup from "yup";
@@ -26,6 +22,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useToken } from "../../shared/hooks/auth";
 import { toast } from "react-toastify";
+import logo from "../../assets/I.V FEM. VERTICAL.svg";
 
 const schema = yup.object({
   email: yup.string()
@@ -54,7 +51,7 @@ export default function SignIn() {
   
   const handleLogin = async (data: yup.InferType<typeof schema>) => {
     setLoading(true);
-    if(cidade == ""){
+    if(cidade === ""){
       toast.error("Selecione uma cidade")
       setLoading(false);
       return
@@ -103,7 +100,7 @@ export default function SignIn() {
                     margin: "20px",
                     padding: "20px",
                   }
-                : { padding: "80px", width: "400px" }
+                : { padding: "80px", width: "500px" }
             }
           >
             <Box
@@ -113,18 +110,9 @@ export default function SignIn() {
                 alignItems: "center",
               }}
             >
-              <Avatar
-                sx={{ backgroundColor: colors.primary_dark, margin: "10px" }}
-              >
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography
-                component="h1"
-                variant="h5"
-                sx={{ fontWeight: "bold" }}
-              >
-                Login
-              </Typography>
+              <Box>
+              <img src={logo} alt="logo: vigifeminicidio" width= "200px"/>
+              </Box>
             </Box>
             <Box
               component="form"
@@ -164,6 +152,17 @@ export default function SignIn() {
                   }
                 />
               </FormControl>
+                  <FormControl margin="normal" fullWidth variant="outlined">
+                    <InputLabel>{"Selecione a cidade"}</InputLabel>
+                    <Select
+                      label={"Selecione a cidade"}
+                      onChange={(e) => handleChangeState(e.target.value)}
+                      defaultValue={""}
+                    >
+                      <MenuItem value={"Manaus"}>Manaus</MenuItem>
+                      <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
+                    </Select>
+                  </FormControl>
               <Box
                 sx={{
                   display: "grid",
@@ -173,17 +172,6 @@ export default function SignIn() {
                   marginTop: 3,
                 }}
               >
-              <FormControl variant="filled">
-                <InputLabel>{"Cidade"}</InputLabel>
-                <Select
-                  label={"Cidade"}
-                  onChange={(e) => handleChangeState(e.target.value)}
-                  defaultValue={""}
-                >
-                  <MenuItem value={"Manaus"}>Manaus</MenuItem>
-                  <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
-                </Select>
-              </FormControl>
                 <Button
                   type="submit"
                   variant="contained"

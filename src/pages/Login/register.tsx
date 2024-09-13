@@ -1,11 +1,8 @@
 import * as React from "react";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import { Alert, CircularProgress, Paper } from "@mui/material";
 import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
@@ -15,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { registerUser } from "../../service/users";
+import logo from "../../assets/I.V FEM. VERTICAL.svg";
 
 const schema = yup
   .object({
@@ -91,7 +89,7 @@ export default function Register() {
                   margin: "20px",
                   padding: "20px",
                 }
-              : { padding: "80px", width: "400px" }
+              : { padding: "80px", width: "600px" }
           }
         >
           <Box
@@ -101,18 +99,9 @@ export default function Register() {
               alignItems: "center",
             }}
           >
-            <Avatar
-              sx={{
-                backgroundColor: colors.primary_dark,
-                marginLeft: "45px",
-                marginTop: "30px",
-              }}
-            >
-              <LockOutlinedIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5" sx={{ fontWeight: "bold" }}>
-              Registre-se
-            </Typography>
+            <Box>
+              <img src={logo} alt="logo: vigifeminicidio" width="200px" />
+            </Box>
           </Box>
           <Box
             component="form"
@@ -162,7 +151,7 @@ export default function Register() {
               }}
             >
               Lembre-se, a senha padrão inicial é composta pelas três primeiras
-              letras do seu nome seguidas pelos três últimos dígitos do seu
+              letras do seu nome seguidas pelos três primeiros dígitos do seu
               telefone. Após o primeiro login, é altamente recomendável
               redefinir sua senha para garantir a segurança da sua conta.
             </Alert>

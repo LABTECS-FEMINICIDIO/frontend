@@ -17,6 +17,7 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  CircularProgress
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { toast } from "react-toastify";
@@ -27,7 +28,6 @@ import { colors } from "../../shared/theme";
 import { grid1, grid2 } from "../../styles";
 import * as Yup from "yup";
 import { formatISO } from "date-fns";
-import CircularProgress from "@mui/material/CircularProgress";
 
 const schema = Yup.object()
   .shape({
@@ -101,10 +101,10 @@ export function EditVictims(props: IPropsForm) {
   }, [datadofato, setValue]);
 
   const handleOpenDialog = async () => {
-    console.log("Opening dialog...");
-    setLoading(true);
     try {
+      setLoading(true);
       const response = await findById(props.vitimaId);
+      setLoading(false);
       if (response && response.data) {
         setUserData(response.data);
         populateFormValues(response.data);
@@ -113,6 +113,7 @@ export function EditVictims(props: IPropsForm) {
         console.error("Erro ao buscar os dados da vítima");
       }
     } catch (error: any) {
+      setLoading(false);
       toast.error("Erro ao buscar os dados da vítima: " + error.message);
     } finally {
       setLoading(false);
