@@ -90,12 +90,19 @@ export function CreateVictim(props: IPropsForm) {
 
   useEffect(() => {
     if (datadofato) {
-      const date = new Date(datadofato);
+      console.log("antes", datadofato);
+      
+      // Criar data sem ajustar para UTC
+      const date = new Date(datadofato + "T00:00:00"); // Adiciona um horário explícito para evitar o ajuste automático
+      
       const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
       const dayOfWeek = weekdays[date.getDay()];
       setValue("diah", dayOfWeek);
+      
+      console.log("depois", date, dayOfWeek);
     }
   }, [datadofato, setValue]);
+  
 
   const onSubmit = (data: any) => {
     api.post("/api/vitimas/", data).then((res) => {

@@ -71,14 +71,19 @@ export function Form(props: IPropsForm) {
 
   useEffect(() => {
     if (datadofato) {
-      console.log("antes",datadofato)
-      const date = new Date(datadofato);
+      console.log("antes", datadofato);
+      
+      // Criar data sem ajustar para UTC
+      const date = new Date(datadofato + "T00:00:00"); // Adiciona um horário explícito para evitar o ajuste automático
+      
       const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
       const dayOfWeek = weekdays[date.getDay()];
       setValue("diah", dayOfWeek);
-      console.log("depois",date)
+      
+      console.log("depois", date, dayOfWeek);
     }
   }, [datadofato, setValue]);
+  
 
   const onSubmit = (data: FormData) => {
     api.post("/api/vitimas/", data).then((res) => {
