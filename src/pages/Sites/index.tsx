@@ -78,10 +78,8 @@ export function Sites() {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
       console.log(search.column, search.value);
-      const findRows = rows.filter(
-        (item) =>
-          String(item[search.column]).toLowerCase() ===
-          String(search.value).toLowerCase()
+      const findRows = rows.filter((item) =>
+        String(item[search.column]).toLowerCase().includes(String(search.value).toLowerCase())
       );
       if (findRows.length === 0) {
         toast.error("Nenhum resultado encontrado para esta pesquisa.");
@@ -89,6 +87,7 @@ export function Sites() {
       setRowsFiltered(findRows);
     }
   };
+  
 
   const handleClear = () => {
     setSearch({ column: "", value: "" });
