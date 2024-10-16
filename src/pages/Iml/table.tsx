@@ -10,6 +10,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import { colors } from "../../shared/theme";
+import { formatDate } from "../../utils/date";
 
 export interface Row {
   id: number;
@@ -19,6 +20,7 @@ export interface Row {
   idade: number;
   bairroDaRemocao: string;
   causaMorte: string;
+  createdAt: string;
 }
 
 interface rowProps {
@@ -57,10 +59,10 @@ export const SimpleTableIml = (props: rowProps) => {
               <TableCell sx={{ background: colors.primary_lightest }}>
                 Hora
               </TableCell>
-              <TableCell sx={{ background: colors.primary_lightest }}>
+              <TableCell sx={{ background: colors.primary_lightest, width: '10px'}}>
                 Sexo
               </TableCell>
-              <TableCell sx={{ background: colors.primary_lightest }}>
+              <TableCell sx={{ background: colors.primary_lightest}}>
                 Idade
               </TableCell>
               <TableCell sx={{ background: colors.primary_lightest }}>
@@ -68,6 +70,9 @@ export const SimpleTableIml = (props: rowProps) => {
               </TableCell>
               <TableCell sx={{ background: colors.primary_lightest }}>
                 Causa da morte
+              </TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Data e hora da captura
               </TableCell>
             </TableRow>
           </TableHead>
@@ -82,6 +87,7 @@ export const SimpleTableIml = (props: rowProps) => {
                   <TableCell>{row.idade}</TableCell>
                   <TableCell>{row.bairroDaRemocao}</TableCell>
                   <TableCell>{row.causaMorte}</TableCell>
+                  <TableCell>{formatDate(row.createdAt)}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
