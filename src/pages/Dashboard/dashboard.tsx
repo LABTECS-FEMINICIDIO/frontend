@@ -16,8 +16,10 @@ export function Dashboard() {
   useEffect(() => {
     if (selectedState == "Manaus"){
       setMetabaseLink("https://graph.monitorafeminicidio.com/public/dashboard/7be29569-672f-4959-809e-612a67f86bcd")
-    }else{
+    }else if(selectedState == "Porto-velho"){
       setMetabaseLink("https://graph.monitorafeminicidio.com/public/dashboard/183717b9-1c39-4688-9263-7335aec82a2d")
+    }else{
+      setMetabaseLink("https://graph.monitorafeminicidio.com/public/dashboard/b2565e99-5df3-4c72-8fbf-49350a80bffa")
     }
   }, [selectedState])
 
