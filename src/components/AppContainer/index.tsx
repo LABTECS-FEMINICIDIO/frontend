@@ -125,7 +125,7 @@ export function AppContainer({ children, title }: AppContainerProps) {
                 >
                   <MenuItem value={"Manaus"}>Manaus</MenuItem>
                   <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
-                  <MenuItem value={"Rio-branco"}>Rio branco</MenuItem>
+                  <MenuItem value={"Rio-branco"}>Rio Branco</MenuItem>
                 </Select>
               </FormControl>
             <EditUser />

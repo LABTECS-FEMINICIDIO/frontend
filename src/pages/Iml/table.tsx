@@ -10,7 +10,7 @@ import {
   TablePagination,
 } from "@mui/material";
 import { colors } from "../../shared/theme";
-import { formatDate } from "../../utils/date";
+import { formatDate, formatTime } from "../../utils/date";
 
 export interface Row {
   id: number;
@@ -72,7 +72,10 @@ export const SimpleTableIml = (props: rowProps) => {
                 Causa da morte
               </TableCell>
               <TableCell sx={{ background: colors.primary_lightest }}>
-                Data e hora da captura
+                Data da Captura
+              </TableCell>
+              <TableCell sx={{ background: colors.primary_lightest }}>
+                Hora da Captura
               </TableCell>
             </TableRow>
           </TableHead>
@@ -88,6 +91,7 @@ export const SimpleTableIml = (props: rowProps) => {
                   <TableCell>{row.bairroDaRemocao}</TableCell>
                   <TableCell>{row.causaMorte}</TableCell>
                   <TableCell>{formatDate(row.createdAt)}</TableCell>
+                  <TableCell>{formatTime(row.createdAt)}</TableCell>
                 </TableRow>
               ))}
           </TableBody>
