@@ -22,7 +22,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
-import { formatDate } from "../../utils/date";
+import { formatDate, formatTime } from "../../utils/date";
 import { useToken } from "../../shared/hooks/auth";
 export interface Row {
   nome: string;
@@ -113,6 +113,9 @@ export function Row(props: Row) {
         </TableCell>
         <TableCell align="left">
         {formatDate(props.createdAt)}
+        </TableCell>
+        <TableCell align="left">
+        {formatTime(props.createdAt)}
         </TableCell>
         <TableCell>
           <IconButton onClick={() => DeleteSite(props.id)}>
@@ -226,7 +229,8 @@ export default function CollapsibleTable({ search, filterData }: Props) {
               <TableCell align="left">Assassinato?</TableCell>
               <TableCell align="left">Classificação</TableCell>
               <TableCell align="left">Lido</TableCell>
-              <TableCell align="left">Data e hora da captura</TableCell>
+              <TableCell align="left">Data da Captura</TableCell>
+              <TableCell align="left">Hora da Captura</TableCell>
               <TableCell align="left"></TableCell>
             </TableRow>
           </TableHead>

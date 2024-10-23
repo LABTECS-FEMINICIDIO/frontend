@@ -74,13 +74,13 @@ export function States({ estados, userEmail }: { estados: string[], userEmail: s
 
     apiAuth.patch(`/api/v1/users/${city}/${encodedEmail}/false`)
       .then(response => {
-        toast.success("City removed successfully!");
+        toast.success("Cidade removida com sucesso!");
         handleClose();
         addCount()
         setAddCityOpen(false)
       })
       .catch(error => {
-        toast.error("Failed to remove city.");
+        toast.error("Falha para remover cidade.");
         console.error("There was an error removing the city!", error);
       });
   };
