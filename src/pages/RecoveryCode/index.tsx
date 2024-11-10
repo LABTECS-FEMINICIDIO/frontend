@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { apiAuth } from "../../service/api";
+import Cookies from "universal-cookie";
 
 const schema = yup
   .object({
@@ -62,6 +63,13 @@ export default function RecoveryCode() {
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
 
   React.useEffect(() => {
+    const cookie = new Cookies();
+    cookie.remove("@feminicidio_token");
+    localStorage.removeItem("@feminicidio_token");
+    cookie.remove("selectedStateF");
+    cookie.remove("usernamef");
+    cookie.remove("idf");
+    
     window.addEventListener("resize", () => {
       setWindowSize(window?.innerWidth);
     });

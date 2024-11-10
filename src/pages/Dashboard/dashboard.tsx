@@ -18,6 +18,8 @@ export function Dashboard() {
       setMetabaseLink("https://graph.monitorafeminicidio.com/public/dashboard/7be29569-672f-4959-809e-612a67f86bcd")
     }else if(selectedState == "Porto-velho"){
       setMetabaseLink("https://graph.monitorafeminicidio.com/public/dashboard/183717b9-1c39-4688-9263-7335aec82a2d")
+    }else if(selectedState == "Rio-de-janeiro"){
+      setMetabaseLink("https://graph.monitorafeminicidio.com/public/dashboard/e5b7f8f0-9144-4631-a7a4-c238fb12e3c6")
     }else{
       setMetabaseLink("https://graph.monitorafeminicidio.com/public/dashboard/b2565e99-5df3-4c72-8fbf-49350a80bffa")
     }

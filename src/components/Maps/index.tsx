@@ -16,7 +16,8 @@ export function MapPage({vitimas}: IProps) {
   const positions: any = {
     "Manaus": [-3.059943, -59.988359],
     "Porto-velho": [-8.763879, -63.884268],
-    "Rio-branco": [-9.9747200, -67.810000]
+    "Rio-branco": [-9.9747200, -67.810000],
+    "Rio-de-janeiro": [-22.9035, -43.2096]
   }
   const cookies = new Cookies()
   const selectecCity: any = cookies.get("selectedStateF")

@@ -162,6 +162,7 @@ export default function SignIn() {
                       <MenuItem value={"Manaus"}>Manaus</MenuItem>
                       <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
                       <MenuItem value={"Rio-branco"}>Rio Branco</MenuItem>
+                      <MenuItem value={"Rio-de-janeiro"}>Rio de Janeiro</MenuItem>
                     </Select>
                   </FormControl>
               <Box
