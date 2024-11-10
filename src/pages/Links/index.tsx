@@ -25,6 +25,7 @@ export function Links() {
   const [search, setSearch] = useState({ column: "", value: "" });
   const [filterRows, setFilterRows] = useState([]);
   const { selectedState } = useToken()
+  const [count, setCount] = useState<number>(0)
 
   const handleValue = (event: ChangeEvent<HTMLInputElement>) => {
     setSearch((state) => ({
@@ -47,7 +48,7 @@ export function Links() {
     }
   
     let searchValue: string | boolean = search.value;
-  
+    setCount(count + 1)
     // Convertendo "sim" ou "não" para true ou false se a coluna for "lido" ou "assassinato"
     if (search.column === "lido") {
       searchValue = search.value.toLowerCase() === "sim" ? "true" : "false";
@@ -66,6 +67,7 @@ export function Links() {
   
   const handleClear = () => {
     setSearch({ column: "", value: "" });
+    setCount(count + 1)
     setFilterRows([]);
   };
 
@@ -182,7 +184,7 @@ export function Links() {
           </Typography>
         </Box>
       </Box>
-      <CollapsibleTable search={search} filterData={filterRows} />
+      <CollapsibleTable search={search} filterData={filterRows} count={count || 0}/>
     </>
   );
 }

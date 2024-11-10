@@ -17,7 +17,7 @@ import { api } from "../../service/api";
 import { Form } from "./form";
 import { Content } from "./content";
 import Classification from "./classification";
-import { CircularProgress, Switch } from "@mui/material";
+import { CircularProgress, Switch, TablePagination } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
@@ -39,7 +39,8 @@ export interface Row {
 }
 export interface Props {
   search: { column: string; value: string };
-  filterData: Row[]
+  filterData: Row[],
+  count: number
 }
 
 export function Row(props: Row) {
@@ -156,54 +157,66 @@ export function Row(props: Row) {
   );
 }
 
-export default function CollapsibleTable({ search, filterData }: Props) {
+export default function CollapsibleTable({ search, filterData, count }: Props) {
   const [rows, setRows] = useState<Row[]>([]);
   const [findSitesFetched, setFindSitesFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const itemsPerPage = 10;
+  const [totalItems, setTotalItems] = useState<number>()
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState<number>()
   const { selectedState } = useToken()
 
-  useEffect(() => {
-    if (search.value.length > 0) {
-      setRows(filterData);
-      return;
+  // useEffect(() => {
+  //   if (search.value.length > 0) {
+  //     setRows(filterData);
+  //     return;
+  //   }
+  //   refreshList();
+  // }, [filterData, selectedState]);
+
+  const buildQuery = () => {
+    if (search.column !== '' && search.value !== ''){
+      return `&${search.column}=${search.value}`
+    }else{
+      return ""
     }
-    refreshList();
-  }, [filterData, selectedState]);
+  }
 
   const refreshList = () => {
     setLoading(true);
     api
-      .get("/api/site")
+      .get(`/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`)
       .then((res) => {
-        setRows(res.data);
+        setRows(res.data.sites);
+        setTotalItems(res.data.total_records);
+        setTotalPages(res.data.total_pages)
         setLoading(false);
       })
       .catch(() => setLoading(false));
   };
 
   useEffect(() => {
-    setLoading(true);
-  /*   if (!findSitesFetched) {
-      api.get("/api/findSites").then((res) => {
-        setLoading(false);
-        setFindSitesFetched(true);
-      });
-    } */
-    api
-      .get("/api/site")
-      .then((res) => {
-        setRows(res.data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [findSitesFetched, selectedState]);
+    setCurrentPage(1)
+    fetchSites()
+  }, [count])
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentRowsPaginated = rows.slice(indexOfFirstItem, indexOfLastItem);
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const fetchSites = () => {
+    api
+    .get(`/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`)
+    .then((res) => {
+      setRows(res.data.sites);
+      setTotalItems(res.data.total_records);
+      setTotalPages(res.data.total_pages)
+      setLoading(false);
+    })
+    .catch(() => setLoading(false));
+  }
+
+  useEffect(() => {
+    setLoading(true);
+      fetchSites()
+  }, [findSitesFetched, selectedState, itemsPerPage, currentPage]);
 
   return (
     <TableContainer component={Paper} sx={{ marginTop: "30px" }}>
@@ -235,69 +248,65 @@ export default function CollapsibleTable({ search, filterData }: Props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {currentRowsPaginated.map((row: Row) => (
+            {rows.map((row: Row) => (
               <Row key={row.id} {...row} refreshList={refreshList} />
             ))}
           </TableBody>
         </Table>
       )}
-      <Pagination
+      {/* <Pagination
         itemsPerPage={itemsPerPage}
         totalItems={rows.length}
         currentPage={currentPage}
         paginate={paginate}
-      />
+      /> */}
+      <TablePaginationDemo props={{
+        currentPage: currentPage,
+        itemsPerPage: itemsPerPage,
+        totalItems: totalItems || 0,
+        setCurrentPage: setCurrentPage,
+        setTotalItemPerPage: setItemsPerPage
+      }}/>
     </TableContainer>
   );
 }
 
-interface PaginationProps {
-  itemsPerPage: number;
-  totalItems: number;
-  currentPage: number;
-  paginate: (pageNumber: number) => void;
+interface IDataPagination {
+  itemsPerPage: number,
+  totalItems: number,
+  currentPage: number,
+  setCurrentPage: (page: number) => void,
+  setTotalItemPerPage: (page: number) => void,
 }
 
-const Pagination: React.FC<PaginationProps> = ({
-  itemsPerPage,
-  totalItems,
-  currentPage,
-  paginate,
-}) => {
-  const pageNumbers = [];
+interface PropsPagination {
+  props: IDataPagination
+}
 
-  for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
-    pageNumbers.push(i);
-  }
+function TablePaginationDemo({props}: PropsPagination) {
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    props.setCurrentPage(newPage + 1)
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    props.setTotalItemPerPage(parseInt(event.target.value, 10));
+    props.setCurrentPage(1)
+  };
 
   return (
-    <nav>
-      <ul
-        style={{
-          listStyle: "none",
-          display: "flex",
-          justifyContent: "center",
-          gap: "10px",
-        }}
-      >
-        {pageNumbers.map((number) => (
-          <li key={number}>
-            <button
-              style={{
-                padding: "5px 10px",
-                cursor: "pointer",
-                backgroundColor: currentPage === number ? "#4CAF50" : "",
-                color: currentPage === number ? "#fff" : "",
-                border: "1px solid #ddd",
-                borderRadius: "5px",
-              }}
-              onClick={() => paginate(number)}
-            >
-              {number}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </nav>
+    <TablePagination
+      component="div"
+      count={props.totalItems}
+      page={props.currentPage - 1}
+      onPageChange={handleChangePage}
+      rowsPerPage={props.itemsPerPage}
+      onRowsPerPageChange={handleChangeRowsPerPage}
+    />
   );
-};
+}
