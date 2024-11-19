@@ -112,7 +112,7 @@ export function States({ estados, userEmail }: { estados: string[], userEmail: s
                 {estados.map((item: any) => (
                   <TableRow key={item.city}>
                     <TableCell component="th" scope="row">
-                      {item.city}
+                      {item.city.replace("-", " ")}
                     </TableCell>
                     <TableCell align="right">
                       <Button

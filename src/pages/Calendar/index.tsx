@@ -41,6 +41,7 @@ export function Calendar() {
 
   const listAll = () => {
     setLoading(true);
+    // fetchApiBrasilHolidays()
     Promise.all([fetchBackendHolidays(), fetchApiBrasilHolidays()])
       .then(([backendResponse, apiBrasilResponse]) => {
         const backendHolidays = transformBackendData(backendResponse.data);

@@ -20,6 +20,7 @@ import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 import { createProgramSearch, findManyProgramSearch } from "../../service/site";
 import { toast } from "react-toastify";
 import { load } from "../../styles";
+import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object()
   .shape({
@@ -68,12 +69,14 @@ export function CreateProgram() {
       toast.error(error?.response.data.detail);
     }
   };
+  
+  const { count } = useRefresh();
 
   React.useEffect(() => {
     findManyProgramSearch().then((res) => {
       setPeriodoPesquisa(res.data[0]?.dias ?? 1);
     });
-  }, []);
+  }, [count]);
 
   const handleClickOpen = () => {
     setOpen(true);
