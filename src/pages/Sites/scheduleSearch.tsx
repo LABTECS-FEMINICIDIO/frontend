@@ -76,7 +76,8 @@ export function CreateProgram() {
     findManyProgramSearch().then((res) => {
       setPeriodoPesquisa(res.data[0]?.dias ?? 1);
     });
-  }, [count]);
+    console.log(count)
+  }, [count, open]);
 
   const handleClickOpen = () => {
     setOpen(true);
