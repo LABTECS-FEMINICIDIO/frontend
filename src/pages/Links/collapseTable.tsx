@@ -24,6 +24,8 @@ import { toast } from "react-toastify";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { formatDate, formatTime } from "../../utils/date";
 import { useToken } from "../../shared/hooks/auth";
+import DeleteSiteModal from "../../components/ModalDeleteLink";
+import CloseColapseTable from "../../components/ModalCloseColapseTable";
 export interface Row {
   nome: string;
   link: string;
@@ -35,12 +37,12 @@ export interface Row {
   vitima: any;
   tagsEncontradas: string;
   refreshList: () => void;
-  createdAt: string
+  createdAt: string;
 }
 export interface Props {
   search: { column: string; value: string };
-  filterData: Row[],
-  count: number
+  filterData: Row[];
+  count: number;
 }
 
 export function Row(props: Row) {
@@ -72,6 +74,10 @@ export function Row(props: Row) {
       });
   };
 
+  const handleCloseColapseTable = () => {
+    setOpen(false)
+  }
+
   return (
     <React.Fragment>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -79,9 +85,9 @@ export function Row(props: Row) {
           <IconButton
             aria-label="expand row"
             size="small"
-            onClick={() => setOpen(!open)}
+            // onClick={() => setOpen(!open)}
           >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            {open ? <CloseColapseTable handleCloseColapseTable={handleCloseColapseTable} /> : <KeyboardArrowDownIcon onClick={() => setOpen(true)} />}
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
@@ -112,16 +118,17 @@ export function Row(props: Row) {
           {props.lido}
           <Switch onChange={handleChangeLido} checked={props.lido} />
         </TableCell>
-        <TableCell align="left">
-        {formatDate(props.createdAt)}
-        </TableCell>
-        <TableCell align="left">
-        {formatTime(props.createdAt)}
-        </TableCell>
+        <TableCell align="left">{formatDate(props.createdAt)}</TableCell>
+        <TableCell align="left">{formatTime(props.createdAt)}</TableCell>
         <TableCell>
-          <IconButton onClick={() => DeleteSite(props.id)}>
+          {/* <IconButton onClick={() => DeleteSite(props.id)}>
             <DeleteIcon />
-          </IconButton>
+          </IconButton> */}
+          <DeleteSiteModal
+            id={props.id}
+            deleteSite={deleteSite}
+            addCount={addCount}
+          />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -162,10 +169,10 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
   const [findSitesFetched, setFindSitesFetched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [totalItems, setTotalItems] = useState<number>()
+  const [totalItems, setTotalItems] = useState<number>();
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [totalPages, setTotalPages] = useState<number>()
-  const { selectedState } = useToken()
+  const [totalPages, setTotalPages] = useState<number>();
+  const { selectedState } = useToken();
 
   // useEffect(() => {
   //   if (search.value.length > 0) {
@@ -176,46 +183,50 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
   // }, [filterData, selectedState]);
 
   const buildQuery = () => {
-    if (search.column !== '' && search.value !== ''){
-      return `&${search.column}=${search.value}`
-    }else{
-      return ""
+    if (search.column !== "" && search.value !== "") {
+      return `&${search.column}=${search.value}`;
+    } else {
+      return "";
     }
-  }
+  };
 
   const refreshList = () => {
     setLoading(true);
     api
-      .get(`/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`)
+      .get(
+        `/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`
+      )
       .then((res) => {
         setRows(res.data.sites);
         setTotalItems(res.data.total_records);
-        setTotalPages(res.data.total_pages)
+        setTotalPages(res.data.total_pages);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   };
 
   useEffect(() => {
-    setCurrentPage(1)
-    fetchSites()
-  }, [count])
+    setCurrentPage(1);
+    fetchSites();
+  }, [count]);
 
   const fetchSites = () => {
     api
-    .get(`/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`)
-    .then((res) => {
-      setRows(res.data.sites);
-      setTotalItems(res.data.total_records);
-      setTotalPages(res.data.total_pages)
-      setLoading(false);
-    })
-    .catch(() => setLoading(false));
-  }
+      .get(
+        `/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`
+      )
+      .then((res) => {
+        setRows(res.data.sites);
+        setTotalItems(res.data.total_records);
+        setTotalPages(res.data.total_pages);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  };
 
   useEffect(() => {
     setLoading(true);
-      fetchSites()
+    fetchSites();
   }, [findSitesFetched, selectedState, itemsPerPage, currentPage]);
 
   return (
@@ -260,43 +271,44 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
         currentPage={currentPage}
         paginate={paginate}
       /> */}
-      <TablePaginationDemo props={{
-        currentPage: currentPage,
-        itemsPerPage: itemsPerPage,
-        totalItems: totalItems || 0,
-        setCurrentPage: setCurrentPage,
-        setTotalItemPerPage: setItemsPerPage
-      }}/>
+      <TablePaginationDemo
+        props={{
+          currentPage: currentPage,
+          itemsPerPage: itemsPerPage,
+          totalItems: totalItems || 0,
+          setCurrentPage: setCurrentPage,
+          setTotalItemPerPage: setItemsPerPage,
+        }}
+      />
     </TableContainer>
   );
 }
 
 interface IDataPagination {
-  itemsPerPage: number,
-  totalItems: number,
-  currentPage: number,
-  setCurrentPage: (page: number) => void,
-  setTotalItemPerPage: (page: number) => void,
+  itemsPerPage: number;
+  totalItems: number;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  setTotalItemPerPage: (page: number) => void;
 }
 
 interface PropsPagination {
-  props: IDataPagination
+  props: IDataPagination;
 }
 
-function TablePaginationDemo({props}: PropsPagination) {
-
+function TablePaginationDemo({ props }: PropsPagination) {
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
+    newPage: number
   ) => {
-    props.setCurrentPage(newPage + 1)
+    props.setCurrentPage(newPage + 1);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     props.setTotalItemPerPage(parseInt(event.target.value, 10));
-    props.setCurrentPage(1)
+    props.setCurrentPage(1);
   };
 
   return (
