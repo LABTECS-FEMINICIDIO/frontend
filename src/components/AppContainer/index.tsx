@@ -59,8 +59,8 @@ export function AppContainer({ children, title }: AppContainerProps) {
 
   function Logout() {
     const cookie = new Cookies();
-    cookie.remove("@feminicidio_token");
-    localStorage.removeItem("@feminicidio_token");
+    cookie.remove("feminicidio_token");
+    localStorage.removeItem("feminicidio_token");
     cookie.remove("selectedStateF");
     cookie.remove("usernamef");
     cookie.remove("idf");
@@ -74,7 +74,7 @@ export function AppContainer({ children, title }: AppContainerProps) {
   const [city, setCity] = React.useState(cookies.get("selectedStateF"))
 
   const handleChangeState = (state: string) => {
-    const storedToken = cookies.get('@feminicidio_token');
+    const storedToken = cookies.get('feminicidio_token');
     const tokenDecoded = decodeToken(storedToken) as any
     const parsedState = tokenDecoded.state
  

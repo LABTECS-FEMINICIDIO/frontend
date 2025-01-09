@@ -50,7 +50,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
   };
 
   useEffect(() => {
-    const storedToken = cookies.get('@feminicidio_token');
+    const storedToken = cookies.get('feminicidio_token');
     if (storedToken) {
       setToken(storedToken);
       setAxiosToken(storedToken);
@@ -78,7 +78,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
           setPermission(false);
           return
         }
-        cookies.set("@feminicidio_token", token);
+        cookies.set("feminicidio_token", token);
         setAxiosToken(token);
         setToken(token);
         setUsername(parsedToken.name);

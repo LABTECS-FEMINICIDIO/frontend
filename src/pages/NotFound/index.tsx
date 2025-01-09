@@ -6,8 +6,8 @@ export function NotFound() {
 
   function Logout() {
       const cookie = new Cookies();
-      cookie.remove('@feminicidio_token');
-      localStorage.removeItem('@feminicidio_token');
+      cookie.remove('feminicidio_token');
+      localStorage.removeItem('feminicidio_token');
       cookie.remove('idf');
       localStorage.removeItem('idf');
       cookie.remove('selectedStateF');

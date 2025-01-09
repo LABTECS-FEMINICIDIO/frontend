@@ -64,8 +64,8 @@ export default function RecoveryCode() {
 
   React.useEffect(() => {
     const cookie = new Cookies();
-    cookie.remove("@feminicidio_token");
-    localStorage.removeItem("@feminicidio_token");
+    cookie.remove("feminicidio_token");
+    localStorage.removeItem("feminicidio_token");
     cookie.remove("selectedStateF");
     cookie.remove("usernamef");
     cookie.remove("idf");

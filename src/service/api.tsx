@@ -11,7 +11,7 @@ export const api = axios.create({
 // Função para adicionar o token aos cabeçalhos
 export const addTokenToHeaders = (config: any) => {
   const cookie = new Cookies();
-  const Token = cookie.get('@feminicidio_token'); // Sem necessidade de await, get é síncrono
+  const Token = cookie.get('feminicidio_token'); // Sem necessidade de await, get é síncrono
   if (Token) {
     config.headers.Authorization = `Bearer ${Token}`;
   }
@@ -44,7 +44,7 @@ export const apiAuth = axios.create({
 
 export const addTokenToHeadersApiAuth = (config: any) => {
   const cookie = new Cookies();
-  const Token = cookie.get('@feminicidio_token');
+  const Token = cookie.get('feminicidio_token');
   if (Token) {
     config.headers.Authorization = `Bearer ${Token}`;
   }
