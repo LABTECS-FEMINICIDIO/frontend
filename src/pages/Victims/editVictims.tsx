@@ -62,6 +62,12 @@ const schema = Yup.object()
     lat: Yup.string(),
     lng: Yup.string(),
     sites_in_bulk: Yup.string(),
+    site1: Yup.string(),
+    site2: Yup.string(),
+    site3: Yup.string(),
+    siteGeo1: Yup.string(),
+    siteGeo2: Yup.string(),
+    siteGeo3: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -94,15 +100,15 @@ export function EditVictims(props: IPropsForm) {
   useEffect(() => {
     if (datadofato) {
       console.log("antes", datadofato);
-      
+
       // Criar data sem ajustar para UTC
       const date = new Date(datadofato + "T00:00:00"); // Adiciona um horário explícito para evitar o ajuste automático
-      
+
       const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
       const dayOfWeek = weekdays[date.getDay()];
       setValue("diah", dayOfWeek);
-      
-      console.log("depois", date, dayOfWeek);
+
+      // console.log("depois", date, dayOfWeek);
     }
   }, [datadofato, setValue]);
 
@@ -164,8 +170,8 @@ export function EditVictims(props: IPropsForm) {
     } catch (error: any) {
       toast.error(
         error?.response?.data?.detail ||
-          error.message ||
-          "Erro ao atualizar dados da vítima"
+        error.message ||
+        "Erro ao atualizar dados da vítima"
       );
     }
   };
@@ -197,9 +203,9 @@ export function EditVictims(props: IPropsForm) {
         </DialogTitle>
         <Divider />
         {loading ? (
-         
-            <CircularProgress />
-          
+
+          <CircularProgress />
+
         ) : (
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <DialogContent>
@@ -797,12 +803,55 @@ export function EditVictims(props: IPropsForm) {
                 Link de Referência:
               </Typography>
               <Box>
-                <TextField
+                {/* <TextField
                   variant="filled"
                   label={errors.sites_in_bulk?.message ?? "Link"}
                   sx={{ width: "93%", mb: 1 }}
                   {...register("sites_in_bulk")}
                   error={!!errors.sites_in_bulk?.message}
+                /> */}
+                <TextField
+                  variant="filled"
+                  label={errors.site1?.message ?? "Site 1"}
+                  sx={{ width: "93%", mb: 1 }}
+                  {...register("site1")}
+                  error={!!errors.site1?.message}
+                  disabled={!!watch("site1")} 
+                />
+                <TextField
+                  variant="filled"
+                  label={errors.site2?.message ?? "Site 2"}
+                  sx={{ width: "93%", mb: 1 }}
+                  {...register("site2")}
+                  error={!!errors.site2?.message}
+                />
+                <TextField
+                  variant="filled"
+                  label={errors.site3?.message ?? "Site 3"}
+                  sx={{ width: "93%", mb: 1 }}
+                  {...register("site3")}
+                  error={!!errors.site3?.message}
+                />
+                <TextField
+                  variant="filled"
+                  label={errors.siteGeo1?.message ?? "Site Geo 1"}
+                  sx={{ width: "93%", mb: 1 }}
+                  {...register("siteGeo1")}
+                  error={!!errors.siteGeo1?.message}
+                />
+                <TextField
+                  variant="filled"
+                  label={errors.siteGeo2?.message ?? "Site Geo 2"}
+                  sx={{ width: "93%", mb: 1 }}
+                  {...register("siteGeo2")}
+                  error={!!errors.siteGeo2?.message}
+                />
+                <TextField
+                  variant="filled"
+                  label={errors.siteGeo3?.message ?? "Site Geo 3"}
+                  sx={{ width: "93%", mb: 1 }}
+                  {...register("siteGeo3")}
+                  error={!!errors.siteGeo3?.message}
                 />
               </Box>
               <Box sx={{ marginTop: "10px", marginLeft: "75%" }}>

@@ -62,6 +62,12 @@ export const schema = Yup.object()
     lat: Yup.string(),
     lng: Yup.string(),
     sites_in_bulk: Yup.string(),
+    site1: Yup.string(),
+    site2: Yup.string(),
+    site3: Yup.string(),
+    siteGeo1: Yup.string(),
+    siteGeo2: Yup.string(),
+    siteGeo3: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
@@ -616,10 +622,45 @@ export function CreateVictim(props: IPropsForm) {
             <Box>
               <TextField
                 variant="filled"
-                label={errors.sites_in_bulk?.message ?? "Link"}
+                label={errors.site1?.message ?? "Site 1"}
                 sx={{ width: "93%", mb: 1 }}
-                {...register("sites_in_bulk")}
-                error={!!errors.sites_in_bulk?.message}
+                {...register("site1")}
+                error={!!errors.site1?.message}
+              />
+              <TextField
+                variant="filled"
+                label={errors.site2?.message ?? "Site 2"}
+                sx={{ width: "93%", mb: 1 }}
+                {...register("site2")}
+                error={!!errors.site2?.message}
+              />
+              <TextField
+                variant="filled"
+                label={errors.site3?.message ?? "Site 3"}
+                sx={{ width: "93%", mb: 1 }}
+                {...register("site3")}
+                error={!!errors.site3?.message}
+              />
+              <TextField
+                variant="filled"
+                label={errors.siteGeo1?.message ?? "Site Geo 1"}
+                sx={{ width: "93%", mb: 1 }}
+                {...register("siteGeo1")}
+                error={!!errors.siteGeo1?.message}
+              />
+              <TextField
+                variant="filled"
+                label={errors.siteGeo2?.message ?? "Site Geo 2"}
+                sx={{ width: "93%", mb: 1 }}
+                {...register("siteGeo2")}
+                error={!!errors.siteGeo2?.message}
+              />
+              <TextField
+                variant="filled"
+                label={errors.siteGeo3?.message ?? "Site Geo 3"}
+                sx={{ width: "93%", mb: 1 }}
+                {...register("siteGeo3")}
+                error={!!errors.siteGeo3?.message}
               />
             </Box>
             <Box sx={{ marginTop: "10px", marginLeft: "75%" }}>

@@ -149,7 +149,7 @@ export function Row(props: Row) {
                     src={props.link}
                   />
                   <Box>
-                    <Form idSite={props.id} />
+                    <Form idSite={props.id} linkSite={props.link}/>
                     <Typography variant="body2" gutterBottom component="div">
                       <strong>Tags Encontradas:</strong> {props.tagsEncontradas}
                     </Typography>
