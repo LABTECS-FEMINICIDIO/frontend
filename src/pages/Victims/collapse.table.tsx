@@ -57,6 +57,12 @@ export interface IRowsPropsVictims {
   vitima: string;
   sites: string[];
   sites_in_bulk: string;
+  site1: string;
+  site2: string;
+  site3: string;
+  siteGeo1: string;
+  siteGeo2: string;
+  siteGeo3: string;
 }
 
 function Row(props: IRowsPropsVictims) {
@@ -134,7 +140,7 @@ function Row(props: IRowsPropsVictims) {
 
   // Função para converter a string de sites_in_bulk em uma lista de links
   const parseSitesInBulk = (sitesInBulk: string) => {
-    return sitesInBulk ? sitesInBulk.split(',').map(site => site.trim()) : [];
+    return sitesInBulk ? sitesInBulk.split(",").map((site) => site.trim()) : [];
   };
 
   // Lista de sites a partir de sites_in_bulk
@@ -272,31 +278,36 @@ function Row(props: IRowsPropsVictims) {
 
                     {/* Sites */}
                     <TableCell>
-                      {props.sites && props.sites.length > 0 && (
-                        <ul>
-                          {props.sites.map((site: any, index: number) => (
-                            <li key={index}>
-                              <a
-                                href={site.link}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                {site.link}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      <Typography variant="subtitle1" gutterBottom>
+                        site1: {props.site1}
+                      </Typography>
+                      <Typography variant="subtitle1" gutterBottom>
+                        site2: {props.site2}
+                      </Typography>
+                      <Typography variant="subtitle1" gutterBottom>
+                        site3: {props.site3}
+                      </Typography>
+                      <Typography variant="subtitle1" gutterBottom>
+                        siteGeo1: {props.siteGeo1}
+                      </Typography>
+                      <Typography variant="subtitle1" gutterBottom>
+                        siteGeo2: {props.siteGeo2}
+                      </Typography>
+                      <Typography variant="subtitle1" gutterBottom>
+                        siteGeo3: {props.siteGeo3}
+                      </Typography>
                       {/* Links de referência dos sites_in_bulk */}
                       {sitesInBulkList && sitesInBulkList.length > 0 && (
                         <ul>
-                          {sitesInBulkList.map((site: string, index: number) => (
-                            <li key={index}>
-                              <a href={site} target="_blank" rel="noreferrer">
-                                {site}
-                              </a>
-                            </li>
-                          ))}
+                          {sitesInBulkList.map(
+                            (site: string, index: number) => (
+                              <li key={index}>
+                                <a href={site} target="_blank" rel="noreferrer">
+                                  {site}
+                                </a>
+                              </li>
+                            )
+                          )}
                         </ul>
                       )}
                     </TableCell>

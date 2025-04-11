@@ -47,12 +47,19 @@ export const schema = Yup.object()
       .optional(),
     lat: Yup.string(),
     lng: Yup.string(),
+    site1: Yup.string(),
+    site2: Yup.string(),
+    site3: Yup.string(),
+    siteGeo1: Yup.string(),
+    siteGeo2: Yup.string(),
+    siteGeo3: Yup.string(),
   })
   .required();
 type FormData = Yup.InferType<typeof schema>;
 
 interface IPropsForm {
   idSite: string;
+  linkSite: string;
 }
 
 export function Form(props: IPropsForm) {
@@ -87,8 +94,7 @@ export function Form(props: IPropsForm) {
 
   const onSubmit = (data: FormData) => {
     api.post("/api/vitimas/", data).then((res) => {
-      api
-        .patch(`/api/site/${props.idSite}`, {
+      api.patch(`/api/site/${props.idSite}`, {
           vitima_id: res.data.id,
         })
         .then((res) => {
@@ -483,6 +489,51 @@ export function Form(props: IPropsForm) {
           error={!!errors.filhosdescrever?.message}
           variant="filled"
           type="number"
+          inputProps={{ min: 0 }}
+        />
+
+        <TextField
+          label={errors.site1?.message ?? "site1"}
+          {...register("site1")}
+          error={!!errors.site1?.message}
+          variant="filled"
+          value={props?.linkSite}
+          inputProps={{ min: 0 }}
+          disabled
+        />
+        <TextField
+          label={errors.site2?.message ?? "site2"}
+          {...register("site2")}
+          error={!!errors.site2?.message}
+          variant="filled"
+          inputProps={{ min: 0 }}
+        />
+        <TextField
+          label={errors.site3?.message ?? "site3"}
+          {...register("site3")}
+          error={!!errors.site3?.message}
+          variant="filled"
+          inputProps={{ min: 0 }}
+        />
+        <TextField
+          label={errors.siteGeo1?.message ?? "siteGeo1"}
+          {...register("siteGeo1")}
+          error={!!errors.siteGeo1?.message}
+          variant="filled"
+          inputProps={{ min: 0 }}
+        />
+        <TextField
+          label={errors.siteGeo2?.message ?? "siteGeo2"}
+          {...register("siteGeo2")}
+          error={!!errors.siteGeo2?.message}
+          variant="filled"
+          inputProps={{ min: 0 }}
+        />
+        <TextField
+          label={errors.siteGeo3?.message ?? "siteGeo3"}
+          {...register("siteGeo3")}
+          error={!!errors.siteGeo3?.message}
+          variant="filled"
           inputProps={{ min: 0 }}
         />
         <Box
