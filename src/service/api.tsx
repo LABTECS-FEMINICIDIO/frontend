@@ -23,7 +23,7 @@ api.interceptors.request.use((config) => {
   const selectedState = cookie.get('selectedStateF');
 
   if (selectedState) {
-    config.baseURL = `${process.env.REACT_APP_PORT_PROJECT_BACKEND}`;
+    config.baseURL = `${process.env.REACT_APP_PORT_PROJECT_BACKEND}/${selectedState}`;
   }
 
   return addTokenToHeaders(config);
