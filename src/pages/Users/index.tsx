@@ -22,6 +22,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import { CreateUser } from "./createUser";
 import React from "react";
+import Cookies from "universal-cookie";
 
 export function Users() {
   const [rows, setRows] = useState([]);
@@ -30,6 +31,7 @@ export function Users() {
   const { count } = useRefresh();
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
+  const cookies = new Cookies();
 
   useEffect(() => {
     listAll();
@@ -57,6 +59,12 @@ export function Users() {
   };
 
   const DeleteUser = (userId: string) => {
+
+    if (userId === cookies.get('idf')) {
+      toast.error('Você não pode excluir seu usuário')
+      return;
+    } 
+
     deleteUser(userId)
       .then((response: any) => {
         if (response.status === 200) {

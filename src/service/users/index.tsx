@@ -14,7 +14,7 @@ export function findManyUsers() {
     return apiAuth.get('/api/v1/users')
 }
 export async function findById(id: string) {
-    return apiAuth.get('api/users/' + id);
+    return apiAuth.get('/api/v1/users/' + id);
 }
 export function createPassword(userId: string) {
     return apiAuth.post('/api/v1/auth/password-reset', {

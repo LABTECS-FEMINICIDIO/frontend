@@ -44,7 +44,6 @@ export function EditUser() {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [userData, setUserData] = useState({});
   const {
     register,
     handleSubmit,
@@ -100,25 +99,17 @@ export function EditUser() {
   }, [id]);
 
   const fetchUserData = () => {
-    findById(id)
-      .then((response) => {
-        if (response && response.data) {
-          console.log('DOIHASDHASDASUH', response.data);
-          setUserData(response.data);
-          setValue("nome", response.data.nome);
-          setValue("email", response.data.email);
-          setValue("telefone", response.data.telefone);
-          setLoading(false);
-        } else {
-          console.error(
-            "Erro ao buscar os dados do usuário: Resposta inválida"
-          );
-          setLoading(false);
-        }
-      })
-      .catch((error: any) => {
-        setLoading(false);
-      });
+    findById(id).then(res => {
+      console.log(res.data);
+      setValue('nome', res.data.value.user.props.name)
+      setValue('email', res.data.value.user.props.email)
+      setValue('telefone', res.data.value.user.props.contact)
+      setLoading(false);
+    }).catch(error => {
+      setLoading(false);
+      console.log(error);
+      toast.error('Erro ao retornar dados do usuário')
+    })
   };
 
   return (
