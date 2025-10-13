@@ -62,8 +62,8 @@ export function TableGrid(props: TableGridProps) {
           ...column,
           ...(matches === false && telaVitimas === false
             ? {
-                flex: 1,
-              }
+              flex: 1,
+            }
             : { width: 150 }),
           sortable: false,
           headerClassName: "super-app-theme--header",
@@ -74,9 +74,9 @@ export function TableGrid(props: TableGridProps) {
               pageSize: 25,
             },
           },
-/*           sorting: {
-            sortModel: [{ field: 'nome', sort: 'asc' }],
-          }, */
+          /*           sorting: {
+                      sortModel: [{ field: 'nome', sort: 'asc' }],
+                    }, */
         }}
         pageSizeOptions={[25]}
         disableColumnMenu

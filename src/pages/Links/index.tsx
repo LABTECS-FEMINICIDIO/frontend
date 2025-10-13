@@ -59,7 +59,7 @@ export function Links() {
   
     try {
       const response = await findSearchLinks({ ...search, value: searchValue });
-      setFilterRows(response.data);
+      setFilterRows(response?.data);
     } catch (error: any) {
       toast.error("Erro ao pesquisar links: ");
     }
@@ -74,11 +74,11 @@ export function Links() {
   const fetchLastUpdateTime = async () => {
     try {
       const response = await findSearch();
-      setLastUpdateTime(response.data.createdAt);
+      setLastUpdateTime(response?.data?.createdAt);
     } catch (error: any) {
       toast.error(
         "Erro ao obter a última vez da pesquisa de links:",
-        error.response.data.detail
+        error.response?.data?.detail
       );
     }
   };

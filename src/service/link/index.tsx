@@ -1,13 +1,13 @@
 import { api } from "../api";
 
-export function createVictims(data: any){
+export function createVictims(data: any) {
     return api.post('/api/vitimas/', data)
 };
-export function findSearch(){
+export function findSearch() {
     return api.get('/api/history/lastSearch')
 };
-export function findContent(idSite: string){
-    return api.get('/api/site/'+idSite)
+export function findContent(idSite: string) {
+    return api.get('/api/site/' + idSite)
 };
 export async function findSearchLinks(search?: { column: string; value: string; }) {
     if (search) {
@@ -15,5 +15,9 @@ export async function findSearchLinks(search?: { column: string; value: string; 
     } else {
         return api.get('/api/site');
     }
+}
+
+export async function deleteLink(linkId: string) {
+    return await api.delete(`/api/item/${linkId}`)
 }
 

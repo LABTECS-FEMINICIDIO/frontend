@@ -5,18 +5,18 @@ import { toast } from "react-toastify";
 
 interface DeleteSiteProps {
   id: string;
-  deleteSite: (siteId: string) => Promise<any>;
+  deleteLink: (linkId: string) => Promise<any>;
   addCount: () => void;
 }
 
-const DeleteSiteModal: React.FC<DeleteSiteProps> = ({ id, deleteSite, addCount }) => {
+const DeleteSiteModal: React.FC<DeleteSiteProps> = ({ id, deleteLink, addCount }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleDelete = () => {
-    deleteSite(id)
+    deleteLink(id)
       .then((response: any) => {
         if (response.status === 200) {
           addCount();

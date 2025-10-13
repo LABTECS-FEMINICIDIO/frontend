@@ -26,6 +26,7 @@ import { formatDate, formatTime } from "../../utils/date";
 import { useToken } from "../../shared/hooks/auth";
 import DeleteSiteModal from "../../components/ModalDeleteLink";
 import CloseColapseTable from "../../components/ModalCloseColapseTable";
+import { deleteLink } from "../../service/link";
 export interface Row {
   nome: string;
   link: string;
@@ -61,12 +62,13 @@ export function Row(props: Row) {
     });
   };
 
-  const DeleteSite = (siteId: string) => {
-    deleteSite(siteId)
+  const handleDeleteLink = (siteId: string) => {
+    deleteLink(siteId)
       .then((response: any) => {
         if (response.status === 200) {
           addCount();
           toast.success("Link excluído com sucesso");
+          props.refreshList();
         }
       })
       .catch((error: any) => {
@@ -85,7 +87,7 @@ export function Row(props: Row) {
           <IconButton
             aria-label="expand row"
             size="small"
-            // onClick={() => setOpen(!open)}
+          // onClick={() => setOpen(!open)}
           >
             {open ? <CloseColapseTable handleCloseColapseTable={handleCloseColapseTable} /> : <KeyboardArrowDownIcon onClick={() => setOpen(true)} />}
           </IconButton>
@@ -121,14 +123,14 @@ export function Row(props: Row) {
         <TableCell align="left">{formatDate(props.createdAt)}</TableCell>
         <TableCell align="left">{formatTime(props.createdAt)}</TableCell>
         <TableCell>
-          {/* <IconButton onClick={() => DeleteSite(props.id)}>
+          <IconButton onClick={() => handleDeleteLink(props.id)}>
             <DeleteIcon />
-          </IconButton> */}
-          <DeleteSiteModal
+          </IconButton>
+          {/* <DeleteSiteModal
             id={props.id}
-            deleteSite={deleteSite}
+            deleteLink={deleteLink}
             addCount={addCount}
-          />
+          /> */}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -149,7 +151,7 @@ export function Row(props: Row) {
                     src={props.link}
                   />
                   <Box>
-                    <Form idSite={props.id} linkSite={props.link}/>
+                    <Form idSite={props.id} linkSite={props.link} />
                     <Typography variant="body2" gutterBottom component="div">
                       <strong>Tags Encontradas:</strong> {props.tagsEncontradas}
                     </Typography>

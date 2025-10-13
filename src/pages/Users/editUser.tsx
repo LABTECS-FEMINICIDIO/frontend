@@ -74,7 +74,7 @@ export function EditUser() {
       const response = await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
       reset();
-      cookies.set("usernamef", response.data.nome);
+      cookies.set("usernamef", response.data.name);
       handleClose();
       setLoading(false);
     } catch (error: any) {
@@ -101,8 +101,9 @@ export function EditUser() {
 
   const fetchUserData = () => {
     findById(id)
-      .then((response?) => {
+      .then((response) => {
         if (response && response.data) {
+          console.log('DOIHASDHASDASUH', response.data);
           setUserData(response.data);
           setValue("nome", response.data.nome);
           setValue("email", response.data.email);
