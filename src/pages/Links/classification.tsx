@@ -3,8 +3,9 @@ import Rating from '@mui/material/Rating';
 import { api } from '../../service/api';
 
 interface IClassification {
-  classification: number,
-  idLink: string
+  classification: number | null,
+  idLink: string,
+  type: string
 }
 
 export default function Classification(props: IClassification) {
@@ -12,9 +13,18 @@ export default function Classification(props: IClassification) {
 
   const handleClick = (newValue: number | null) => {
     setValue(newValue);
+
+    if (props.type === 'site') {
+      api.patch(`/api/referenceSite/${props.idLink}`, {
+        classificacao: newValue
+      });
+      return;
+    }
+
     api.patch(`/api/site/${props.idLink}`, {
       classificacao: newValue
     });
+
   };
 
   return (

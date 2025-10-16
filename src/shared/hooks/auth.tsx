@@ -57,7 +57,6 @@ export function TokenProvider({ children }: TokenProviderProps) {
       const tokenDecoded = decodeToken(storedToken) as any
       const parsedToken = JSON.parse(tokenDecoded.sub)
       setUsername(parsedToken.name);
-      cookies.set("usernamef", parsedToken.name);
       cookies.set("idf", parsedToken.id);
       const selectedStatePreviours = cookies.get("selectedStateF")
       setSelectedState(selectedStatePreviours)

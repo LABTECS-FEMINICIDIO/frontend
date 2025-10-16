@@ -28,7 +28,7 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 
 const schema = Yup.object()
   .shape({
-    name: Yup.string()
+    nome: Yup.string()
       .trim()
       .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras')
       .optional(),
@@ -112,7 +112,7 @@ export function EditUser({ id, user }: { id: string , user: any}) {
 
   const fillUserData = () => {
     console.log("user dasta", user)
-    setValue("name", user.name)
+    setValue("nome", user.name)
     setValue("email", user.email);
     setValue("role", user.role);
     setValue("contact", user.contact);
@@ -152,9 +152,9 @@ export function EditUser({ id, user }: { id: string , user: any}) {
             <Box component="form" onSubmit={handleSubmit(onSubmit)}>
               <DialogContent sx={{ display: "grid", gap: 2 }}>
                 <TextField
-                  label={errors.name?.message ?? "Nome"}
-                  {...register("name")}
-                  error={!!errors.name?.message}
+                  label={errors.nome?.message ?? "Nome"}
+                  {...register("nome")}
+                  error={!!errors.nome?.message}
                   variant="filled"
                   fullWidth
                 />

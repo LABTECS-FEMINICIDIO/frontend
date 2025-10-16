@@ -114,6 +114,7 @@ export function Row(props: Row) {
           <Classification
             classification={props.classificacao}
             idLink={props.id}
+            type="link"
           />
         </TableCell>
         <TableCell align="left">

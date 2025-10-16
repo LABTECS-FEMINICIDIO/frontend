@@ -1,6 +1,7 @@
 import { Rating, Switch } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { api } from "../../service/api";
+import Classification from "../Links/classification";
 
 export const columns: GridColDef[] = [
   {
@@ -16,8 +17,12 @@ export const columns: GridColDef[] = [
   {
     field: 'classificacao',
     headerName: 'Classificação',
-    renderCell: (params: GridRenderCellParams<any, number>) => (
-      <Rating value={params.value} />
+    renderCell: ({ row }) => (
+      <Classification
+        classification={row.classificacao}
+        idLink={row.id}
+        type="site"
+      />
     ),
   },
   {

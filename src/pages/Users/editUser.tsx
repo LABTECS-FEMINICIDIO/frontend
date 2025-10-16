@@ -73,7 +73,7 @@ export function EditUser() {
       const response = await updateUser(id, data);
       toast.success("Informações do usuário atualizadas com sucesso");
       reset();
-      cookies.set("usernamef", response.data.name);
+      cookies.set("usernamef", response.data.user.value.user.props.name);
       handleClose();
       setLoading(false);
     } catch (error: any) {
