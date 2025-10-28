@@ -47,6 +47,8 @@ export const SimpleTableIml = (props: rowProps) => {
     setPage(0);
   };
 
+  console.log('ROWWWS--------->', props.rows);
+
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer sx={{ maxHeight: "calc(100vh - 248px)" }}>

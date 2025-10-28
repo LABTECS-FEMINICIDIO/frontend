@@ -1,4 +1,16 @@
-import { Box, Button, FormControl, IconButton, InputAdornment, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { title, toolbarMobile, toolbarWeb } from "../../styles";
 import { TableGrid } from "../../components/TableGrid";
 import { columns } from "./columns";
@@ -19,7 +31,7 @@ interface Holiday {
   date: string;
   name: string;
   diaSemana: string;
-  type:string;
+  type: string;
   pontoFacultativo: boolean;
 }
 
@@ -37,49 +49,59 @@ export function Calendar() {
     listAll();
   }, [count, anoAtual]);
 
-  console.log("--------->", rows)
-
   const listAll = () => {
     setLoading(true);
     // fetchApiBrasilHolidays()
     Promise.all([fetchBackendHolidays(), fetchApiBrasilHolidays()])
       .then(([backendResponse, apiBrasilResponse]) => {
         const backendHolidays = transformBackendData(backendResponse.data);
-        const apiBrasilHolidays = transformApiBrasilData(apiBrasilResponse.data);
-        const mergedHolidays = mergeData(backendHolidays, apiBrasilHolidays);
-        
-        // Ordenar os feriados por data
-        const sortedHolidays = mergedHolidays.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        
-        setRows(sortedHolidays);
+        const apiBrasilHolidays = transformApiBrasilData(
+          apiBrasilResponse.data
+        );
+
+        setRows(mergeData(backendHolidays, apiBrasilHolidays));
+
+        console.log("ROWS ---->", rows);
+
         setLoading(false);
-  
+
         // Atualizar o ano dos feriados do backend
         updateBackendHolidaysYear(backendResponse.data);
+        console.log("ROWS ---->", rows);
       })
       .catch((error) => {
         toast.error(error.message);
         setLoading(false);
       });
   };
-  
+
   const updateBackendHolidaysYear = (backendData: any[]) => {
     const updatedBackendHolidays = backendData.map((holiday) => {
       const newDate = new Date(holiday.ano, holiday.mes - 1, holiday.dia);
       newDate.setFullYear(anoAtual); // Definir o novo ano
       return {
         ...holiday,
-        date: formatDate(`${newDate.getDate()}/${newDate.getMonth() + 1}/${newDate.getFullYear()}`),
+        date: formatDate(
+          `${newDate.getFullYear()}-${
+            newDate.getMonth() + 1
+          }-${newDate.getDate()}`
+        ),
       };
     });
-  
+
     // Atualizar os feriados do backend na lista de feriados
     setRows((prevRows) => {
-      const apiBrasilHolidays = prevRows.filter((holiday) => holiday.id.startsWith("api-"));
-      return [...apiBrasilHolidays, ...transformBackendData(updatedBackendHolidays)];
+      const apiBrasilHolidays = prevRows.filter((h) => h.id.startsWith("api-"));
+      const merged = [
+        ...apiBrasilHolidays,
+        ...transformBackendData(updatedBackendHolidays),
+      ];
+
+      return merged.sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
     });
   };
-  
 
   const fetchBackendHolidays = () => {
     return findManyHoliday();
@@ -93,33 +115,33 @@ export function Calendar() {
     // Transformar os dados do backend para o formato comum
     return data.map((holiday) => ({
       id: holiday.id,
-      date: formatDate(`${holiday.dia}/${holiday.mes}/${holiday.ano}`),
+      date: formatDate(`${holiday.ano}-${holiday.mes}-${holiday.dia}`),
       name: holiday.name,
       diaSemana: getDiaSemana(
         new Date(holiday.ano, holiday.mes - 1, holiday.dia)
       ),
       type: holiday.type,
-      pontoFacultativo: holiday.pontoFacultativo
+      pontoFacultativo: holiday.pontoFacultativo,
     }));
   };
+
   const formatDate = (dateString: string) => {
-    if (!dateString) return ''; // Retorna string vazia se `dateString` for indefinido
+    if (!dateString) return ""; // Retorna string vazia se `dateString` for indefinido
 
     // Verifica se o formato da data está no formato yyyy-mm-dd
-    if (dateString.includes('-')) {
-        const [year, month, day] = dateString.split('-');
-        return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
+    if (dateString.includes("-")) {
+      const [year, month, day] = dateString.split("-");
+      return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
     }
 
     // Assume que a data já está no formato dd/mm/yyyy
-    const [day, month, year] = dateString.split('/');
+    const [day, month, year] = dateString.split("/");
     if (!day || !month || !year) {
-        return dateString; // Retorna a data original se o formato estiver incorreto
+      return dateString; // Retorna a data original se o formato estiver incorreto
     }
 
-    return `${day.padStart(2, '0')}/${month.padStart(2, '0')}/${year}`;
-};
-
+    return `${day.padStart(2, "0")}/${month.padStart(2, "0")}/${year}`;
+  };
 
   const transformApiBrasilData = (data: any[]) => {
     // Transformar os dados da API Brasil para o formato comum
@@ -129,13 +151,16 @@ export function Calendar() {
       name: holiday.name,
       diaSemana: getDiaSemana(new Date(holiday.date)),
       type: holiday.type,
-      pontoFacultativo: holiday.pontoFacultativo
+      pontoFacultativo: holiday.pontoFacultativo,
     }));
   };
 
   const mergeData = (backendData: Holiday[], apiBrasilData: Holiday[]) => {
-    // Juntar os dados de ambos os endpoints
-    return [...backendData, ...apiBrasilData];
+    const merged = [...backendData, ...apiBrasilData];
+
+    return [...merged].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
   };
 
   const getDiaSemana = (holidayDate: Date) => {
@@ -156,7 +181,7 @@ export function Calendar() {
     setAnoAtual(anoAtualNovo);
     localStorage.setItem("anoAtual", anoAtualNovo.toString());
   };
-  
+
   const handleVoltarParaAnoAtual = () => {
     const anoAtualReal = new Date().getFullYear();
     setAnoAtual(anoAtualReal);
@@ -195,28 +220,28 @@ export function Calendar() {
 
   const handleSearch = () => {
     if (search.column === "" || search.value === "") {
-        toast.error("Campo coluna e pesquisa não pode ser vazio");
+      toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-        const findRows = rows.filter((item: any) => {
-            // Verifica se a coluna é 'date' para tratar de forma especial
-            if (search.column === 'date') {
-                // Converte a data de item.date para o formato dd/mm/yyyy
-                const itemDate = item.date ? formatDate(item.date) : '';
-                const searchDate = formatDate(search.value);
-                return itemDate.includes(searchDate);
-            }
-            // Caso contrário, realiza a comparação normal
-            return String(item[search.column])
-                .toLowerCase()
-                .includes(String(search.value).toLowerCase());
-        });
-
-        if (findRows.length === 0) {
-            toast.error("Nenhum resultado encontrado para esta pesquisa.");
+      const findRows = rows.filter((item: any) => {
+        // Verifica se a coluna é 'date' para tratar de forma especial
+        if (search.column === "date") {
+          // Converte a data de item.date para o formato dd/mm/yyyy
+          const itemDate = item.date ? formatDate(item.date) : "";
+          const searchDate = formatDate(search.value);
+          return itemDate.includes(searchDate);
         }
-        setRowsFiltered(findRows);
+        // Caso contrário, realiza a comparação normal
+        return String(item[search.column])
+          .toLowerCase()
+          .includes(String(search.value).toLowerCase());
+      });
+
+      if (findRows.length === 0) {
+        toast.error("Nenhum resultado encontrado para esta pesquisa.");
+      }
+      setRowsFiltered(findRows);
     }
-};
+  };
 
   const handleClear = () => {
     setSearch({ column: "", value: "" });
@@ -228,7 +253,7 @@ export function Calendar() {
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
         <Typography sx={title}>Calendário</Typography>
         <Box sx={{ display: "flex", gap: 1 }}>
-        <FormControl sx={{ minWidth: 140 }} size="small">
+          <FormControl sx={{ minWidth: 140 }} size="small">
             <InputLabel id="demo-select-small">Coluna</InputLabel>
             <Select
               name="column"
@@ -298,19 +323,19 @@ export function Calendar() {
         </Box>
       </Box>
       {!loading && (
-      <>
-        <TableGrid
-          rows={rowsFiltered.length > 0 ? rowsFiltered : rows}
-          columns={columns}
-          onDelete={DeleteHoliday}
-          titleDelete="Excluir feriado"
-          subtitleDelete="Deseja mesmo excluir essa informação?"
-        />
-        <Typography sx={{ fontWeight: "lighter" }}>
-          Ano Atual: {anoAtual}
-        </Typography>
-      </>
-    )}
+        <>
+          <TableGrid
+            rows={rows}
+            columns={columns}
+            onDelete={DeleteHoliday}
+            titleDelete="Excluir feriado"
+            subtitleDelete="Deseja mesmo excluir essa informação?"
+          />
+          <Typography sx={{ fontWeight: "lighter" }}>
+            Ano Atual: {anoAtual}
+          </Typography>
+        </>
+      )}
     </>
   );
 }

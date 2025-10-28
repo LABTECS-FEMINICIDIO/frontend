@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
 
 export const schema = Yup.object()
   .shape({
@@ -70,35 +69,74 @@ export function Form(props: IPropsForm) {
     control,
     setValue,
     watch,
+    reset,
   } = useForm({
+    defaultValues: {
+      datadofato: undefined,
+      diah: "",
+      horario: "",
+      turno: "",
+      nome: "",
+      idade: undefined,
+      racacor1: "",
+      estciv2: "",
+      bairro: "",
+      rua_beco_travessa_estrada_ramal: "",
+      endcomplemento: "",
+      tipoarma1: "",
+      tipoarma2: "",
+      loclesao1: "",
+      loclesao2: "",
+      zona: "",
+      loclesao3: "",
+      hospitalizacao: "",
+      violsexual: "",
+      latrocinio: "",
+      localdeocorrencia: "",
+      presencafilhofamiliar: "",
+      compexcomp: "",
+      gestacao: "",
+      filhosdescrever: undefined,
+      lat: "",
+      lng: "",
+      site2: "",
+      site3: "",
+      siteGeo1: "",
+      siteGeo2: "",
+      siteGeo3: "",
+    },
     resolver: yupResolver(schema),
   });
-
+  const [disabled, setDisabled] = useState<boolean>(false);
   const datadofato = watch("datadofato");
 
   useEffect(() => {
     if (datadofato) {
       console.log("antes", datadofato);
-      
+
       // Criar data sem ajustar para UTC
       const date = new Date(datadofato + "T00:00:00"); // Adiciona um horário explícito para evitar o ajuste automático
-      
+
       const weekdays = ["dom", "seg", "ter", "qua", "qui", "sex", "sab"];
       const dayOfWeek = weekdays[date.getDay()];
       setValue("diah", dayOfWeek);
-      
-      console.log("depois", date, dayOfWeek);
     }
   }, [datadofato, setValue]);
-  
 
   const onSubmit = (data: FormData) => {
+    setDisabled(true);
+    data.site1 = props.linkSite;
+
     api.post("/api/vitimas/", data).then((res) => {
-      api.patch(`/api/site/${props.idSite}`, {
+      api
+        .patch(`/api/site/${props.idSite}`, {
           vitima_id: res.data.id,
         })
         .then((res) => {
           toast.success("Vítima criada com sucesso!");
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
         });
     });
   };
@@ -110,14 +148,14 @@ export function Form(props: IPropsForm) {
       >
         <TextField
           type="date"
-          label={errors.datadofato?.message ?? "datadofato"}
+          label={errors.datadofato?.message ?? "Data do fato"}
           {...register("datadofato")}
           error={!!errors.datadofato?.message}
           variant="filled"
           InputLabelProps={{ shrink: true }}
         />
         <FormControl variant="filled">
-          <InputLabel>{errors.diah?.message ?? "diah"}</InputLabel>
+          <InputLabel>{errors.diah?.message ?? "Dia"}</InputLabel>
           <Controller
             name="diah"
             control={control}
@@ -137,15 +175,15 @@ export function Form(props: IPropsForm) {
           />
         </FormControl>
         <TextField
-          label={errors.horario?.message ?? "horario"}
+          label={errors.horario?.message ?? "Horário"}
           {...register("horario")}
           error={!!errors.horario?.message}
           variant="filled"
         />
         <FormControl variant="filled">
-          <InputLabel>{errors.turno?.message ?? "turno"}</InputLabel>
+          <InputLabel>{errors.turno?.message ?? "Período"}</InputLabel>
           <Select
-            label={errors.turno?.message ?? "turno"}
+            label={errors.turno?.message ?? "Período"}
             {...register("turno")}
             error={!!errors.turno?.message}
             defaultValue={""}
@@ -158,21 +196,21 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <TextField
-          label={errors.nome?.message ?? "nome"}
+          label={errors.nome?.message ?? "Nome"}
           {...register("nome")}
           error={!!errors.nome?.message}
           variant="filled"
         />
         <TextField
-          label={errors.idade?.message ?? "idade"}
+          label={errors.idade?.message ?? "Idade"}
           {...register("idade")}
           error={!!errors.idade?.message}
           variant="filled"
         />
         <FormControl variant="filled">
-          <InputLabel>{errors.racacor1?.message ?? "racacor1"}</InputLabel>
+          <InputLabel>{errors.racacor1?.message ?? "Raça cor"}</InputLabel>
           <Select
-            label={errors.racacor1?.message ?? "racacor1"}
+            label={errors.racacor1?.message ?? "Raça cor"}
             {...register("racacor1")}
             error={!!errors.racacor1?.message}
             defaultValue={""}
@@ -186,9 +224,9 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.estciv2?.message ?? "estciv2"}</InputLabel>
+          <InputLabel>{errors.estciv2?.message ?? "Estado civil 2"}</InputLabel>
           <Select
-            label={errors.estciv2?.message ?? "estciv2"}
+            label={errors.estciv2?.message ?? "Estado civil 2"}
             {...register("estciv2")}
             error={!!errors.estciv2?.message}
             defaultValue={""}
@@ -198,21 +236,21 @@ export function Form(props: IPropsForm) {
             <MenuItem value={"casada"}>casada</MenuItem>
             <MenuItem value={"viuva"}>viuva</MenuItem>
             <MenuItem value={"separada judicialmente-divorciada"}>
-            separada judicialmente-divorciada
+              separada judicialmente-divorciada
             </MenuItem>
             <MenuItem value={"uniao-estavel"}>uniao estavel</MenuItem>
           </Select>
         </FormControl>
         <TextField
-          label={errors.bairro?.message ?? "bairro"}
+          label={errors.bairro?.message ?? "Bairro"}
           {...register("bairro")}
           error={!!errors.bairro?.message}
           variant="filled"
         />
         <FormControl variant="filled">
-          <InputLabel>{errors.zona?.message ?? "zona"}</InputLabel>
+          <InputLabel>{errors.zona?.message ?? "Zona"}</InputLabel>
           <Select
-            label={errors.zona?.message ?? "zona"}
+            label={errors.zona?.message ?? "Zona"}
             {...register("zona")}
             error={!!errors.zona?.message}
             defaultValue={""}
@@ -228,21 +266,18 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <TextField
-          label={
-            errors.rua_beco_travessa_estrada_ramal?.message ??
-            "rua_beco_travessa_estrada_ramal"
-          }
+          label={errors.rua_beco_travessa_estrada_ramal?.message ?? "Endereço"}
           {...register("rua_beco_travessa_estrada_ramal")}
           error={!!errors.rua_beco_travessa_estrada_ramal?.message}
           variant="filled"
         />
         <TextField
-          label={errors.endcomplemento?.message ?? "endcomplemento"}
+          label={errors.endcomplemento?.message ?? "Complemento do Endereço"}
           {...register("endcomplemento")}
           error={!!errors.endcomplemento?.message}
           variant="filled"
         />
-                <TextField
+        <TextField
           label={errors.lat?.message ?? "Y_lat"}
           {...register("lat")}
           error={!!errors.lat?.message}
@@ -255,9 +290,11 @@ export function Form(props: IPropsForm) {
           variant="filled"
         />
         <FormControl variant="filled">
-          <InputLabel>{errors.tipoarma1?.message ?? "tipoarma1"}</InputLabel>
+          <InputLabel>
+            {errors.tipoarma1?.message ?? "Tipo de arma 1"}
+          </InputLabel>
           <Select
-            label={errors.tipoarma1?.message ?? "tipoarma1"}
+            label={errors.tipoarma1?.message ?? "Tipo de arma 1"}
             {...register("tipoarma1")}
             error={!!errors.tipoarma1?.message}
             defaultValue={""}
@@ -286,9 +323,11 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.tipoarma2?.message ?? "tipoarma2"}</InputLabel>
+          <InputLabel>
+            {errors.tipoarma2?.message ?? "Tipo de arma 2"}
+          </InputLabel>
           <Select
-            label={errors.tipoarma2?.message ?? "tipoarma2"}
+            label={errors.tipoarma2?.message ?? "Tipo de arma 2"}
             {...register("tipoarma2")}
             error={!!errors.tipoarma2?.message}
             defaultValue={""}
@@ -317,9 +356,11 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.loclesao1?.message ?? "loclesao1"}</InputLabel>
+          <InputLabel>
+            {errors.loclesao1?.message ?? "Local da lesão 1"}
+          </InputLabel>
           <Select
-            label={errors.loclesao1?.message ?? "loclesao1"}
+            label={errors.loclesao1?.message ?? "Local da lesão 1"}
             {...register("loclesao1")}
             error={!!errors.loclesao1?.message}
             defaultValue={""}
@@ -333,9 +374,11 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.loclesao2?.message ?? "loclesao2"}</InputLabel>
+          <InputLabel>
+            {errors.loclesao2?.message ?? "Local da lesão 2"}
+          </InputLabel>
           <Select
-            label={errors.loclesao2?.message ?? "loclesao2"}
+            label={errors.loclesao2?.message ?? "Local da lesão 2"}
             {...register("loclesao2")}
             error={!!errors.loclesao2?.message}
             defaultValue={""}
@@ -349,9 +392,11 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.loclesao3?.message ?? "loclesao3"}</InputLabel>
+          <InputLabel>
+            {errors.loclesao3?.message ?? "Local da lesão 3"}
+          </InputLabel>
           <Select
-            label={errors.loclesao3?.message ?? "loclesao3"}
+            label={errors.loclesao3?.message ?? "Local da lesão 3"}
             {...register("loclesao3")}
             error={!!errors.loclesao3?.message}
             defaultValue={""}
@@ -366,10 +411,10 @@ export function Form(props: IPropsForm) {
         </FormControl>
         <FormControl variant="filled">
           <InputLabel>
-            {errors.hospitalizacao?.message ?? "hospitalizacao"}
+            {errors.hospitalizacao?.message ?? "Hospitalizacao?"}
           </InputLabel>
           <Select
-            label={errors.hospitalizacao?.message ?? "hospitalizacao"}
+            label={errors.hospitalizacao?.message ?? "Hospitalizacao?"}
             {...register("hospitalizacao")}
             error={!!errors.hospitalizacao?.message}
             defaultValue={""}
@@ -380,9 +425,11 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.violsexual?.message ?? "violsexual"}</InputLabel>
+          <InputLabel>
+            {errors.violsexual?.message ?? "Violência Sexual?"}
+          </InputLabel>
           <Select
-            label={errors.violsexual?.message ?? "violsexual"}
+            label={errors.violsexual?.message ?? "Violência Sexual?"}
             {...register("violsexual")}
             error={!!errors.violsexual?.message}
             defaultValue={""}
@@ -393,9 +440,9 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.latrocinio?.message ?? "latrocinio"}</InputLabel>
+          <InputLabel>{errors.latrocinio?.message ?? "Latrocínio?"}</InputLabel>
           <Select
-            label={errors.latrocinio?.message ?? "latrocinio"}
+            label={errors.latrocinio?.message ?? "Latrocínio?"}
             {...register("latrocinio")}
             error={!!errors.latrocinio?.message}
             defaultValue={""}
@@ -407,10 +454,10 @@ export function Form(props: IPropsForm) {
         </FormControl>
         <FormControl variant="filled">
           <InputLabel>
-            {errors.localdeocorrencia?.message ?? "localdeocorrencia"}
+            {errors.localdeocorrencia?.message ?? "Local da ocorrência"}
           </InputLabel>
           <Select
-            label={errors.localdeocorrencia?.message ?? "localdeocorrencia"}
+            label={errors.localdeocorrencia?.message ?? "Local da ocorrência"}
             {...register("localdeocorrencia")}
             error={!!errors.localdeocorrencia?.message}
             defaultValue={""}
@@ -442,11 +489,13 @@ export function Form(props: IPropsForm) {
         </FormControl>
         <FormControl variant="filled">
           <InputLabel>
-            {errors.presencafilhofamiliar?.message ?? "presencafilhofamiliar"}
+            {errors.presencafilhofamiliar?.message ??
+              "Filho ou família presente?"}
           </InputLabel>
           <Select
             label={
-              errors.presencafilhofamiliar?.message ?? "presencafilhofamiliar"
+              errors.presencafilhofamiliar?.message ??
+              "Filho ou família presente?"
             }
             {...register("presencafilhofamiliar")}
             error={!!errors.presencafilhofamiliar?.message}
@@ -458,9 +507,11 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.compexcomp?.message ?? "compexcomp"}</InputLabel>
+          <InputLabel>
+            {errors.compexcomp?.message ?? "Companheiro ou Ex"}
+          </InputLabel>
           <Select
-            label={errors.compexcomp?.message ?? "compexcomp"}
+            label={errors.compexcomp?.message ?? "Companheiro ou Ex"}
             {...register("compexcomp")}
             error={!!errors.compexcomp?.message}
             defaultValue={""}
@@ -471,7 +522,7 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <FormControl variant="filled">
-          <InputLabel>{errors.gestacao?.message ?? "gestacao"}</InputLabel>
+          <InputLabel>{errors.gestacao?.message ?? "Gestação?"}</InputLabel>
           <Select
             label={errors.gestacao?.message ?? "gestacao"}
             {...register("gestacao")}
@@ -484,7 +535,7 @@ export function Form(props: IPropsForm) {
           </Select>
         </FormControl>
         <TextField
-          label={errors.filhosdescrever?.message ?? "filhosdescrever"}
+          label={errors.filhosdescrever?.message ?? "Qtd. Filhos"}
           {...register("filhosdescrever")}
           error={!!errors.filhosdescrever?.message}
           variant="filled"
@@ -493,7 +544,7 @@ export function Form(props: IPropsForm) {
         />
 
         <TextField
-          label={errors.site1?.message ?? "site1"}
+          label={errors.site1?.message ?? "Site 1"}
           {...register("site1")}
           error={!!errors.site1?.message}
           variant="filled"
@@ -501,36 +552,37 @@ export function Form(props: IPropsForm) {
           inputProps={{ min: 0 }}
           disabled
         />
+
         <TextField
-          label={errors.site2?.message ?? "site2"}
+          label={errors.site2?.message ?? "Site 2"}
           {...register("site2")}
           error={!!errors.site2?.message}
           variant="filled"
           inputProps={{ min: 0 }}
         />
         <TextField
-          label={errors.site3?.message ?? "site3"}
+          label={errors.site3?.message ?? "Site 3"}
           {...register("site3")}
           error={!!errors.site3?.message}
           variant="filled"
           inputProps={{ min: 0 }}
         />
         <TextField
-          label={errors.siteGeo1?.message ?? "siteGeo1"}
+          label={errors.siteGeo1?.message ?? "Site Geo 1"}
           {...register("siteGeo1")}
           error={!!errors.siteGeo1?.message}
           variant="filled"
           inputProps={{ min: 0 }}
         />
         <TextField
-          label={errors.siteGeo2?.message ?? "siteGeo2"}
+          label={errors.siteGeo2?.message ?? "Site Geo 2"}
           {...register("siteGeo2")}
           error={!!errors.siteGeo2?.message}
           variant="filled"
           inputProps={{ min: 0 }}
         />
         <TextField
-          label={errors.siteGeo3?.message ?? "siteGeo3"}
+          label={errors.siteGeo3?.message ?? "Site Geo 3"}
           {...register("siteGeo3")}
           error={!!errors.siteGeo3?.message}
           variant="filled"
@@ -544,7 +596,12 @@ export function Form(props: IPropsForm) {
             justifyContent: "end",
           }}
         >
-          <Button variant="contained" onClick={handleSubmit(onSubmit)}>
+          <Button
+            variant="contained"
+            onClick={handleSubmit(onSubmit)}
+            sx={{ mb: 2 }}
+            disabled={disabled}
+          >
             Salvar
           </Button>
         </Box>

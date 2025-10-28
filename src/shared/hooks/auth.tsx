@@ -72,7 +72,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
         const tokenDecoded = decodeToken(token) as any
         const parsedToken = JSON.parse(tokenDecoded.sub)
         const parsedState = tokenDecoded.state
-        if(parsedState.filter((item: any) => item.city == selectedState).length == 0){
+         if(parsedState.filter((item: any) => item.city == selectedState).length == 0){
           toast.error("Este usuário não possui permissão para esta cidade")
           setPermission(false);
           return
