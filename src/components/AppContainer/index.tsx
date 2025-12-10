@@ -9,7 +9,14 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { Button, FormControl, InputLabel, MenuItem, Select, useMediaQuery } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  useMediaQuery,
+} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { MenuList } from "./MenuList";
 import { Content } from "./Content";
@@ -52,7 +59,6 @@ export function AppContainer({ children, title }: AppContainerProps) {
     }
   };
 
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
@@ -71,21 +77,21 @@ export function AppContainer({ children, title }: AppContainerProps) {
 
   const { handleSelectedState } = useToken();
 
-  const [city, setCity] = React.useState(cookies.get("selectedStateF"))
+  const [city, setCity] = React.useState(cookies.get("selectedStateF"));
 
   const handleChangeState = (state: string) => {
-    const storedToken = cookies.get('feminicidio_token');
-    const tokenDecoded = decodeToken(storedToken) as any
-    const parsedState = tokenDecoded.state
- 
-    if(parsedState.filter((item: any) => item.city == state).length == 0){
-        toast.error("Este usuário não possui permissão para esta cidade")
-        return
-      }
-    handleSelectedState(state)
-    cookies.set("selectedStateF", state)
-    setCity(state)
-  }
+    const storedToken = cookies.get("feminicidio_token");
+    const tokenDecoded = decodeToken(storedToken) as any;
+    const parsedState = tokenDecoded.state;
+
+    if (parsedState.filter((item: any) => item.city == state).length == 0) {
+      toast.error("Este usuário não possui permissão para esta cidade");
+      return;
+    }
+    handleSelectedState(state);
+    cookies.set("selectedStateF", state);
+    setCity(state);
+  };
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -115,20 +121,27 @@ export function AppContainer({ children, title }: AppContainerProps) {
             />
           </Box>
           <Box display="flex" alignItems="center" color="primary">
-            <FormControl variant="filled" size="small" sx={{minWidth: "100px", marginRight: "10px"}}>
-                <InputLabel>{"Cidade"}</InputLabel>
-                <Select
-                  label={"Cidade"}
-                  onChange={(e) => handleChangeState(e.target.value)}
-                  defaultValue={city}
-                  value={city}
-                >
-                  <MenuItem value={"Manaus"}>Manaus</MenuItem>
-                  <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
-                  <MenuItem value={"Rio-branco"}>Rio Branco</MenuItem>
-                  <MenuItem value={"Rio-de-janeiro"}>Rio de Janeiro</MenuItem>
-                </Select>
-              </FormControl>
+            <FormControl
+              variant="filled"
+              size="small"
+              sx={{ minWidth: "100px", marginRight: "10px" }}
+            >
+              <InputLabel>{"Cidade"}</InputLabel>
+              <Select
+                label={"Cidade"}
+                onChange={(e) => {
+                  handleChangeState(e.target.value);
+                  window.location.reload();
+                }}
+                defaultValue={city}
+                value={city}
+              >
+                <MenuItem value={"Manaus"}>Manaus</MenuItem>
+                <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
+                <MenuItem value={"Rio-branco"}>Rio Branco</MenuItem>
+                <MenuItem value={"Rio-de-janeiro"}>Rio de Janeiro</MenuItem>
+              </Select>
+            </FormControl>
             <EditUser />
             <Button variant="text" onClick={() => Logout()}>
               <LogoutIcon />
@@ -150,7 +163,6 @@ export function AppContainer({ children, title }: AppContainerProps) {
         <MenuList open={open} />
       </Drawer>
       {title === "Dashboard" ? children : <Content>{children}</Content>}
-
     </Box>
   );
 }

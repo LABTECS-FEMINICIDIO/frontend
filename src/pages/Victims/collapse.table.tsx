@@ -201,7 +201,7 @@ function Row(props: IRowsPropsVictims) {
                         horario: {props.horario}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        turno: {props.turno}
+                        periodo: {props.turno}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
                         racacor1: {props.racacor1}

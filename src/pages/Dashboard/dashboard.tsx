@@ -15,21 +15,13 @@ export function Dashboard() {
 
   useEffect(() => {
     if (selectedState == "Manaus") {
-      setMetabaseLink(
-        "https://graph.monitorafeminicidio.com/public/dashboard/3428d2b6-fd61-40b4-b36c-613628b7ebf6"
-      );
+      setMetabaseLink(process.env.REACT_APP_METABASE_LINK_MANAUS || "");
     } else if (selectedState == "Porto-velho") {
-      setMetabaseLink(
-        "https://graph.monitorafeminicidio.com/public/dashboard/11ba83a9-ae94-4dba-a9d2-769d56a488b0"
-      );
+      setMetabaseLink(process.env.REACT_APP_METABASE_LINK_PORTO_VELHO || "");
     } else if (selectedState == "Rio-de-janeiro") {
-      setMetabaseLink(
-        "https://graph.monitorafeminicidio.com/public/dashboard/2a4c2ac1-fc3d-40fd-9edd-82b0c87b8c36"
-      );
+      setMetabaseLink(process.env.REACT_APP_METABASE_LINK_RIO_DE_JANEIRO || "");
     } else {
-      setMetabaseLink(
-        "https://graph.monitorafeminicidio.com/public/dashboard/00ce319f-9e90-4446-adc0-0764c9aecae5"
-      );
+      setMetabaseLink(process.env.REACT_APP_METABASE_LINK_RIO_BRANCO || "");
     }
   }, [selectedState]);
 

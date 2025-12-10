@@ -67,6 +67,8 @@ export function EditUser({ id, user }: { id: string , user: any}) {
   };
 
   const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
+    // return console.log(data);
+
     setLoading(true);
     try {
       await updateUser(id, data);
@@ -180,7 +182,7 @@ export function EditUser({ id, user }: { id: string , user: any}) {
                   >
                     <MenuItem value={"Administrador"}>Administrador</MenuItem>
                     <MenuItem value={"Digitador"}>Digitador</MenuItem>
-                    <MenuItem value={"Pesquisador"}>Editor</MenuItem>
+                    <MenuItem value={"Editor"}>Editor</MenuItem>
                     <MenuItem value={"Visualizador"}>Visualizador</MenuItem>
                   </Select>
                 </FormControl>

@@ -74,6 +74,8 @@ type FormData = Yup.InferType<typeof schema>;
 export function CreateVictim(props: IPropsForm) {
   const [loading, setLoading] = React.useState(true);
   const [open, setOpen] = React.useState(false);
+  const [hora, setHora] = React.useState("");
+  const [periodo, setPeriodo] = React.useState("");
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
@@ -109,6 +111,8 @@ export function CreateVictim(props: IPropsForm) {
   }, [datadofato, setValue]);
 
   const onSubmit = (data: any) => {
+    data.turno = periodo;
+
     api.post("/api/vitimas/", data).then((res) => {
       addCount();
       handleClose();
@@ -119,6 +123,26 @@ export function CreateVictim(props: IPropsForm) {
   const handleClose = () => {
     setOpen(false);
     reset();
+  };
+
+  function getPeriodoByHora(hora: string): string {
+    // hora no formato "HH:mm"
+    if (hora === "") {
+      return "";
+    }
+    const [h] = hora.split(":").map(Number);
+
+    if (h >= 0 && h < 6) return "madrugada";
+    if (h >= 6 && h < 12) return "manha";
+    if (h >= 12 && h < 18) return "tarde";
+    if (h >= 18 && h <= 23) return "noite";
+    return "";
+  }
+
+  const handleHoraChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const novaHora = e.target.value;
+    setHora(novaHora);
+    setPeriodo(getPeriodoByHora(novaHora));
   };
 
   return (
@@ -230,16 +254,19 @@ export function CreateVictim(props: IPropsForm) {
               <TextField
                 label={errors.horario?.message ?? "horario"}
                 {...register("horario")}
+                value={hora}
+                onChange={handleHoraChange}
                 error={!!errors.horario?.message}
                 variant="filled"
               />
               <FormControl variant="filled">
-                <InputLabel>{errors.turno?.message ?? "turno"}</InputLabel>
+                <InputLabel>{errors.turno?.message ?? "periodo"}</InputLabel>
                 <Select
-                  label={errors.turno?.message ?? "turno"}
+                  label={errors.turno?.message ?? "periodo"}
+                  value={periodo}
                   {...register("turno")}
                   error={!!errors.turno?.message}
-                  defaultValue={""}
+                  onChange={(e) => setPeriodo(e.target.value)}
                 >
                   <MenuItem value={"NA"}>NA</MenuItem>
                   <MenuItem value={"madrugada"}>madrugada</MenuItem>
@@ -543,7 +570,7 @@ export function CreateVictim(props: IPropsForm) {
                   <MenuItem value={"area de mata na zona rural"}>
                     area de mata na zona rural
                   </MenuItem>
-                  <MenuItem value={"colecao hidrica"}>coleção hidrica</MenuItem>
+                  <MenuItem value={"colecao hidrica"}>colecao hidrica</MenuItem>
                 </Select>
               </FormControl>
             </Box>
@@ -617,7 +644,7 @@ export function CreateVictim(props: IPropsForm) {
             <Typography sx={{ color: colors.neutral_dark, mb: 1 }}>
               Link de Referência:
             </Typography>
-            <Box sx={{display: "flex", flexDirection: "column", gap: "10px"}}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <TextField
                 label={errors.site1?.message ?? "site1"}
                 {...register("site1")}
