@@ -3,7 +3,9 @@ import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { api } from "../../service/api";
 import Classification from "../Links/classification";
 
-export const columns: GridColDef[] = [
+export const columns = (
+  onResetFiltered: (rowId: number, newStatus: boolean) => void
+): GridColDef[] => [
   {
     field: "nome",
     headerName: "Nome",
@@ -15,8 +17,8 @@ export const columns: GridColDef[] = [
     width: 150,
   },
   {
-    field: 'classificacao',
-    headerName: 'Classificação',
+    field: "classificacao",
+    headerName: "Classificação",
     renderCell: ({ row }) => (
       <Classification
         classification={row.classificacao}
@@ -29,15 +31,19 @@ export const columns: GridColDef[] = [
     field: "pesquisar",
     headerName: "Pesquisar",
     renderCell: ({ row }) => {
-
       const handleChangePesquisar = () => {
-        api.patch(`/api/referenceSitePesquisar/${row.id}`).then(() => {
-        })
-      }
-      return (<>
-        <Switch onChange={handleChangePesquisar} defaultChecked={row.pesquisar} />
-      </>)
-    }
-
-  }
+        const newStatus = !row.pesquisar; // invertendo estado
+        api.patch(`/api/referenceSitePesquisar/${row.id}`);
+        onResetFiltered(row.id, newStatus);
+      };
+      return (
+        <>
+          <Switch
+            onChange={handleChangePesquisar}
+            defaultChecked={row.pesquisar}
+          />
+        </>
+      );
+    },
+  },
 ];

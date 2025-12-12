@@ -9,6 +9,8 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from "@mui/material";
 import { title, toolbarMobile, toolbarWeb } from "../../styles";
@@ -17,7 +19,7 @@ import { columns } from "./columns";
 import { CreateTag } from "./createTag";
 import { CreateSite } from "./createSite";
 import { CreateProgram } from "./scheduleSearch";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { api } from "../../service/api";
 import { useRefresh } from "../../shared/hooks/useRefresh";
 import { toast } from "react-toastify";
@@ -28,17 +30,28 @@ import { deleteSite } from "../../service/site";
 import { useToken } from "../../shared/hooks/auth";
 
 export function Sites() {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<any>([]);
   const { count } = useRefresh();
   const [search, setSearch] = useState({ column: "", value: "" });
   const [rowsFiltered, setRowsFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
-  const { selectedState } = useToken()
+  const [valueFilterStatus, setValueFilterStatus] = useState<boolean | null>(
+    null
+  );
+  const { selectedState } = useToken();
 
   useEffect(() => {
     listAll();
   }, [count, selectedState]);
+
+  const resetFiltered = (rowId: number, newStatus: boolean) => {
+    setRows((prev: any) =>
+      prev.map((item: any) =>
+        item.id === rowId ? { ...item, pesquisar: newStatus } : item
+      )
+    );
+  };
 
   const listAll = () => {
     setLoading(true);
@@ -77,9 +90,10 @@ export function Sites() {
     if (search.column === "" || search.value === "") {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
     } else {
-      console.log(search.column, search.value);
-      const findRows = rows.filter((item) =>
-        String(item[search.column]).toLowerCase().includes(String(search.value).toLowerCase())
+      const findRows = rows.filter((item: any) =>
+        String(item[search.column])
+          .toLowerCase()
+          .includes(String(search.value).toLowerCase())
       );
       if (findRows.length === 0) {
         toast.error("Nenhum resultado encontrado para esta pesquisa.");
@@ -87,12 +101,30 @@ export function Sites() {
       setRowsFiltered(findRows);
     }
   };
-  
+
+  const parseStatusValue = (v: string | null): boolean | null =>
+    v === "true" ? true : v === "false" ? false : null;
+
+  const handleStatusChange = (value: string | null) => {
+    const status = parseStatusValue(value);
+    setValueFilterStatus(status);
+    handleFilterBlockedSites(status);
+  };
+
+  const handleFilterBlockedSites = (status: boolean | null) => {
+    const filtered = rows.filter((item: any) => item.pesquisar === status);
+    setRowsFiltered(filtered);
+  };
 
   const handleClear = () => {
     setSearch({ column: "", value: "" });
     setRowsFiltered([]);
   };
+
+  const filteredRows = useMemo(() => {
+    if (valueFilterStatus === null) return rows;
+    return rows.filter((r: any) => r.pesquisar === valueFilterStatus);
+  }, [rows, valueFilterStatus]);
 
   const DeleteSite = (siteId: string) => {
     deleteSite(siteId)
@@ -113,8 +145,8 @@ export function Sites() {
     <>
       <Box style={windowSize < 800 ? toolbarMobile : toolbarWeb}>
         <Typography sx={title}>Sites</Typography>
-        <Box sx={{ display: "flex", gap: 1}}>
-          <FormControl size="small" sx={{minWidth: "140px"}}>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <FormControl size="small" sx={{ minWidth: "140px" }}>
             <InputLabel id="demo-select-small">Coluna</InputLabel>
             <Select
               name="column"
@@ -129,7 +161,7 @@ export function Sites() {
               <MenuItem value={"classificacao"}>Classificação</MenuItem>
             </Select>
           </FormControl>
-          <FormControl size="small" sx={{minWidth: "140px"}}>
+          <FormControl size="small" sx={{ minWidth: "140px" }}>
             <TextField
               name="value"
               color="secondary"
@@ -181,12 +213,26 @@ export function Sites() {
           <CircularProgress />
         </Box>
       ) : (
-        <TableGrid
-          rows={filtered ? rowsFiltered : rows}
-          columns={columns}
-          titleDelete="Excluir site?"
-          onDelete={DeleteSite}
-        />
+        <>
+          <TableGrid
+            rows={filtered ? filteredRows : rows}
+            columns={columns(resetFiltered)}
+            titleDelete="Excluir site?"
+            onDelete={DeleteSite}
+          />
+          <ToggleButtonGroup
+            color="standard"
+            exclusive
+            value={valueFilterStatus}
+            defaultValue=""
+            onChange={(_, value) => handleStatusChange(value)}
+            aria-label="status"
+          >
+            <ToggleButton value="">Todos</ToggleButton>
+            <ToggleButton value="true">Ativos</ToggleButton>
+            <ToggleButton value="false">Inativos</ToggleButton>
+          </ToggleButtonGroup>
+        </>
       )}
     </>
   );

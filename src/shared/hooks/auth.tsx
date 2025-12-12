@@ -1,10 +1,16 @@
-import React, { createContext, ReactNode, useContext, useState, useEffect } from 'react';
-import Cookies from 'universal-cookie';
-import { ILogin } from '../../models/login';
-import { login } from '../../service/auth';
-import api from '../../service/api';
-import { toast } from 'react-toastify';
-import {jwtDecode} from 'jwt-decode';
+import React, {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+import Cookies from "universal-cookie";
+import { ILogin } from "../../models/login";
+import { login } from "../../service/auth";
+import api from "../../service/api";
+import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 interface TokenContextData {
   permission?: Boolean;
@@ -13,7 +19,7 @@ interface TokenContextData {
   username: string;
   perfil: string;
   handleSelectedState: (state: string) => void;
-  selectedState: string
+  selectedState: string;
 }
 
 interface TokenProviderProps {
@@ -29,7 +35,7 @@ export function TokenProvider({ children }: TokenProviderProps) {
   const [perfil, setPerfil] = useState("");
   const [token, setToken] = useState<string | null>(null);
   const [username, setUsername] = useState("");
-  const [selectedState, setSelectedState] = useState("")
+  const [selectedState, setSelectedState] = useState("");
 
   const decodeToken = (token: string) => {
     try {
@@ -43,23 +49,23 @@ export function TokenProvider({ children }: TokenProviderProps) {
 
   const setAxiosToken = (token: string | null) => {
     if (token) {
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
-      delete api.defaults.headers.common['Authorization'];
+      delete api.defaults.headers.common["Authorization"];
     }
   };
 
   useEffect(() => {
-    const storedToken = cookies.get('feminicidio_token');
+    const storedToken = cookies.get("feminicidio_token");
     if (storedToken) {
       setToken(storedToken);
       setAxiosToken(storedToken);
-      const tokenDecoded = decodeToken(storedToken) as any
-      const parsedToken = JSON.parse(tokenDecoded.sub)
+      const tokenDecoded = decodeToken(storedToken) as any;
+      const parsedToken = JSON.parse(tokenDecoded.sub);
       setUsername(parsedToken.name);
       cookies.set("idf", parsedToken.id);
-      const selectedStatePreviours = cookies.get("selectedStateF")
-      setSelectedState(selectedStatePreviours)
+      const selectedStatePreviours = cookies.get("selectedStateF");
+      setSelectedState(selectedStatePreviours);
       setPerfil(parsedToken.role.toLowerCase());
       setPermission(true);
     }
@@ -67,15 +73,18 @@ export function TokenProvider({ children }: TokenProviderProps) {
 
   async function Login(payload: ILogin) {
     await login(payload)
-      .then(response => {
-        const token = response.data.access_token; 
-        const tokenDecoded = decodeToken(token) as any
-        const parsedToken = JSON.parse(tokenDecoded.sub)
-        const parsedState = tokenDecoded.state
-         if(parsedState.filter((item: any) => item.city == selectedState).length == 0){
-          toast.error("Este usuário não possui permissão para esta cidade")
+      .then((response) => {
+        const token = response.data.access_token;
+        const tokenDecoded = decodeToken(token) as any;
+        const parsedToken = JSON.parse(tokenDecoded.sub);
+        const parsedState = tokenDecoded.state;
+        if (
+          parsedState.filter((item: any) => item.city == selectedState)
+            .length == 0
+        ) {
+          toast.error("Este usuário não possui permissão para esta cidade");
           setPermission(false);
-          return
+          return;
         }
         cookies.set("feminicidio_token", token);
         setAxiosToken(token);
@@ -83,24 +92,34 @@ export function TokenProvider({ children }: TokenProviderProps) {
         setUsername(parsedToken.name);
         cookies.set("usernamef", parsedToken.name);
         cookies.set("idf", parsedToken.id);
-        cookies.set("selectedStateF", selectedState)
+        cookies.set("selectedStateF", selectedState);
         setPerfil(parsedToken.role.toLowerCase());
         setPermission(true);
-        toast.success('Login realizado com sucesso');
+        toast.success("Login realizado com sucesso");
       })
-      .catch(error => {
-        console.log(error)
+      .catch((error) => {
+        console.log(error);
         setPermission(false);
-        toast.error(error.response.data.message)
+        toast.error(error.response.data.message);
       });
   }
 
   const handleSelectedState = (state: string) => {
-    setSelectedState(state)
-  }
+    setSelectedState(state);
+  };
 
   return (
-    <TokenContext.Provider value={{ permission, Login, token, username, perfil, handleSelectedState, selectedState }}>
+    <TokenContext.Provider
+      value={{
+        permission,
+        Login,
+        token,
+        username,
+        perfil,
+        handleSelectedState,
+        selectedState,
+      }}
+    >
       {children}
     </TokenContext.Provider>
   );

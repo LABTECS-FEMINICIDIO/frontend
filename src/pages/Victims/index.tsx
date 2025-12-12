@@ -13,7 +13,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { title, toolbarMobile, toolbarWeb } from "../../styles";
+import {
+  title,
+  toolbarMobile,
+  toolbarWeb,
+  VisuallyHiddenInput,
+} from "../../styles";
 import { ChangeEvent, useEffect, useState } from "react";
 import { api } from "../../service/api";
 import { toast } from "react-toastify";
@@ -24,6 +29,7 @@ import { useRefresh } from "../../shared/hooks/useRefresh";
 import { TableVictims } from "./collapse.table";
 import { CreateVictim } from "./createVictim";
 import { useToken } from "../../shared/hooks/auth";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 export function Victims() {
   const [rows, setRows] = useState([]);
@@ -32,7 +38,7 @@ export function Victims() {
   const [loading, setLoading] = useState(true);
   const { count } = useRefresh();
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
-  const { selectedState } = useToken()
+  const { selectedState } = useToken();
 
   useEffect(() => {
     listAll();
@@ -73,19 +79,22 @@ export function Victims() {
       let formattedSearchValue = search.value;
       if (search.column === "datadofato") {
         const [day, month, year] = search.value.split("/");
-        formattedSearchValue = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+        formattedSearchValue = `${year}-${month.padStart(
+          2,
+          "0"
+        )}-${day.padStart(2, "0")}`;
       }
-      
+
       const findRows = rows.filter((item) =>
         String(item[search.column])
           .toLowerCase()
           .includes(String(formattedSearchValue).toLowerCase())
       );
-      
+
       if (findRows.length === 0) {
         toast.error("Nenhum resultado encontrado para esta pesquisa.");
       }
-      
+
       setRowsFiltered(findRows);
     }
   };
@@ -109,6 +118,35 @@ export function Victims() {
       saveAs(blob, "export.xlsx");
     } catch (error) {
       console.error("Erro ao exportar o arquivo:", error);
+    }
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (file) {
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      api
+        .post("api/import-xlsx", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(() => {
+          toast.success("Arquivo importado com sucesso");
+          listAll();
+        })
+        .catch((error) => {
+          console.error("Erro ao importar o arquivo", error);
+          toast.error(error?.response.data.detail);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   };
 
@@ -196,7 +234,15 @@ export function Victims() {
           </FormControl>
           <Button
             component="label"
-            variant="outlined"
+            variant="contained"
+            startIcon={<CloudUploadIcon />}
+          >
+            Importar arquivo
+            <VisuallyHiddenInput type="file" onChange={handleFileChange} />
+          </Button>
+          <Button
+            component="label"
+            variant="contained"
             onClick={handleExportClick}
           >
             Exportar

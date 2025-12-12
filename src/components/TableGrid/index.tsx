@@ -52,7 +52,6 @@ export function TableGrid(props: TableGridProps) {
       : [...props.columns];
   const matches = useMediaQuery("(max-width:480px)");
   const telaVitimas = window.location.pathname.includes("victims");
-  console.log(window.location.pathname.includes("victims"));
 
   return (
     <Box sx={tableContainer}>
@@ -62,8 +61,8 @@ export function TableGrid(props: TableGridProps) {
           ...column,
           ...(matches === false && telaVitimas === false
             ? {
-              flex: 1,
-            }
+                flex: 1,
+              }
             : { width: 150 }),
           sortable: false,
           headerClassName: "super-app-theme--header",
