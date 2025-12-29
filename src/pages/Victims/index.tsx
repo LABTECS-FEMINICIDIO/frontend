@@ -30,15 +30,24 @@ import { TableVictims } from "./collapse.table";
 import { CreateVictim } from "./createVictim";
 import { useToken } from "../../shared/hooks/auth";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Swal from "sweetalert2";
 
 export function Victims() {
   const [rows, setRows] = useState([]);
   const [search, setSearch] = useState({ column: "", value: "" });
   const [rowsFiltered, setRowsFiltered] = useState([]);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const { count } = useRefresh();
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
-  const { selectedState } = useToken();
+  const { selectedState, perfil } = useToken();
+
+  useEffect(() => {
+    const isAdmin = perfil.includes("administrador");
+    if (isAdmin) {
+      setIsAdmin(true);
+    }
+  }, [perfil]);
 
   useEffect(() => {
     listAll();
@@ -121,6 +130,33 @@ export function Victims() {
     }
   };
 
+  const handleDeleteAllVictims = async () => {
+    try {
+      await api.get("/api/delete/vitimas");
+      toast.success("Registros apagados com sucesso!");
+      return listAll();
+    } catch (error) {
+      toast.error("Erro ao apagar registros!");
+    }
+  };
+
+  const handleConfirmationModal = async () => {
+    Swal.fire({
+      title: "Você realmente deseja excluir todos os registros?",
+      showConfirmButton: true,
+      showDenyButton: true,
+      confirmButtonText: "Sim, desejo!",
+      denyButtonText: "Não",
+      confirmButtonColor: "#DC0032",
+      denyButtonColor: "#707070",
+      text: "Esta ação não pode ser desfeita!",
+    }).then((res) => {
+      if (res.isConfirmed) {
+        handleDeleteAllVictims();
+      }
+    });
+  };
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
@@ -142,10 +178,11 @@ export function Victims() {
         })
         .catch((error) => {
           console.error("Erro ao importar o arquivo", error);
-          toast.error(error?.response.data.detail);
+          toast.error("Ocorreu um erro ao importar o arquivo");
         })
         .finally(() => {
           setLoading(false);
+          event.target.value = "";
         });
     }
   };
@@ -263,6 +300,29 @@ export function Victims() {
         </Box>
       ) : (
         <TableVictims rows={filtered ? rowsFiltered : rows} />
+      )}
+
+      {isAdmin && (
+        <Box
+          sx={{
+            display: "flex",
+            mt: 2,
+            flexDirection: "row",
+            justifyContent: "end",
+          }}
+        >
+          <Button
+            component="label"
+            style={{
+              backgroundColor: rows.length === 0 ? "#a6a0a0ff" : "#DC0032",
+            }}
+            variant="contained"
+            onClick={handleConfirmationModal}
+            disabled={rows.length === 0}
+          >
+            Apagar todos os registros
+          </Button>
+        </Box>
       )}
     </>
   );
