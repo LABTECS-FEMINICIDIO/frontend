@@ -24,12 +24,15 @@ import { useToken } from "../../shared/hooks/auth";
 import { toast } from "react-toastify";
 import logo from "../../assets/I.V FEM. VERTICAL.svg";
 
-const schema = yup.object({
-  email: yup.string()
-    .required("E-mail é um campo obrigatório")
-    .email("E-mail deve ter um formato válido, exemplo@mail.com.br"),
-  senha: yup.string().required("Senha é um campo obrigatório"),
-}).required();
+const schema = yup
+  .object({
+    email: yup
+      .string()
+      .required("E-mail é um campo obrigatório")
+      .email("E-mail deve ter um formato válido, exemplo@mail.com.br"),
+    senha: yup.string().required("Senha é um campo obrigatório"),
+  })
+  .required();
 
 type FormData = yup.InferType<typeof schema>;
 
@@ -37,7 +40,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
   const { Login, token, permission, handleSelectedState } = useToken();
-  const [cidade, setCidade] = React.useState("")
+  const [cidade, setCidade] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const {
     register,
@@ -48,13 +51,13 @@ export default function SignIn() {
   });
 
   const onSubmit = (data: FormData) => handleLogin(data);
-  
+
   const handleLogin = async (data: yup.InferType<typeof schema>) => {
     setLoading(true);
-    if(cidade === ""){
-      toast.error("Selecione uma cidade")
+    if (cidade === "") {
+      toast.error("Selecione uma cidade");
       setLoading(false);
-      return
+      return;
     }
     await Login(data);
     setLoading(false);
@@ -69,12 +72,12 @@ export default function SignIn() {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleChangeState = (state: string) => {
-    handleSelectedState(state)
-    setCidade(state)
-  }
+    handleSelectedState(state);
+    setCidade(state);
+  };
 
   const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
   };
@@ -111,7 +114,7 @@ export default function SignIn() {
               }}
             >
               <Box>
-              <img src={logo} alt="logo: vigifeminicidio" width= "200px"/>
+                <img src={logo} alt="logo: vigifeminicidio" width="200px" />
               </Box>
             </Box>
             <Box
@@ -152,19 +155,20 @@ export default function SignIn() {
                   }
                 />
               </FormControl>
-                  <FormControl margin="normal" fullWidth variant="outlined">
-                    <InputLabel>{"Selecione a cidade"}</InputLabel>
-                    <Select
-                      label={"Selecione a cidade"}
-                      onChange={(e) => handleChangeState(e.target.value)}
-                      defaultValue={""}
-                    >
-                      <MenuItem value={"Manaus"}>Manaus</MenuItem>
-                      <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
-                      <MenuItem value={"Rio-branco"}>Rio Branco</MenuItem>
-                      <MenuItem value={"Rio-de-janeiro"}>Rio de Janeiro</MenuItem>
-                    </Select>
-                  </FormControl>
+              <FormControl margin="normal" fullWidth variant="outlined">
+                <InputLabel>{"Selecione a cidade"}</InputLabel>
+                <Select
+                  label={"Selecione a cidade"}
+                  onChange={(e) => handleChangeState(e.target.value)}
+                  defaultValue={""}
+                >
+                  <MenuItem value={"Manaus"}>Manaus</MenuItem>
+                  <MenuItem value={"Porto-velho"}>Porto Velho</MenuItem>
+                  <MenuItem value={"Rio-branco"}>Rio Branco</MenuItem>
+                  <MenuItem value={"Rio-de-janeiro"}>Rio de Janeiro</MenuItem>
+                  <MenuItem value={"Boa-vista"}>Boa Vista</MenuItem>
+                </Select>
+              </FormControl>
               <Box
                 sx={{
                   display: "grid",
@@ -182,13 +186,24 @@ export default function SignIn() {
                 >
                   {loading ? <CircularProgress /> : "ENTRAR"}
                 </Button>
-                <Box sx={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-                <Link href="/register" variant="body2" sx={{marginTop: 3}}>
-                  Não possui cadastro? Registre-se
-                </Link>
-                <Link href="/recoveryCode" variant="body2" sx={{marginTop: 3}}>
-                  Esqueci minha senha
-                </Link>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Link href="/register" variant="body2" sx={{ marginTop: 3 }}>
+                    Não possui cadastro? Registre-se
+                  </Link>
+                  <Link
+                    href="/recoveryCode"
+                    variant="body2"
+                    sx={{ marginTop: 3 }}
+                  >
+                    Esqueci minha senha
+                  </Link>
                 </Box>
                 <Box sx={borda} />
               </Box>
