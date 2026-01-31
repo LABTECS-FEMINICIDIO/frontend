@@ -20,8 +20,10 @@ export function Dashboard() {
       setMetabaseLink(process.env.REACT_APP_METABASE_LINK_PORTO_VELHO || "");
     } else if (selectedState == "Rio-de-janeiro") {
       setMetabaseLink(process.env.REACT_APP_METABASE_LINK_RIO_DE_JANEIRO || "");
-    } else {
+    } else if (selectedState == "Rio-branco") {
       setMetabaseLink(process.env.REACT_APP_METABASE_LINK_RIO_BRANCO || "");
+    } else if (selectedState == "Boa-vista") {
+      setMetabaseLink(process.env.REACT_APP_METABASE_LINK_BOA_VISTA || "");
     }
   }, [selectedState]);
 
