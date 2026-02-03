@@ -95,6 +95,33 @@ export function EditVictims(props: IPropsForm) {
   });
 
   const datadofato = watch("datadofato");
+  const horario = watch("horario");
+
+  function getPeriodoByHora(hora: string): string {
+    // hora no formato "HH:mm"
+    if (hora === "") {
+      return "";
+    }
+
+    if (hora === "NA") {
+      return "NA";
+    }
+
+    const [h] = hora.split(":").map(Number);
+
+    if (h >= 0 && h < 6) return "madrugada";
+    if (h >= 6 && h < 12) return "manha";
+    if (h >= 12 && h < 18) return "tarde";
+    if (h >= 18 && h <= 23) return "noite";
+    return "";
+  }
+
+  useEffect(() => {
+    if (!horario) return;
+
+    const periodo = getPeriodoByHora(horario);
+    setValue("turno", periodo);
+  }, [horario, setValue]);
 
   useEffect(() => {
     if (datadofato) {
@@ -170,7 +197,7 @@ export function EditVictims(props: IPropsForm) {
       toast.error(
         error?.response?.data?.detail ||
           error.message ||
-          "Erro ao atualizar dados da vítima"
+          "Erro ao atualizar dados da vítima",
       );
     }
   };
@@ -312,31 +339,25 @@ export function EditVictims(props: IPropsForm) {
                   />
                 </FormControl>
                 <TextField
-                  label={errors.horario?.message ?? "horario"}
+                  label="horario"
                   {...register("horario")}
-                  error={!!errors.horario?.message}
                   variant="filled"
                 />
                 <FormControl variant="filled">
-                  <InputLabel>{errors.turno?.message ?? "turno"}</InputLabel>
-                  <Select
-                    label={errors.turno?.message ?? "turno"}
-                    {...register("turno")}
-                    error={!!errors.turno?.message}
-                    defaultValue={
-                      userData
-                        ? userData.turno !== null && userData.turno !== "N/A"
-                          ? userData.turno
-                          : ""
-                        : ""
-                    }
-                  >
-                    <MenuItem value={"NA"}>NA</MenuItem>
-                    <MenuItem value={"madrugada"}>madrugada</MenuItem>
-                    <MenuItem value={"manha"}>manha</MenuItem>
-                    <MenuItem value={"tarde"}>tarde</MenuItem>
-                    <MenuItem value={"noite"}>noite</MenuItem>
-                  </Select>
+                  <InputLabel>periodo</InputLabel>
+                  <Controller
+                    name="turno"
+                    control={control}
+                    render={({ field }) => (
+                      <Select {...field}>
+                        <MenuItem value="NA">NA</MenuItem>
+                        <MenuItem value="madrugada">madrugada</MenuItem>
+                        <MenuItem value="manha">manha</MenuItem>
+                        <MenuItem value="tarde">tarde</MenuItem>
+                        <MenuItem value="noite">noite</MenuItem>
+                      </Select>
+                    )}
+                  />
                 </FormControl>
               </Box>
               <Typography sx={{ color: colors.neutral_dark, mb: 3, mt: 3 }}>
