@@ -37,7 +37,7 @@ export function Sites() {
   const [loading, setLoading] = useState(true);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
   const [valueFilterStatus, setValueFilterStatus] = useState<boolean | null>(
-    null
+    null,
   );
   const { selectedState } = useToken();
 
@@ -48,8 +48,8 @@ export function Sites() {
   const resetFiltered = (rowId: number, newStatus: boolean) => {
     setRows((prev: any) =>
       prev.map((item: any) =>
-        item.id === rowId ? { ...item, pesquisar: newStatus } : item
-      )
+        item.id === rowId ? { ...item, pesquisar: newStatus } : item,
+      ),
     );
   };
 
@@ -93,7 +93,7 @@ export function Sites() {
       const findRows = rows.filter((item: any) =>
         String(item[search.column])
           .toLowerCase()
-          .includes(String(search.value).toLowerCase())
+          .includes(String(search.value).toLowerCase()),
       );
       if (findRows.length === 0) {
         toast.error("Nenhum resultado encontrado para esta pesquisa.");
@@ -215,7 +215,7 @@ export function Sites() {
       ) : (
         <>
           <TableGrid
-            rows={filtered ? filteredRows : rows}
+            rows={filtered ? rowsFiltered : rows}
             columns={columns(resetFiltered)}
             titleDelete="Excluir site?"
             onDelete={DeleteSite}
