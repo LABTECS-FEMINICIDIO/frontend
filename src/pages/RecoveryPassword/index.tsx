@@ -6,10 +6,19 @@ import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import { Alert, CircularProgress, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Paper } from "@mui/material";
+import {
+  Alert,
+  CircularProgress,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Paper,
+} from "@mui/material";
 import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
-import imagemLogin from "../../assets/laco-login.svg";
+import imagemLogin from "../../assets/testeimagemlogin.png";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,12 +29,18 @@ import { useLocation } from "react-router-dom";
 
 const schema = yup
   .object({
-    email: yup.string().email("E-mail inválido").required("E-mail é um campo obrigatório"),
-    recovery_code: yup.string().required("Código de recuperação é um campo obrigatório"),
+    email: yup
+      .string()
+      .email("E-mail inválido")
+      .required("E-mail é um campo obrigatório"),
+    recovery_code: yup
+      .string()
+      .required("Código de recuperação é um campo obrigatório"),
     new_password: yup.string().required("Senha é um campo obrigatório"),
-    confirm_password: yup.string()
-    .oneOf([yup.ref('new_password')], 'As senhas devem coincidir')
-    .required('Confirme sua senha')
+    confirm_password: yup
+      .string()
+      .oneOf([yup.ref("new_password")], "As senhas devem coincidir")
+      .required("Confirme sua senha"),
   })
   .required();
 type FormData = yup.InferType<typeof schema>;
@@ -35,7 +50,6 @@ const useQuery = () => {
 };
 
 export default function RecoveryPass() {
-
   const {
     register,
     setValue,
@@ -46,55 +60,57 @@ export default function RecoveryPass() {
     resolver: yupResolver(schema),
   });
 
-
   const onSubmit = (data: FormData) => handleRegister(data);
   const [loading, setLoading] = React.useState(false);
 
   const query = useQuery();
-  const email = query.get('email');
-  const code = query.get('code');
+  const email = query.get("email");
+  const code = query.get("code");
 
   React.useEffect(() => {
-    setValue("email", email as string)
-    setValue("recovery_code", code as string)
-  }, [])
+    setValue("email", email as string);
+    setValue("recovery_code", code as string);
+  }, []);
 
   const handleRegister = async (data: yup.InferType<typeof schema>) => {
     setLoading(true);
 
-    
-    apiAuth.post("/api/v1/auth/change-my-password", {
-        "email": data.email,
-        "passwordRecoveryCode": data.recovery_code,
-        "newPassword": data.new_password
-    }).then((res) => {
-        toast.success(res.data.message)
-        setLoading(false)
-        reset()
+    apiAuth
+      .post("/api/v1/auth/change-my-password", {
+        email: data.email,
+        passwordRecoveryCode: data.recovery_code,
+        newPassword: data.new_password,
+      })
+      .then((res) => {
+        toast.success(res.data.message);
+        setLoading(false);
+        reset();
         setTimeout(() => {
-            toast.info("Você será redirecionado para a página de login")
-        }, 3000)
+          toast.info("Você será redirecionado para a página de login");
+        }, 3000);
         setTimeout(() => {
-            window.location.href = '/';
-        }, 6000)
-    }).catch((err) => {
-        toast.error(err.response.data.message)
-        setLoading(false)
-        reset()
-    })
+          window.location.href = "/";
+        }, 6000);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+        setLoading(false);
+        reset();
+      });
   };
-  const [showPassword, setShowPassword] = React.useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleClickShowConfirmPassword = () => setShowConfirmPassword((show) => !show);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((show) => !show);
 
   const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
+    event: React.MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
   };
-  
+
   React.useEffect(() => {
     window.addEventListener("resize", () => {
       setWindowSize(window?.innerWidth);
@@ -107,11 +123,15 @@ export default function RecoveryPass() {
         <img
           src={imagemLogin}
           alt="laço"
-          style={
-            windowSize < 800
-              ? { display: "none" }
-              : { position: "absolute", top: "20px", right: "10px" }
-          }
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            filter: "blur(8px)",
+          }}
         />
         <Paper
           style={
@@ -120,8 +140,15 @@ export default function RecoveryPass() {
                   display: "grid",
                   margin: "20px",
                   padding: "20px",
+                  position: "relative",
+                  zIndex: 10,
                 }
-              : { padding: "80px", width: "400px" }
+              : {
+                  padding: "50px",
+                  width: "600px",
+                  position: "relative",
+                  zIndex: 10,
+                }
           }
         >
           <Box
@@ -129,12 +156,10 @@ export default function RecoveryPass() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "column"
+              flexDirection: "column",
             }}
           >
-            <Avatar
-              sx={{ backgroundColor: colors.primary_dark }}
-            >
+            <Avatar sx={{ backgroundColor: colors.primary_dark }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5" sx={{ fontWeight: "bold" }}>
@@ -158,7 +183,7 @@ export default function RecoveryPass() {
               autoComplete="email"
               autoFocus
             />
-            
+
             <TextField
               margin="normal"
               required
@@ -170,50 +195,54 @@ export default function RecoveryPass() {
               autoComplete="recovery_code"
               autoFocus
             />
-            
-            <FormControl margin="normal" fullWidth variant="outlined">
-                <InputLabel>{errors.new_password?.message ?? "Nova senha"}</InputLabel>
-                <OutlinedInput
-                  {...register("new_password")}
-                  label={errors.new_password?.message ?? "Nova senha"}
-                  error={!!errors.new_password?.message}
-                  id="new_password"
-                  type={showPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
 
-              <FormControl margin="normal" fullWidth variant="outlined">
-                <InputLabel>{errors.confirm_password?.message ?? "Confirme sua senha"}</InputLabel>
-                <OutlinedInput
-                  {...register("confirm_password")}
-                  label={errors.confirm_password?.message ?? "Confirme sua senha"}
-                  error={!!errors.confirm_password?.message}
-                  id="confirm_password"
-                  type={showConfirmPassword ? "text" : "password"}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handleClickShowConfirmPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
+            <FormControl margin="normal" fullWidth variant="outlined">
+              <InputLabel>
+                {errors.new_password?.message ?? "Nova senha"}
+              </InputLabel>
+              <OutlinedInput
+                {...register("new_password")}
+                label={errors.new_password?.message ?? "Nova senha"}
+                error={!!errors.new_password?.message}
+                id="new_password"
+                type={showPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+
+            <FormControl margin="normal" fullWidth variant="outlined">
+              <InputLabel>
+                {errors.confirm_password?.message ?? "Confirme sua senha"}
+              </InputLabel>
+              <OutlinedInput
+                {...register("confirm_password")}
+                label={errors.confirm_password?.message ?? "Confirme sua senha"}
+                error={!!errors.confirm_password?.message}
+                id="confirm_password"
+                type={showConfirmPassword ? "text" : "password"}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowConfirmPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
 
             <Box
               sx={{
@@ -237,10 +266,10 @@ export default function RecoveryPass() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  mt: 3,
+                  mt: 1,
                 }}
               >
-                <Link href="/" variant="body2" sx={{ marginBottom: 1 }}>
+                <Link href="/" variant="body2">
                   Faça login
                 </Link>
               </Box>

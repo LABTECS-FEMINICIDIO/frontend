@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import { Alert, CircularProgress, Paper } from "@mui/material";
 import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
-import imagemLogin from "../../assets/laco-login.svg";
+import imagemLogin from "../../assets/testeimagemlogin.png";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -19,15 +19,15 @@ import Cookies from "universal-cookie";
 
 const schema = yup
   .object({
-    email: yup.string().email("E-mail inválido").required("E-mail é um campo obrigatório"),
+    email: yup
+      .string()
+      .email("E-mail inválido")
+      .required("E-mail é um campo obrigatório"),
   })
   .required();
 type FormData = yup.InferType<typeof schema>;
 
-
-
 export default function RecoveryCode() {
-
   const {
     register,
     handleSubmit,
@@ -42,22 +42,25 @@ export default function RecoveryCode() {
 
   const handleRegister = async (data: yup.InferType<typeof schema>) => {
     setLoading(true);
-    
-    apiAuth.post("/api/v1/auth/reset-my-password", data).then((res) => {
+
+    apiAuth
+      .post("/api/v1/auth/reset-my-password", data)
+      .then((res) => {
         toast.success(res.data.message, {
-          autoClose: false
-        })
+          autoClose: false,
+        });
         toast.info("Verifique seu email", {
           autoClose: false,
-          theme: "colored"
-        })
-        setLoading(false)
-        reset()
-    }).catch((err) => {
-        toast.error(err.response.data.message)
-        setLoading(false)
-        reset()
-    })
+          theme: "colored",
+        });
+        setLoading(false);
+        reset();
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message);
+        setLoading(false);
+        reset();
+      });
   };
 
   const [windowSize, setWindowSize] = React.useState(window?.innerWidth);
@@ -69,7 +72,7 @@ export default function RecoveryCode() {
     cookie.remove("selectedStateF");
     cookie.remove("usernamef");
     cookie.remove("idf");
-    
+
     window.addEventListener("resize", () => {
       setWindowSize(window?.innerWidth);
     });
@@ -81,11 +84,15 @@ export default function RecoveryCode() {
         <img
           src={imagemLogin}
           alt="laço"
-          style={
-            windowSize < 800
-              ? { display: "none" }
-              : { position: "absolute", top: "20px", right: "10px" }
-          }
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            filter: "blur(8px)",
+          }}
         />
         <Paper
           style={
@@ -94,8 +101,15 @@ export default function RecoveryCode() {
                   display: "grid",
                   margin: "20px",
                   padding: "20px",
+                  position: "relative",
+                  zIndex: 10,
                 }
-              : { padding: "80px", width: "400px" }
+              : {
+                  padding: "50px",
+                  width: "600px",
+                  position: "relative",
+                  zIndex: 10,
+                }
           }
         >
           <Box
@@ -103,20 +117,30 @@ export default function RecoveryCode() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              flexDirection: "column"
+              flexDirection: "column",
             }}
           >
-            <Avatar
-              sx={{ backgroundColor: colors.primary_dark }}
-            >
+            <Avatar sx={{ backgroundColor: colors.primary_dark }}>
               <LockOutlinedIcon />
             </Avatar>
-            <Typography component="h1" variant="h5" sx={{ fontWeight: "bold", mt: 2 }}>
+            <Typography
+              component="h1"
+              variant="h5"
+              sx={{ fontWeight: "bold", mt: 2 }}
+            >
               Recuperação de senha
             </Typography>
           </Box>
-          <Alert severity="info" sx={{margin: '20px', background: colors.primary_lightest, color: colors.neutral_dark}}>
-          Você receberá um email com o código de redefinição de senha. O código irá expirar em 30 minutos.
+          <Alert
+            severity="info"
+            sx={{
+              margin: "20px",
+              background: colors.primary_lightest,
+              color: colors.neutral_dark,
+            }}
+          >
+            Você receberá um email com o código de redefinição de senha. O
+            código irá expirar em 30 minutos.
           </Alert>
           <Box
             component="form"
@@ -157,10 +181,10 @@ export default function RecoveryCode() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  mt: 3,
+                  mt: 1,
                 }}
               >
-                <Link href="/" variant="body2" sx={{ marginTop: 3 }}>
+                <Link href="/" variant="body2">
                   Voltar para login
                 </Link>
               </Box>

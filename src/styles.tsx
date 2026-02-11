@@ -47,12 +47,11 @@ export const borda = {
 
 export const container = {
   backgroundColor: colors.primary_lightest,
-  height: "100vh",
-  width: "100%",
+  minHeight: "100vh",
+  width: "100vw",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  padding: 0,
 };
 
 export const load = {

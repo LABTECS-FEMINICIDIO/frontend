@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import { Alert, CircularProgress, Paper } from "@mui/material";
 import { colors } from "../../shared/theme";
 import { borda, container } from "../../styles";
-import imagemLogin from "../../assets/laco-login.svg";
+import imagemLogin from "../../assets/testeimagemlogin.png";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -75,11 +75,15 @@ export default function Register() {
         <img
           src={imagemLogin}
           alt="laço"
-          style={
-            windowSize < 800
-              ? { display: "none" }
-              : { position: "absolute", top: "20px", right: "10px" }
-          }
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            objectFit: "cover",
+            filter: "blur(8px)", // 👈 aqui
+          }}
         />
         <Paper
           style={
@@ -88,8 +92,15 @@ export default function Register() {
                   display: "grid",
                   margin: "20px",
                   padding: "20px",
+                  position: "relative",
+                  zIndex: 10,
                 }
-              : { padding: "80px", width: "600px" }
+              : {
+                  padding: "50px",
+                  width: "600px",
+                  position: "relative",
+                  zIndex: 10,
+                }
           }
         >
           <Box
@@ -177,10 +188,10 @@ export default function Register() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  mt: 3,
+                  mt: 1,
                 }}
               >
-                <Link href="/" variant="body2" sx={{ marginTop: 3 }}>
+                <Link href="/" variant="body2">
                   Já possui cadastro? Faça login
                 </Link>
               </Box>

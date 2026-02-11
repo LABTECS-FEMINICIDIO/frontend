@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { LightTheme } from "./shared/theme";
 import { BrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./routes";
@@ -11,6 +11,7 @@ import { RefreshProvider } from "./shared/hooks/useRefresh";
 export function App() {
   return (
     <ThemeProvider theme={LightTheme}>
+      <CssBaseline />
       <BrowserRouter basename="/">
         <ToastContainer position="top-right" />
         <RefreshProvider>

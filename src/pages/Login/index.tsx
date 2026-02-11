@@ -15,7 +15,7 @@ import {
   Select,
 } from "@mui/material";
 import { borda, container } from "../../styles";
-import imagemLogin from "../../assets/laco-login.svg";
+import imagemLogin from "../../assets/testeimagemlogin.png";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -23,6 +23,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useToken } from "../../shared/hooks/auth";
 import { toast } from "react-toastify";
 import logo from "../../assets/I.V FEM. VERTICAL.svg";
+import WelcomeRobot from "../../components/WelcomeRobot";
 
 const schema = yup
   .object({
@@ -89,40 +90,50 @@ export default function SignIn() {
           <img
             src={imagemLogin}
             alt="laço"
-            style={
-              windowSize < 800
-                ? { display: "none" }
-                : { position: "absolute", top: "20px", right: "10px" }
-            }
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: "blur(8px)", // 👈 aqui
+            }}
           />
           <Paper
-            style={
-              windowSize < 800
-                ? {
-                    display: "grid",
-                    margin: "20px",
-                    padding: "20px",
-                  }
-                : { padding: "80px", width: "500px" }
-            }
+            sx={{
+              position: "relative",
+              zIndex: 10,
+              p: { xs: 3, sm: 4, md: 5 },
+              width: {
+                xs: "90%",
+                sm: "80%",
+                md: 450,
+                lg: 500,
+              },
+              maxWidth: "95vw",
+
+              // 👇 reduz só em telas médias (notebook)
+              transform: {
+                xs: "scale(1)",
+                md: "scale(0.6)",
+                lg: "scale(0.9)",
+              },
+              transformOrigin: "center",
+            }}
           >
             <Box
               sx={{
-                display: "grid",
+                display: "flex",
+                flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <Box>
-                <img src={logo} alt="logo: vigifeminicidio" width="200px" />
-              </Box>
+              <img src={logo} alt="logo: vigifeminicidio" width="120px" />
+              <WelcomeRobot />
             </Box>
-            <Box
-              component="form"
-              onSubmit={handleSubmit(onSubmit)}
-              noValidate
-              sx={{ mt: 5 }}
-            >
+            <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
               <TextField
                 margin="normal"
                 required
@@ -194,13 +205,13 @@ export default function SignIn() {
                     flexDirection: "column",
                   }}
                 >
-                  <Link href="/register" variant="body2" sx={{ marginTop: 3 }}>
+                  <Link href="/register" variant="body2" sx={{ marginTop: 2 }}>
                     Não possui cadastro? Registre-se
                   </Link>
                   <Link
                     href="/recoveryCode"
                     variant="body2"
-                    sx={{ marginTop: 3 }}
+                    sx={{ marginTop: 1 }}
                   >
                     Esqueci minha senha
                   </Link>
