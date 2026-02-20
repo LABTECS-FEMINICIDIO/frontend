@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { borda, container } from "../../styles";
 import imagemLogin from "../../assets/testeimagemlogin.png";
+import imagemSus from "../../assets/sus-logo-1.png";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -217,6 +218,23 @@ export default function SignIn() {
                   </Link>
                 </Box>
                 <Box sx={borda} />
+              </Box>
+              <Box
+                sx={{
+                  mt: 4,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <img
+                  src={imagemSus}
+                  alt="laço"
+                  style={{
+                    width: "25%",
+                    height: "25%",
+                  }}
+                />
               </Box>
             </Box>
           </Paper>

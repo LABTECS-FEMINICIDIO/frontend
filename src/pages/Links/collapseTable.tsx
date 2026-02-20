@@ -77,8 +77,8 @@ export function Row(props: Row) {
   };
 
   const handleCloseColapseTable = () => {
-    setOpen(false)
-  }
+    setOpen(false);
+  };
 
   return (
     <React.Fragment>
@@ -87,9 +87,15 @@ export function Row(props: Row) {
           <IconButton
             aria-label="expand row"
             size="small"
-          // onClick={() => setOpen(!open)}
+            // onClick={() => setOpen(!open)}
           >
-            {open ? <CloseColapseTable handleCloseColapseTable={handleCloseColapseTable} /> : <KeyboardArrowDownIcon onClick={() => setOpen(true)} />}
+            {open ? (
+              <CloseColapseTable
+                handleCloseColapseTable={handleCloseColapseTable}
+              />
+            ) : (
+              <KeyboardArrowDownIcon onClick={() => setOpen(true)} />
+            )}
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
@@ -197,7 +203,7 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
     setLoading(true);
     api
       .get(
-        `/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`
+        `/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`,
       )
       .then((res) => {
         setRows(res.data.sites);
@@ -216,7 +222,7 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
   const fetchSites = () => {
     api
       .get(
-        `/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`
+        `/api/site/paginated?page=${currentPage}&page_size=${itemsPerPage}${buildQuery()}`,
       )
       .then((res) => {
         setRows(res.data.sites);
@@ -302,13 +308,13 @@ interface PropsPagination {
 function TablePaginationDemo({ props }: PropsPagination) {
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
+    newPage: number,
   ) => {
     props.setCurrentPage(newPage + 1);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     props.setTotalItemPerPage(parseInt(event.target.value, 10));
     props.setCurrentPage(1);
@@ -317,6 +323,7 @@ function TablePaginationDemo({ props }: PropsPagination) {
   return (
     <TablePagination
       component="div"
+      labelRowsPerPage="Linhas por página"
       count={props.totalItems}
       page={props.currentPage - 1}
       onPageChange={handleChangePage}

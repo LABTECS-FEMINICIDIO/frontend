@@ -79,7 +79,7 @@ export function CreateSite() {
             marginBottom: 2,
           }}
         >
-          {"Preencha as informações para cadastrar uma nova tag."}
+          {"Preencha as informações para cadastrar um novo site."}
         </Typography>
         <Divider sx={{ marginBottom: 2 }} />
         <Box component="form" onSubmit={handleSubmit(onSubmit)} >

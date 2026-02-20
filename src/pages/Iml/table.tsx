@@ -41,13 +41,11 @@ export const SimpleTableIml = (props: rowProps) => {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
-  console.log('ROWWWS--------->', props.rows);
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
@@ -61,10 +59,12 @@ export const SimpleTableIml = (props: rowProps) => {
               <TableCell sx={{ background: colors.primary_lightest }}>
                 Hora
               </TableCell>
-              <TableCell sx={{ background: colors.primary_lightest, width: '10px'}}>
+              <TableCell
+                sx={{ background: colors.primary_lightest, width: "10px" }}
+              >
                 Sexo
               </TableCell>
-              <TableCell sx={{ background: colors.primary_lightest}}>
+              <TableCell sx={{ background: colors.primary_lightest }}>
                 Idade
               </TableCell>
               <TableCell sx={{ background: colors.primary_lightest }}>
@@ -99,6 +99,7 @@ export const SimpleTableIml = (props: rowProps) => {
           </TableBody>
         </Table>
         <TablePagination
+          labelRowsPerPage="Linhas por página"
           rowsPerPageOptions={[25, 50, 100]}
           component="div"
           count={props.rows.length}
@@ -106,7 +107,11 @@ export const SimpleTableIml = (props: rowProps) => {
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          sx={{ position: "sticky", bottom: 0, background: colors.background_base }}
+          sx={{
+            position: "sticky",
+            bottom: 0,
+            background: colors.background_base,
+          }}
         />
       </TableContainer>
     </Paper>
