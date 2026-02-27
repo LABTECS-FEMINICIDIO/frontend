@@ -25,13 +25,13 @@ const schema = Yup.object()
   .shape({
     nome: Yup.string()
       .trim()
-      .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras')
+      .matches(/^[a-zA-Z\s]*$/, "Nome deve conter apenas letras")
       .optional(),
     email: Yup.string()
       .email("E-mail deve ter um formato válido: exemplo@mail.com.br")
       .optional(),
     telefone: Yup.string()
-      .matches(/^[0-9]+$/, 'Telefone deve conter apenas números')
+      .matches(/^[0-9]+$/, "Telefone deve conter apenas números")
       .optional(),
     perfil: Yup.string().optional(),
     senha: Yup.string().optional(),
@@ -99,17 +99,17 @@ export function EditUser() {
   }, [id]);
 
   const fetchUserData = () => {
-    findById(id).then(res => {
-      console.log(res.data);
-      setValue('nome', res.data.value.user.props.name)
-      setValue('email', res.data.value.user.props.email)
-      setValue('telefone', res.data.value.user.props.contact)
-      setLoading(false);
-    }).catch(error => {
-      setLoading(false);
-      console.log(error);
-      toast.error('Erro ao retornar dados do usuário')
-    })
+    findById(id)
+      .then((res) => {
+        setValue("nome", res.data.value.user.props.name);
+        setValue("email", res.data.value.user.props.email);
+        setValue("telefone", res.data.value.user.props.contact);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        toast.error("Erro ao retornar dados do usuário");
+      });
   };
 
   return (

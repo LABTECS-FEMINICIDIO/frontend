@@ -218,6 +218,7 @@ export function Sites() {
             rows={filtered ? rowsFiltered : rows}
             columns={columns(resetFiltered)}
             titleDelete="Excluir site?"
+            subtitleDelete="Realmente deseja excluir este site?"
             onDelete={DeleteSite}
           />
           <ToggleButtonGroup

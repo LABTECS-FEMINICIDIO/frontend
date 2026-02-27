@@ -228,10 +228,10 @@ function Row(props: IRowsPropsVictims) {
                         zona: {props.zona}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        X_lat: {props.lat}
+                        Y_lat: {props.lat}
                       </Typography>
                       <Typography variant="subtitle1" gutterBottom>
-                        Y_long: {props.lng}
+                        X_long: {props.lng}
                       </Typography>
                     </TableCell>
 

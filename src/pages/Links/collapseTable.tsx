@@ -17,7 +17,12 @@ import { api } from "../../service/api";
 import { Form } from "./form";
 import { Content } from "./content";
 import Classification from "./classification";
-import { CircularProgress, Switch, TablePagination } from "@mui/material";
+import {
+  CircularProgress,
+  Switch,
+  TablePagination,
+  Tooltip,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deleteSite } from "../../service/site";
 import { toast } from "react-toastify";
@@ -39,6 +44,7 @@ export interface Row {
   tagsEncontradas: string;
   refreshList: () => void;
   createdAt: string;
+  onDeleteSuccess: (id: string) => void;
 }
 export interface Props {
   search: { column: string; value: string };
@@ -82,7 +88,9 @@ export function Row(props: Row) {
 
   return (
     <React.Fragment>
-      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+      <TableRow
+        sx={{ "& > *": { borderBottom: "unset" }, textAlign: "center" }}
+      >
         <TableCell>
           <IconButton
             aria-label="expand row"
@@ -101,10 +109,29 @@ export function Row(props: Row) {
         <TableCell component="th" scope="row">
           {props.nome}
         </TableCell>
-        <TableCell align="left">
-          <a href={props.link} target="_blank">
-            {props.link}
-          </a>
+
+        <TableCell
+          sx={{
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          <Tooltip title={props.link} placement="top">
+            <a
+              href={props.link}
+              target="_blank"
+              style={{
+                display: "block",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                color: "#1976d2",
+              }}
+            >
+              {props.link}
+            </a>
+          </Tooltip>
         </TableCell>
         <TableCell align="left">
           <Content idSite={props.id} props={props.conteudo} />
@@ -130,14 +157,14 @@ export function Row(props: Row) {
         <TableCell align="left">{formatDate(props.createdAt)}</TableCell>
         <TableCell align="left">{formatTime(props.createdAt)}</TableCell>
         <TableCell>
-          <IconButton onClick={() => handleDeleteLink(props.id)}>
+          {/* <IconButton onClick={() => handleDeleteLink(props.id)}>
             <DeleteIcon />
-          </IconButton>
-          {/* <DeleteSiteModal
+          </IconButton> */}
+          <DeleteSiteModal
             id={props.id}
             deleteLink={deleteLink}
-            addCount={addCount}
-          /> */}
+            onDeleteSuccess={props.onDeleteSuccess}
+          />
         </TableCell>
       </TableRow>
       <TableRow>
@@ -182,6 +209,10 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState<number>();
   const { selectedState } = useToken();
+
+  const handleDeleteSuccess = (id: string) => {
+    setRows((prev) => prev.filter((link) => link.id !== id));
+  };
 
   // useEffect(() => {
   //   if (search.value.length > 0) {
@@ -252,8 +283,16 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
           <CircularProgress />
         </Box>
       ) : (
-        <Table aria-label="collapsible table">
-          <TableHead sx={{ background: colors.primary_lightest }}>
+        <Table
+          aria-label="collapsible table"
+          sx={{
+            tableLayout: "fixed",
+            width: "100%",
+          }}
+        >
+          <TableHead
+            sx={{ background: colors.primary_lightest, textAlign: "center" }}
+          >
             <TableRow>
               <TableCell />
               <TableCell>Nome do Site</TableCell>
@@ -269,7 +308,12 @@ export default function CollapsibleTable({ search, filterData, count }: Props) {
           </TableHead>
           <TableBody>
             {rows.map((row: Row) => (
-              <Row key={row.id} {...row} refreshList={refreshList} />
+              <Row
+                key={row.id}
+                {...row}
+                refreshList={refreshList}
+                onDeleteSuccess={handleDeleteSuccess}
+              />
             ))}
           </TableBody>
         </Table>

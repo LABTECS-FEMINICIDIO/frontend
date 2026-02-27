@@ -5,12 +5,14 @@ import "leaflet/dist/leaflet.css";
 import MarkerClusterGroup from "react-leaflet-cluster";
 import { Box } from "@mui/material";
 import Cookies from "universal-cookie";
+import { useToken } from "../../shared/hooks/auth";
 
 interface IProps {
   vitimas: any[];
 }
 
 export function MapPage({ vitimas }: IProps) {
+  const { perfil } = useToken();
   const positions: any = {
     Manaus: [-3.059943, -59.988359],
     "Porto-velho": [-8.763879, -63.884268],
@@ -54,35 +56,37 @@ export function MapPage({ vitimas }: IProps) {
                 lng: Number(marker.lng),
               }}
             >
-              <Popup>
-                <h2>{marker.nome}</h2>
-                <p>Bairro: {marker.bairro}</p>
-                <p>Zona: {marker.zona ?? "Zona não cadastrada"}</p>
-                <p>Idade: {marker.idade}</p>
-                <MapContainer
-                  center={{
-                    lat: Number(marker.lat),
-                    lng: Number(marker.lng),
-                  }}
-                  zoom={20}
-                  scrollWheelZoom={false}
-                  zoomControl={false}
-                  style={{ height: "100px", width: "180px" }}
-                >
-                  <TileLayer
-                    url={
-                      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                    }
-                  />
-                  <Marker
-                    icon={myIcon}
-                    position={{
+              {perfil !== "visualizador" ? (
+                <Popup>
+                  <h2>{marker.nome}</h2>
+                  <p>Bairro: {marker.bairro}</p>
+                  <p>Zona: {marker.zona ?? "Zona não cadastrada"}</p>
+                  <p>Idade: {marker.idade}</p>
+                  <MapContainer
+                    center={{
                       lat: Number(marker.lat),
                       lng: Number(marker.lng),
                     }}
-                  ></Marker>
-                </MapContainer>
-              </Popup>
+                    zoom={20}
+                    scrollWheelZoom={false}
+                    zoomControl={false}
+                    style={{ height: "100px", width: "180px" }}
+                  >
+                    <TileLayer
+                      url={
+                        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                      }
+                    />
+                    <Marker
+                      icon={myIcon}
+                      position={{
+                        lat: Number(marker.lat),
+                        lng: Number(marker.lng),
+                      }}
+                    ></Marker>
+                  </MapContainer>
+                </Popup>
+              ) : null}
             </Marker>
           ))}
         </MarkerClusterGroup>

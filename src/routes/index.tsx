@@ -7,7 +7,7 @@ import {
   APP_PAGES_VISUALIZADOR,
   APP_PAGES_EDITOR_PORTO_VELHO,
   APP_PAGES_PORTO_VELHO,
-  APP_PAGES_VISUALIZADOR_PORTO_VELHO
+  APP_PAGES_VISUALIZADOR_PORTO_VELHO,
 } from "./pages.routes";
 import { DefaultLayout } from "../DefaultLayout";
 import SignIn from "../pages/Login";
@@ -27,6 +27,7 @@ interface Page {
 export function AppRoutes() {
   const { permission, perfil, selectedState } = useToken();
   const [pagesRender, setPagesRender] = useState<Page[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const cookie = new Cookies();
@@ -35,42 +36,50 @@ export function AppRoutes() {
     if (city === "Manaus") {
       setPagesRender(
         perfil === "visualizador"
-        ? APP_PAGES_VISUALIZADOR
-        : perfil === "pesquisador"
-        ? APP_PAGES_EDITOR
-        : APP_PAGES
+          ? APP_PAGES_VISUALIZADOR
+          : perfil === "pesquisador"
+            ? APP_PAGES_EDITOR
+            : APP_PAGES,
       );
     } else {
       setPagesRender(
         perfil === "visualizador"
-        ? APP_PAGES_VISUALIZADOR_PORTO_VELHO
-        : perfil === "pesquisador"
-        ? APP_PAGES_EDITOR_PORTO_VELHO
-        : APP_PAGES_PORTO_VELHO
+          ? APP_PAGES_VISUALIZADOR_PORTO_VELHO
+          : perfil === "pesquisador"
+            ? APP_PAGES_EDITOR_PORTO_VELHO
+            : APP_PAGES_PORTO_VELHO,
       );
     }
+
+    setLoading(false);
   }, [perfil, selectedState]);
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <Routes>
-      {permission && pagesRender.length > 0 ? (
+      {permission ? (
         <Route path="/" element={<DefaultLayout />}>
-          {pagesRender?.map(({ route, component }) => (
+          {pagesRender.map(({ route, component }) => (
             <Route key={route} path={route} element={component} />
           ))}
-          <Route key={"login"} path="/" element={<SignIn />} />
-          <Route key={"register"} path="/register" element={<Register />} />
-          <Route key={"recoveryCode"}  path="/recoveryCode" element={<RecoveryCode/>} />
-          <Route key={"recoveryPass"}  path="/recoveryPass" element={<RecoveryPassword/>} />
+
+          <Route path="/" element={<SignIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/recoveryCode" element={<RecoveryCode />} />
+          <Route path="/recoveryPass" element={<RecoveryPassword />} />
         </Route>
       ) : (
         <>
-          <Route key={"login"} path="/" element={<SignIn />} />
-          <Route key={"register"} path="/register" element={<Register />} />
-          <Route key={"recoveryCode"}  path="/recoveryCode" element={<RecoveryCode/>} />
-          <Route key={"recoveryPass"}  path="/recoveryPass" element={<RecoveryPassword/>} />
+          <Route path="/" element={<SignIn />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/recoveryCode" element={<RecoveryCode />} />
+          <Route path="/recoveryPass" element={<RecoveryPassword />} />
         </>
       )}
+
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

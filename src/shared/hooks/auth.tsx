@@ -98,9 +98,8 @@ export function TokenProvider({ children }: TokenProviderProps) {
         toast.success("Login realizado com sucesso");
       })
       .catch((error) => {
-        console.log(error);
         setPermission(false);
-        toast.error(error.response.data.message);
+        toast.error(error?.response?.data?.message || "Erro ao fazer login");
       });
   }
 

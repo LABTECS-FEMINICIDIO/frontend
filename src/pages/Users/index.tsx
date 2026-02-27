@@ -59,11 +59,10 @@ export function Users() {
   };
 
   const DeleteUser = (userId: string) => {
-
-    if (userId === cookies.get('idf')) {
-      toast.error('Você não pode excluir seu usuário')
+    if (userId === cookies.get("idf")) {
+      toast.error("Você não pode excluir seu usuário");
       return;
-    } 
+    }
 
     deleteUser(userId)
       .then((response: any) => {
@@ -149,7 +148,7 @@ export function Users() {
               <MenuItem value={"name"}>Nome</MenuItem>
               <MenuItem value={"email"}>Email</MenuItem>
               <MenuItem value={"contact"}>Telefone</MenuItem>
-              <MenuItem value={"acesso"}>Acesso</MenuItem>
+              {/* <MenuItem value={"acesso"}>Acesso</MenuItem> */}
             </Select>
           </FormControl>
           <FormControl size="small" sx={{ minWidth: 140 }}>
@@ -205,7 +204,8 @@ export function Users() {
         <TableGrid
           rows={filtered ? rowsFiltered : rows}
           columns={columns}
-          titleDelete="Excluir usuário?"
+          titleDelete="Excluir usuário"
+          subtitleDelete="Realmente deseja excluir este usuário?"
           onDelete={DeleteUser}
           onEdit={OpenModalEdit}
         />

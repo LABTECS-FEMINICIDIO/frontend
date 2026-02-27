@@ -30,13 +30,13 @@ const schema = Yup.object()
   .shape({
     nome: Yup.string()
       .trim()
-      .matches(/^[a-zA-Z\s]*$/, 'Nome deve conter apenas letras')
+      .matches(/^[a-zA-Z\s]*$/, "Nome deve conter apenas letras")
       .optional(),
     email: Yup.string()
       .email("E-mail deve ter um formato válido: exemplo@mail.com.br")
       .optional(),
     contact: Yup.string()
-      .matches(/^[0-9]+$/, 'Telefone deve conter apenas números')
+      .matches(/^[0-9]+$/, "Telefone deve conter apenas números")
       .optional(),
     role: Yup.string().optional(),
     password: Yup.string().optional(),
@@ -45,12 +45,12 @@ const schema = Yup.object()
 
 type FormData = Yup.InferType<typeof schema>;
 
-export function EditUser({ id, user }: { id: string , user: any}) {
+export function EditUser({ id, user }: { id: string; user: any }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const [userData, setUserData] = useState<IUser | null>(null);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const { addCount } = useRefresh();
 
   const {
@@ -67,8 +67,6 @@ export function EditUser({ id, user }: { id: string , user: any}) {
   };
 
   const handleUpadateUser = async (data: Yup.InferType<typeof schema>) => {
-    // return console.log(data);
-
     setLoading(true);
     try {
       await updateUser(id, data);
@@ -113,13 +111,12 @@ export function EditUser({ id, user }: { id: string , user: any}) {
   // };
 
   const fillUserData = () => {
-    console.log("user dasta", user)
-    setValue("nome", user.name)
+    setValue("nome", user.name);
     setValue("email", user.email);
     setValue("role", user.role);
     setValue("contact", user.contact);
     setLoading(false);
-}
+  };
   const handleEditButtonClick = () => {
     setLoading(true);
     fillUserData();
@@ -136,7 +133,7 @@ export function EditUser({ id, user }: { id: string , user: any}) {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        {user && (  // Verifica se os dados do usuário estão definidos
+        {user && ( // Verifica se os dados do usuário estão definidos
           <>
             <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: 600 }}>
               {"Editar informações do usuário"}
@@ -201,5 +198,4 @@ export function EditUser({ id, user }: { id: string , user: any}) {
       </Dialog>
     </>
   );
-  
 }

@@ -52,7 +52,7 @@ export function CreateProgram() {
   };
 
   const handleCreateProgramSearch = async (
-    data: Yup.InferType<typeof schema>
+    data: Yup.InferType<typeof schema>,
   ) => {
     try {
       setLoading(true);
@@ -69,14 +69,13 @@ export function CreateProgram() {
       toast.error(error?.response.data.detail);
     }
   };
-  
+
   const { count } = useRefresh();
 
   React.useEffect(() => {
     findManyProgramSearch().then((res) => {
       setPeriodoPesquisa(res.data[0]?.dias ?? 1);
     });
-    console.log(count)
   }, [count, open]);
 
   const handleClickOpen = () => {
@@ -149,11 +148,7 @@ export function CreateProgram() {
               <Button autoFocus onClick={handleClose}>
                 Cancelar
               </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                autoFocus
-              >
+              <Button type="submit" variant="contained" autoFocus>
                 Salvar
               </Button>
             </DialogActions>

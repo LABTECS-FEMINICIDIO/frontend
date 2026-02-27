@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  CircularProgress,
   FormControl,
   IconButton,
   InputAdornment,
@@ -56,18 +57,12 @@ export function Calendar() {
       .then(([backendResponse, apiBrasilResponse]) => {
         const backendHolidays = transformBackendData(backendResponse.data);
         const apiBrasilHolidays = transformApiBrasilData(
-          apiBrasilResponse.data
+          apiBrasilResponse.data,
         );
-
         setRows(mergeData(backendHolidays, apiBrasilHolidays));
-
-        console.log("ROWS ---->", rows);
-
         setLoading(false);
-
         // Atualizar o ano dos feriados do backend
         updateBackendHolidaysYear(backendResponse.data);
-        console.log("ROWS ---->", rows);
       })
       .catch((error) => {
         toast.error(error.message);
@@ -84,7 +79,7 @@ export function Calendar() {
         date: formatDate(
           `${newDate.getFullYear()}-${
             newDate.getMonth() + 1
-          }-${newDate.getDate()}`
+          }-${newDate.getDate()}`,
         ),
       };
     });
@@ -98,7 +93,7 @@ export function Calendar() {
       ];
 
       return merged.sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
       );
     });
   };
@@ -118,7 +113,7 @@ export function Calendar() {
       date: formatDate(`${holiday.ano}-${holiday.mes}-${holiday.dia}`),
       name: holiday.name,
       diaSemana: getDiaSemana(
-        new Date(holiday.ano, holiday.mes - 1, holiday.dia)
+        new Date(holiday.ano, holiday.mes - 1, holiday.dia),
       ),
       type: holiday.type,
       pontoFacultativo: holiday.pontoFacultativo,
@@ -159,7 +154,7 @@ export function Calendar() {
     const merged = [...backendData, ...apiBrasilData];
 
     return [...merged].sort(
-      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     );
   };
 
@@ -219,28 +214,33 @@ export function Calendar() {
   };
 
   const handleSearch = () => {
-    if (search.column === "" || search.value === "") {
+    if (!search.column || !search.value) {
       toast.error("Campo coluna e pesquisa não pode ser vazio");
-    } else {
-      const findRows = rows.filter((item: any) => {
-        // Verifica se a coluna é 'date' para tratar de forma especial
-        if (search.column === "date") {
-          // Converte a data de item.date para o formato dd/mm/yyyy
-          const itemDate = item.date ? formatDate(item.date) : "";
-          const searchDate = formatDate(search.value);
-          return itemDate.includes(searchDate);
-        }
-        // Caso contrário, realiza a comparação normal
-        return String(item[search.column])
-          .toLowerCase()
-          .includes(String(search.value).toLowerCase());
-      });
-
-      if (findRows.length === 0) {
-        toast.error("Nenhum resultado encontrado para esta pesquisa.");
-      }
-      setRowsFiltered(findRows);
+      return;
     }
+
+    const searchValue = String(search.value).trim().toLowerCase();
+
+    const findRows = rows.filter((item: any) => {
+      const columnValue = item[search.column];
+
+      if (!columnValue) return false;
+
+      // tratamento especial para data
+      if (search.column === "date") {
+        const itemDateFormatted = formatDate(columnValue)?.trim().toLowerCase();
+
+        return itemDateFormatted?.includes(searchValue);
+      }
+
+      return String(columnValue).trim().toLowerCase().includes(searchValue);
+    });
+
+    if (findRows.length === 0) {
+      toast.error("Nenhum resultado encontrado para esta pesquisa.");
+    }
+
+    setRowsFiltered(findRows);
   };
 
   const handleClear = () => {
@@ -322,10 +322,21 @@ export function Calendar() {
           <CreateHoliday />
         </Box>
       </Box>
-      {!loading && (
+      {loading ? (
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "70vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
         <>
           <TableGrid
-            rows={rows}
+            rows={rowsFiltered.length > 0 ? rowsFiltered : rows}
             columns={columns}
             onDelete={DeleteHoliday}
             titleDelete="Excluir feriado"
