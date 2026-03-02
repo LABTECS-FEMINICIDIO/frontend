@@ -1,14 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from "react";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
 import {
   Button,
   FormControl,
@@ -17,15 +11,22 @@ import {
   Select,
   useMediaQuery,
 } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import { MenuList } from "./MenuList";
-import { Content } from "./Content";
-import { AppBar, Drawer, DrawerHeader } from "./styles";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
+import Toolbar from "@mui/material/Toolbar";
+import { jwtDecode } from "jwt-decode";
+import * as React from "react";
+import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
 import { EditUser } from "../../pages/Users/editUser";
 import { useToken } from "../../shared/hooks/auth";
-import { toast } from "react-toastify";
-import { jwtDecode } from "jwt-decode";
+import { Content } from "./Content";
+import { MenuList } from "./MenuList";
+import { AppBar, Drawer, DrawerHeader } from "./styles";
 
 interface AppContainerProps {
   children?: React.ReactNode;
@@ -42,6 +43,10 @@ export function AppContainer({ children, title }: AppContainerProps) {
     setAnchorEl(event.currentTarget);
   };
   const cookies = new Cookies();
+
+  const location = useLocation();
+  const token = cookies.get("feminicidio_token");
+  const isDashboard = Boolean(token) && location.pathname === "/";
 
   const username = cookies.get("usernamef");
 
@@ -94,7 +99,7 @@ export function AppContainer({ children, title }: AppContainerProps) {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", height: "100vh" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -163,7 +168,23 @@ export function AppContainer({ children, title }: AppContainerProps) {
         <Divider />
         <MenuList open={open} />
       </Drawer>
-      {title === "Dashboard" ? children : <Content>{children}</Content>}
+
+      {isDashboard ? (
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            overflow: "hidden",
+            paddingTop: "80px",
+            backgroundColor: "white",
+          }}
+        >
+          {children}
+        </Box>
+      ) : (
+        <Content>{children}</Content>
+      )}
     </Box>
   );
 }

@@ -1,11 +1,11 @@
-import { stylesMap } from "./map";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { Box } from "@mui/material";
 import { Icon, LatLngExpression } from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-cluster";
-import { Box } from "@mui/material";
 import Cookies from "universal-cookie";
 import { useToken } from "../../shared/hooks/auth";
+import { stylesMap } from "./map";
 
 interface IProps {
   vitimas: any[];
@@ -40,7 +40,7 @@ export function MapPage({ vitimas }: IProps) {
         center={position}
         zoom={12}
         scrollWheelZoom={true}
-        style={{ height: "550px", width: "100%" }}
+        style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

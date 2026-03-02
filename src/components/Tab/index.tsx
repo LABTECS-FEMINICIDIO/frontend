@@ -1,8 +1,8 @@
-import * as React from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 import { Dashboard } from "../../pages/Dashboard/dashboard";
 import { Maps } from "../../pages/Dashboard/maps";
 
@@ -21,10 +21,15 @@ function CustomTabPanel(props: TabPanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
+      style={{
+        flex: 1,
+        display: value === index ? "flex" : "none",
+        flexDirection: "column",
+      }}
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ flex: 1 }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -47,7 +52,7 @@ export default function BasicTabs() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -58,12 +63,14 @@ export default function BasicTabs() {
           <Tab label="Mapa" {...a11yProps(1)} />
         </Tabs>
       </Box>
-      <CustomTabPanel value={value} index={0}>
-        <Dashboard />
-      </CustomTabPanel>
-      <CustomTabPanel value={value} index={1}>
-        <Maps />
-      </CustomTabPanel>
+      <Box sx={{ flex: 1, display: "flex", overflow: "hidden" }}>
+        <CustomTabPanel value={value} index={0}>
+          <Dashboard />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={1}>
+          <Maps />
+        </CustomTabPanel>
+      </Box>
     </Box>
   );
 }

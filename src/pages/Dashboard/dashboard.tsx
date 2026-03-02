@@ -28,29 +28,47 @@ export function Dashboard() {
   }, [selectedState]);
 
   return (
-    <>
+    <Box
+      sx={{
+        position: "relative",
+        width: "100%",
+        height: "calc(100vh - 175px)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden",
+      }}
+    >
       {loadingMetabase && (
         <Box
           sx={{
+            position: "absolute",
+            inset: 0,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: "70vh",
+            zIndex: 2,
           }}
         >
           <CircularProgress />
         </Box>
       )}
-      <Box sx={{ display: "flex", flexWrap: "wrap", mt: 1 }}>
-        <iframe
-          src={metabaseLink}
-          title="Dashboards"
-          frameBorder="0"
-          width="1650"
-          height="670"
-          onLoad={handleMetabaseLoad}
-        />
-      </Box>
-    </>
+
+      <iframe
+        src={metabaseLink}
+        title="Dashboards"
+        frameBorder={0}
+        width="100%"
+        height="100%"
+        allowTransparency
+        style={{
+          border: "none",
+          borderRadius: "8px",
+          background: "white",
+          flex: 1,
+        }}
+        onLoad={handleMetabaseLoad}
+      />
+    </Box>
   );
 }
