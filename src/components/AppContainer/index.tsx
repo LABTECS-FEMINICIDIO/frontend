@@ -99,7 +99,7 @@ export function AppContainer({ children, title }: AppContainerProps) {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
